@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/popup">
+<ImageView
+    android:src="@drawable/boratcircle"
+    android:layout_height="50dp"
+    android:layout_width="50dp"
+    android:id="@+id/circle"
+    android:layout_alignParentTop="true"
+    android:layout_alignRight="@+id/save"
+    android:layout_alignEnd="@+id/save"
+    android:layout_marginTop="17dp" />
+
+    <EditText
+        android:id="@+id/newname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Enter new Name"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_alignLeft="@+id/back"
+        android:layout_alignStart="@+id/back" />
+
+
+
+    <EditText
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Enter new number"
+        android:inputType="phone"
+        android:layout_below="@+id/newname"
+        android:layout_alignLeft="@+id/newname"
+        android:layout_alignStart="@+id/newname" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+
+        android:layout_alignBaseline="@+id/back"
+        android:layout_alignBottom="@+id/back"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_below="@+id/number"
+        android:layout_toRightOf="@+id/circle"
+        android:layout_toEndOf="@+id/circle" />
+
+
+</RelativeLayout>
