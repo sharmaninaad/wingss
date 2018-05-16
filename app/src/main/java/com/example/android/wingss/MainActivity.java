@@ -69,16 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     String[] texts = {
-        "Upgrade to professional",
-            "Notifications",
-            "My Block List",
-            "Settings"
+        "Weekly plan",
+            "Monthly Plan",
+            "Annual Plan",
+            "Lifetime Plan"
     } ;
     Integer[] iconId = {
-        R.drawable.prof,
-            R.drawable.notify,
-            R.drawable.block,
-            R.drawable.sett
+        R.drawable.week,
+            R.drawable.month,
+            R.drawable.year,
+            R.drawable.lifetime
     };
     DialogInterface.OnClickListener listener;
     AlertDialog.Builder alertDialogBuilder;
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
-        mylist listAdapter = new
+        final mylist listAdapter = new
                 mylist(MainActivity.this, texts, iconId);
         button=(Button)findViewById(R.id.edit);
     //alertDialogBuilder= new AlertDialog.Builder(this);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         view=inflater.inflate(R.layout.dialog, null);
 */
-        upgrade=(TextView)findViewById(R.id.up);
+        upgrade=(TextView)findViewById(R.id.Up);
         upgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
                 dialog.setContentView(R.layout.dialoglist);
                 dialog.setTitle("Select from the above plans");
-
+                ListView listView=(ListView)dialog.findViewById(R.id.thelist);
+                listView.setAdapter(listAdapter);
                 dialog.show();
 
             }
