@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textColorHint="#33691e"
         android:inputType="textPersonName"
         android:hint="Enter the Username"
         android:layout_marginBottom="25dp"
@@ -26,11 +27,13 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
+        android:textColorHint="#33691e"
+
         android:hint="Enter Password"
         android:layout_marginBottom="35dp"
         android:layout_above="@+id/phone"
-        android:layout_toRightOf="@+id/login"
-        android:layout_toEndOf="@+id/login" />
+        android:layout_toRightOf="@+id/versatile"
+        android:layout_toEndOf="@+id/versatile" />
 
     <EditText
         android:id="@+id/mail"
@@ -40,7 +43,9 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="21dp"
-        android:layout_above="@+id/login"
+        android:textColorHint="#33691e"
+
+        android:layout_above="@+id/versatile"
         android:layout_alignLeft="@+id/pwd"
         android:layout_alignStart="@+id/pwd" />
 
@@ -52,36 +57,40 @@
         android:hint="enter your phone number"
         android:inputType="phone"
         android:layout_marginBottom="17dp"
+        android:textColorHint="#33691e"
+
         android:layout_above="@+id/mail"
         android:layout_alignLeft="@+id/mail"
         android:layout_alignStart="@+id/mail" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/versatile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
-        android:text="Button"
+        android:text="login"
+        android:textColor="#fff"
+        android:background="#33691e"
         android:layout_marginBottom="42dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mail"
         android:layout_marginLeft="28dp"
 
         android:layout_marginStart="28dp"
-        android:layout_toEndOf="@+id/login"
-        android:layout_toRightOf="@+id/login"
+        android:layout_toEndOf="@+id/versatile"
+        android:layout_toRightOf="@+id/versatile"
         android:background="#fff"
         android:backgroundTint="#fff"
         android:elevation="0dp"
-        android:text=" or Sign Up" />
+        android:text=" or signup" />
 
     <ImageView
         android:id="@+id/imageView3"
