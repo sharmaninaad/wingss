@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -130,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setTitle("Select from the above plans");
                 ListView listView=(ListView)dialog.findViewById(R.id.thelist);
                 listView.setAdapter(listAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(MainActivity.this, "item at "+position+" clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 dialog.show();
 
             }
