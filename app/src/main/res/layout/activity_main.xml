@@ -14,19 +14,23 @@
     tools:context="com.example.android.wingss.MainActivity"
     android:orientation="vertical"
     android:weightSum="1">
-
-    <ImageView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <android.support.v4.widget.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="148dp"
         android:layout_height="165dp"
-        android:layout_marginLeft="120dp"
+
         android:src="@drawable/boratcircle" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
+
         android:text="Tim Heuer"
         android:textColor="#000"
         android:textSize="20dp" />
@@ -35,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
+
         android:text="098872 30800"
 
        />
@@ -45,7 +49,6 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="146dp"
         android:layout_marginTop="14dp"
         android:background="#fff"
         android:backgroundTint="#fff"
@@ -54,87 +57,94 @@
         android:fontFamily="sans-serif-smallcaps"
         android:text="Edit Profile"
         android:textColor="#0000ff" />
-<TextView
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+<View
     android:layout_width="match_parent"
     android:layout_height="1dp"
     android:background="#9e9e9e"/>
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="187dp" >
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/prof"
+            android:layout_marginLeft="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
-        <TableRow
-            android:layout_marginLeft="14dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:src="@drawable/prof"
-                android:layout_marginLeft="8dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-            <TextView
-                android:id="@+id/Up"
-                android:text="Upgrade to Professional"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-        </TableRow>
         <TextView
+            android:id="@+id/Up"
+            android:text="Upgrade to Professional"
+            android:layout_marginLeft="17dp"
+            android:textColor="#000"
+            android:textSize="17dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <ImageView
+            android:src="@drawable/arrow"
+            android:layout_marginLeft="10dp"
+            android:layout_width="30dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
             android:background="#9e9e9e"/>
-        <TableRow
-            android:layout_marginLeft="14dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:src="@drawable/notify"
+            android:layout_marginLeft="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
-            <ImageView
-                android:src="@drawable/notify"
-                android:layout_marginLeft="8dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-            <TextView
-                android:id="@+id/notify"
-                android:text="Notifications"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-        </TableRow>
         <TextView
+            android:id="@+id/notify"
+            android:text="Notifications"
+
+            android:layout_marginLeft="17dp"
+            android:textColor="#000"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/arrow"
+            android:layout_marginLeft="10dp"
+
+            android:layout_width="30dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+
+
+        <View
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:background="#9e9e9e"/>
-
-        <TableRow
-            android:layout_marginLeft="14dp"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:src="@drawable/block"
@@ -145,7 +155,7 @@
             <TextView
                 android:id="@+id/block"
                 android:text="My Block List"
-                android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:layout_marginLeft="17dp"
                 android:textColor="#000"
                 android:textSize="17dp"
@@ -153,169 +163,161 @@
                 android:layout_height="wrap_content" />
             <ImageView
                 android:src="@drawable/arrow"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+
                 android:layout_width="30dp"
                 android:layout_height="20dp" />
-        </TableRow>
-        <TextView
+        </LinearLayout>
+
+
+        <View
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:background="#9e9e9e"/>
-
-        <TableRow
-            android:layout_marginLeft="14dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:src="@drawable/sett"
+                android:layout_marginLeft="8dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/Settings"
+                android:text="Settings"
+
+                android:layout_marginLeft="17dp"
+                android:textColor="#000"
+                android:textSize="17dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/arrow"
+                android:layout_marginLeft="10dp"
+
+                android:layout_width="30dp"
+                android:layout_height="20dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#9e9e9e"/>
+
+        <TextView
+             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#e0e0e0"
+            android:textColor="#212121"
+            android:gravity="bottom"
+            android:text="SUPPORT" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/faq"
+                android:layout_marginLeft="8dp"
+
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/faq"
+                android:text="FAQ"
+                android:layout_marginLeft="17dp"
+                android:textColor="#000"
+                android:textSize="17dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/arrow"
+                android:layout_marginLeft="10dp"
+                android:layout_width="30dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#9e9e9e"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:src="@drawable/contact"
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/Settings"
-                android:text="Settings"
-                android:layout_marginTop="15dp"
+                android:id="@+id/contact"
+                android:text="Contact Us"
                 android:layout_marginLeft="17dp"
                 android:textColor="#000"
                 android:textSize="17dp"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:src="@drawable/arrow"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="30dp"
                 android:layout_height="20dp" />
-        </TableRow>
+        </LinearLayout>
 
-    </TableLayout>
-<TextView
-    android:layout_marginTop="0dp"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="#e0e0e0"
-    android:textColor="#212121"
-    android:text="
 
-    SUPPORT
-"/>
-<TableLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TableRow
-        android:layout_marginLeft="14dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:src="@drawable/faq"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-        <TextView
-            android:id="@+id/faq"
-            android:text="FAQ"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="27dp"
-            android:textColor="#000"
-            android:textSize="17dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:src="@drawable/arrow"
-            android:layout_marginLeft="145dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="30dp"
-            android:layout_height="20dp" />
-    </TableRow>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_marginLeft="50dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="3dp"
-        android:background="#9e9e9e"/>
-
-    <TableRow
-        android:layout_marginLeft="14dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp">
-
-        <ImageView
-            android:src="@drawable/contact"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/contact"
-            android:text="Contact Us"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="27dp"
-            android:textColor="#000"
-            android:textSize="17dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:src="@drawable/arrow"
-            android:layout_marginLeft="145dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="30dp"
-            android:layout_height="20dp" />
-    </TableRow>
-
-</TableLayout>
-    <TextView
-        android:layout_marginTop="10dp"
+</LinearLayout>
+    <View
+        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="#e0e0e0"
         android:textColor="#212121"
-     />
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TableRow
-            android:layout_marginLeft="14dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:src="@drawable/faq"
+            android:layout_marginLeft="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/about"
+            android:text="About"
+            android:layout_marginLeft="17dp"
+            android:textColor="#000"
+            android:textSize="17dp"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/arrow"
+            android:layout_marginLeft="10dp"
 
-            <ImageView
-                android:src="@drawable/faq"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+            android:layout_width="30dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/about"
-                android:text="About"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="27dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-        </TableRow>
-
-
-
-
-    </TableLayout>
-
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>
