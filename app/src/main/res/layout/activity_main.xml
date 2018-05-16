@@ -19,7 +19,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_horizontal">
-    <android.support.v4.widget.CircleImageView
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="148dp"
         android:layout_height="165dp"
@@ -58,234 +58,255 @@
         android:text="Edit Profile"
         android:textColor="#0000ff" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="#9e9e9e"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <ImageView
-            android:src="@drawable/prof"
-            android:layout_marginLeft="8dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-        <TextView
-            android:id="@+id/Up"
-            android:text="Upgrade to Professional"
-            android:layout_marginLeft="17dp"
-            android:textColor="#000"
-            android:textSize="17dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <ImageView
-            android:src="@drawable/arrow"
-            android:layout_marginLeft="10dp"
-            android:layout_width="30dp"
-            android:layout_height="20dp" />
-
-    </LinearLayout>
-
         <View
             android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:background="#9e9e9e"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-        <ImageView
-            android:src="@drawable/notify"
-            android:layout_marginLeft="8dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:background="#9e9e9e" />
 
-        <TextView
-            android:id="@+id/notify"
-            android:text="Notifications"
-
-            android:layout_marginLeft="17dp"
-            android:textColor="#000"
-            android:textSize="17dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:src="@drawable/arrow"
-            android:layout_marginLeft="10dp"
-
-            android:layout_width="30dp"
-            android:layout_height="20dp" />
-    </LinearLayout>
-
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#9e9e9e"/>
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:src="@drawable/block"
-                android:layout_marginLeft="8dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-            <TextView
-                android:id="@+id/block"
-                android:text="My Block List"
-                android:layout_weight="1"
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="10dp"
-
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#9e9e9e"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:src="@drawable/sett"
-                android:layout_marginLeft="8dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-            <TextView
-                android:id="@+id/Settings"
-                android:text="Settings"
-
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="10dp"
-
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#9e9e9e"/>
-
-        <TextView
-             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#e0e0e0"
-            android:textColor="#212121"
-            android:gravity="bottom"
-            android:text="SUPPORT" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:src="@drawable/faq"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+
+                android:src="@drawable/prof" />
+
+            <TextView
+                android:id="@+id/Up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="Upgrade to Professional"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+
+            android:background="#9e9e9e" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+
+                android:src="@drawable/notify" />
+
+            <TextView
+                android:id="@+id/notify"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="Notifications"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            
+            android:background="#9e9e9e" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/block" />
+
+            <TextView
+                android:id="@+id/block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="My Block List"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+           
+            android:background="#9e9e9e" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sett" />
+
+            <TextView
+                android:id="@+id/Settings"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="Settings"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#e0e0e0"
+            android:gravity="center_vertical"
+            android:text="    SUPPORT"
+
+            android:textColor="#212121" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginLeft="8dp"
 
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/faq" />
 
             <TextView
                 android:id="@+id/faq"
-                android:text="FAQ"
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="FAQ"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
             <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="10dp"
                 android:layout_width="30dp"
-                android:layout_height="20dp" />
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#9e9e9e"/>
+            android:layout_marginLeft="50dp"
+
+            android:background="#9e9e9e" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <ImageView
-                android:src="@drawable/contact"
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+
+                android:scaleType="centerCrop"
+                android:src="@drawable/contact" />
 
             <TextView
                 android:id="@+id/contact"
-                android:text="Contact Us"
-                android:layout_marginLeft="17dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_weight="1"
+                android:text="Contact Us"
+                android:textColor="#000"
+                android:textSize="17dp" />
+
             <ImageView
-                android:src="@drawable/arrow"
-                android:layout_marginLeft="10dp"
                 android:layout_width="30dp"
-                android:layout_height="20dp" />
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow" />
         </LinearLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
+
     <View
-        android:layout_marginTop="13dp"
+
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="#e0e0e0"
@@ -293,11 +314,11 @@
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center"
+        android:layout_height="50dp">
         <ImageView
-            android:src="@drawable/faq"
+            android:src="@drawable/about"
             android:layout_marginLeft="8dp"
             android:layout_width="30dp"
             android:layout_height="30dp" />
@@ -308,6 +329,8 @@
             android:layout_marginLeft="17dp"
             android:textColor="#000"
             android:textSize="17dp"
+            android:scaleType="centerCrop"
+
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
