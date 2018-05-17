@@ -1,10 +1,17 @@
 package com.example.android.wingss;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
 
 public class Login extends AppCompatActivity {
     EditText name_edit;
@@ -52,4 +59,51 @@ public class Login extends AppCompatActivity {
 
 
     }
+    private void saveToDB() {
+        SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name_edit.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_edit.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_edit.getText().toString());
+
+
+
+        long newRowId = database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
+
+        Toast.makeText(this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
+    }
+    private void readFromDB() {
+        String name = name_edit.getText().toString();
+        String password = pwd_edit.getText().toString();
+        long date = 0;
+
+
+        SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
+
+        String[] projection = {
+                Dbcontract.Dbentry._ID,
+                COLUMN_NAME,
+                Dbcontract.Dbentry.COLUMN_PWD,
+                Dbcontract.Dbentry.COLUMN_MAIL
+        };
+
+        String selection =
+                Dbcontract.Dbentry.COLUMN_NAME + " like ? " ;
+        String[] selectionArgs = { name};
+
+        Cursor cursor = database.query(
+                Dbcontract.Dbentry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        cursor.moveToFirst();
+        String pwddb= cursor.getString(2);
+
+    }
+    //To do: make a read from db function and then call them on buttons beong clicked
 }

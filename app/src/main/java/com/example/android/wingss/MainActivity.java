@@ -2,8 +2,10 @@ package com.example.android.wingss;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         final mylist listAdapter = new
                 mylist(MainActivity.this, texts, iconId);
         button=(Button)findViewById(R.id.edit);
+
     //alertDialogBuilder= new AlertDialog.Builder(this);
        /* listener=new DialogInterface.OnClickListener() {
             @Override
@@ -189,4 +192,5 @@ public class MainActivity extends AppCompatActivity {
         //list=(ListView)findViewById(R.id.mmlist);
         //list.setAdapter(listAdapter);
     }
+
 }

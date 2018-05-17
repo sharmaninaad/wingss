@@ -83,14 +83,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mail"
         android:layout_marginLeft="28dp"
-
+        android:textColor="#311b92"
         android:layout_marginStart="28dp"
         android:layout_toEndOf="@+id/versatile"
         android:layout_toRightOf="@+id/versatile"
         android:background="#fff"
         android:backgroundTint="#fff"
         android:elevation="0dp"
-        android:text=" or signup" />
+
+        android:text=" or signup"
+        android:textStyle="italic"/>
 
     <ImageView
         android:id="@+id/imageView3"
