@@ -1,6 +1,7 @@
 package com.example.android.wingss;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,31 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+        ver_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ver_btn.getText().equals("login"))
+                {
+                    String passdb=pwd_edit.getText().toString();
+                    if(passdb.equals(readFromDB()))
+                    {
+                        Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
+                        startActivity( new Intent(Login.this,MainActivity.class));
+
+                    }
+                    else
+                    {
+                        pwd_edit.setText("");
+                        Toast.makeText(Login.this, "Please enter the right password", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                }
+               if(ver_btn.getText().equals("signup"))
+               {
+                    saveToDB();
+               }
+            }
+        });
 
 
     }
@@ -73,16 +99,14 @@ public class Login extends AppCompatActivity {
 
         Toast.makeText(this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
     }
-    private void readFromDB() {
+    private String readFromDB() {
         String name = name_edit.getText().toString();
-        String password = pwd_edit.getText().toString();
-        long date = 0;
+
 
 
         SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
-                Dbcontract.Dbentry._ID,
                 COLUMN_NAME,
                 Dbcontract.Dbentry.COLUMN_PWD,
                 Dbcontract.Dbentry.COLUMN_MAIL
@@ -102,7 +126,8 @@ public class Login extends AppCompatActivity {
                 null
         );
         cursor.moveToFirst();
-        String pwddb= cursor.getString(2);
+        String pwddb= cursor.getString(1);
+        return pwddb;
 
     }
     //To do: make a read from db function and then call them on buttons beong clicked
