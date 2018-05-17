@@ -8,7 +8,7 @@
 
 <ImageView
     android:layout_width="100dp"
-    android:layout_height="247dp"
+    android:layout_height="200dp"
     android:scaleType="fitCenter"
     android:src="@drawable/cameraf"/>
 <LinearLayout
@@ -28,7 +28,7 @@
             android:src="@drawable/mail"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"/>
-        <TextView
+        <EditText
             android:id="@+id/mail1"
             android:layout_width="250dp"
             android:layout_height="40dp"
@@ -55,7 +55,7 @@
             android:src="@drawable/lock"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"/>
-    <TextView
+    <EditText
         android:id="@+id/pwd1"
         android:layout_width="250dp"
         android:layout_height="40dp"
@@ -117,7 +117,7 @@
         android:orientation="horizontal"
         android:background="@drawable/buttons">
         <ImageView
-            android:layout_width="30dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:src="@drawable/twit"/>
     <Button

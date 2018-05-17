@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
@@ -18,10 +18,10 @@ import org.w3c.dom.Text;
 import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
 
 public class Login extends AppCompatActivity {
-    TextView name_edit;
-    TextView pwd_edit;
-    //TextView mail_edit;
-    //TextView phone_edit;
+    EditText name_edit;
+    EditText pwd_edit;
+    //EditText mail_edit;
+    //EditText phone_edit;
     Button ver_btn;
     //Button opt_btn;
    //int flag_login=1;
@@ -31,15 +31,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
 
-        name_edit=(TextView)findViewById(R.id.mail1);
-        pwd_edit=(TextView) findViewById(R.id.pwd1);
+        name_edit=(EditText)findViewById(R.id.mail1);
+        pwd_edit=(EditText) findViewById(R.id.pwd1);
        // mail_edit=(EditText)findViewById(R.id.mail);
        // phone_edit=(EditText)findViewById(R.id.phone);
 
        // mail_edit.setVisibility(View.INVISIBLE);
        // phone_edit.setVisibility(View.INVISIBLE);
 
-        ver_btn=(Button)findViewById(R.id.versatile);
+        ver_btn=(Button)findViewById(R.id.versatile1);
        // opt_btn=(Button)findViewById(R.id.option);
 
         /*opt_btn.setOnClickListener(new View.OnClickListener() {
