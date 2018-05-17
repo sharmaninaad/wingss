@@ -10,36 +10,39 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
 
 public class Login extends AppCompatActivity {
-    EditText name_edit;
-    EditText pwd_edit;
-    EditText mail_edit;
-    EditText phone_edit;
+    TextView name_edit;
+    TextView pwd_edit;
+    //TextView mail_edit;
+    //TextView phone_edit;
     Button ver_btn;
-    Button opt_btn;
-    int flag_login=1;
-    int flag_signup=0;
+    //Button opt_btn;
+   //int flag_login=1;
+   // int flag_signup=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login1);
 
-        name_edit=(EditText)findViewById(R.id.user);
-        pwd_edit=(EditText)findViewById(R.id.pwd);
-        mail_edit=(EditText)findViewById(R.id.mail);
-        phone_edit=(EditText)findViewById(R.id.phone);
+        name_edit=(TextView)findViewById(R.id.mail1);
+        pwd_edit=(TextView) findViewById(R.id.pwd1);
+       // mail_edit=(EditText)findViewById(R.id.mail);
+       // phone_edit=(EditText)findViewById(R.id.phone);
 
-        mail_edit.setVisibility(View.INVISIBLE);
-        phone_edit.setVisibility(View.INVISIBLE);
+       // mail_edit.setVisibility(View.INVISIBLE);
+       // phone_edit.setVisibility(View.INVISIBLE);
 
         ver_btn=(Button)findViewById(R.id.versatile);
-        opt_btn=(Button)findViewById(R.id.option);
+       // opt_btn=(Button)findViewById(R.id.option);
 
-        opt_btn.setOnClickListener(new View.OnClickListener() {
+        /*opt_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(flag_login==1)
@@ -61,12 +64,12 @@ public class Login extends AppCompatActivity {
                     phone_edit.setVisibility(View.INVISIBLE);
                 }
             }
-        });
+        });*/
         ver_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag_login==1)
-                {
+          //      if(flag_login==1)
+            //    {
                     String passdb=pwd_edit.getText().toString();
                     if(passdb.equals(readFromDB()))
                     {
@@ -81,16 +84,16 @@ public class Login extends AppCompatActivity {
                     }
                     
                 }
-               if(flag_login==0)
-               {
-                    saveToDB();
-               }
-            }
+              // if(flag_login==0)
+               //{
+                 //   saveToDB();
+               //}
+        //    }
         });
 
 
     }
-    private void saveToDB() {
+  /*  private void saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -103,7 +106,7 @@ public class Login extends AppCompatActivity {
         long newRowId = database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
         Toast.makeText(this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
-    }
+    }*/
     private String readFromDB() {
         String name = name_edit.getText().toString();
 
