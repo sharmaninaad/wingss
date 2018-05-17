@@ -21,6 +21,8 @@ public class Login extends AppCompatActivity {
     EditText phone_edit;
     Button ver_btn;
     Button opt_btn;
+    int flag_login=1;
+    int flag_signup=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +42,21 @@ public class Login extends AppCompatActivity {
         opt_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(opt_btn.getText().toString().equals("or singup"))
+                if(flag_login==1)
                 {
                     ver_btn.setText("signup");
                     opt_btn.setText("or login");
+                    flag_signup=1;
+                    flag_login=0;
                     mail_edit.setVisibility(View.VISIBLE);
                     phone_edit.setVisibility(View.VISIBLE);
                 }
-                else if(opt_btn.getText().toString().equals("or login"))
+                else if(flag_signup==1)
                 {
                     ver_btn.setText("login");
                     opt_btn.setText("or signup");
-
+                    flag_login=1;
+                    flag_signup=0;
                     mail_edit.setVisibility(View.INVISIBLE);
                     phone_edit.setVisibility(View.INVISIBLE);
                 }
@@ -60,7 +65,7 @@ public class Login extends AppCompatActivity {
         ver_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ver_btn.getText().equals("login"))
+                if(flag_login==1)
                 {
                     String passdb=pwd_edit.getText().toString();
                     if(passdb.equals(readFromDB()))
@@ -76,7 +81,7 @@ public class Login extends AppCompatActivity {
                     }
                     
                 }
-               if(ver_btn.getText().equals("signup"))
+               if(flag_login==0)
                {
                     saveToDB();
                }
@@ -125,9 +130,15 @@ public class Login extends AppCompatActivity {
                 null,
                 null
         );
-        cursor.moveToFirst();
-        String pwddb= cursor.getString(1);
-        return pwddb;
+
+        if(cursor==null)
+        {
+            Toast.makeText(this, "No user with the above name exists", Toast.LENGTH_SHORT).show();
+        return null;}
+        else {
+            cursor.moveToFirst();
+            String pwddb = cursor.getString(1);
+            return pwddb;}
 
     }
     //To do: make a read from db function and then call them on buttons beong clicked
