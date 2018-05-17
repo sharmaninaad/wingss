@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wall"
+    android:alpha="0.7"
+    android:gravity="center_horizontal">
+
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="247dp"
+    android:scaleType="fitCenter"
+    android:src="@drawable/cameraf"/>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/text"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mail"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/mail1"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:hint="E-mail address"
+            android:layout_weight="1"
+            android:layout_marginLeft="23dp"
+
+            android:textColorHint="#000" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="300dp"
+        android:layout_height="0.3dp"
+        android:background="#000"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/lock"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/pwd1"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:textColorHint="#000"
+        android:layout_marginLeft="23dp"
+
+        android:hint="*******" />
+        </LinearLayout>
+
+</LinearLayout>
+    <Button
+        android:layout_width="300dp"
+        android:layout_marginTop="15dp"
+        android:text="Sign In"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:background="@drawable/buttono"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center">
+        <View
+            android:layout_width="130dp"
+            android:layout_height="1dp"
+            android:background="#000"
+
+
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/buttonb">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fbb"/>
+    <Button
+        android:layout_width="250dp"
+
+        android:text="Sign in with Facebook"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:background="@drawable/buttonb"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"></LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/buttons">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:src="@drawable/twit"/>
+    <Button
+        android:layout_width="250dp"
+
+        android:text="Sign in with Twitter"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:background="@drawable/buttons"
+        android:layout_height="wrap_content" />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:textColor="#f5f5f5"
+            android:layout_marginLeft="60dp"
+            android:layout_weight="0.5"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New here? Sign Up"
+            android:textColor="#f5f5f5"
+
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,92 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
+    android:orientation="vertical"
     tools:context="com.example.android.wingss.Login">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/image"
+       />
     <EditText
         android:id="@+id/user"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:ems="10"
+        android:fontFamily="casual"
+
         android:textColorHint="#33691e"
         android:inputType="textPersonName"
         android:hint="Enter the Username"
-        android:layout_marginBottom="25dp"
-        android:layout_above="@+id/pwd"
-        android:layout_alignLeft="@+id/pwd"
-        android:layout_alignStart="@+id/pwd" />
+
+  />
 
     <EditText
         android:id="@+id/pwd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:ems="10"
         android:inputType="textPassword"
         android:textColorHint="#33691e"
-
+        android:fontFamily="casual"
         android:hint="Enter Password"
-        android:layout_marginBottom="35dp"
-        android:layout_above="@+id/phone"
-        android:layout_toRightOf="@+id/versatile"
-        android:layout_toEndOf="@+id/versatile" />
+       />
 
     <EditText
         android:id="@+id/mail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:hint="Enter your email-address"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:layout_marginBottom="21dp"
-        android:textColorHint="#33691e"
+        android:fontFamily="casual"
 
-        android:layout_above="@+id/versatile"
-        android:layout_alignLeft="@+id/pwd"
-        android:layout_alignStart="@+id/pwd" />
+        android:textColorHint="#33691e"
+ />
 
     <EditText
         android:id="@+id/phone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:ems="10"
         android:hint="enter your phone number"
         android:inputType="phone"
-        android:layout_marginBottom="17dp"
+        android:fontFamily="casual"
+
         android:textColorHint="#33691e"
+ />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="45dp"
 
-        android:layout_above="@+id/mail"
-        android:layout_alignLeft="@+id/mail"
-        android:layout_alignStart="@+id/mail" />
-
+    android:gravity="center">
     <Button
         android:id="@+id/versatile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="26dp"
-        android:layout_marginStart="26dp"
         android:text="login"
         android:textColor="#fff"
         android:background="#33691e"
-        android:layout_marginBottom="42dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_weight="0.5"
+
+        />
 
     <Button
         android:id="@+id/option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mail"
-        android:layout_marginLeft="28dp"
+        android:layout_weight="0.5"
+
+
+
         android:textColor="#311b92"
-        android:layout_marginStart="28dp"
-        android:layout_toEndOf="@+id/versatile"
-        android:layout_toRightOf="@+id/versatile"
+
+
         android:background="#fff"
         android:backgroundTint="#fff"
         android:elevation="0dp"
@@ -94,13 +103,7 @@
         android:text=" or signup"
         android:textStyle="italic"/>
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/image"
-        android:layout_marginBottom="24dp"
-        android:layout_above="@+id/user"
-        android:layout_alignLeft="@+id/user"
-        android:layout_alignStart="@+id/user" />
-</RelativeLayout>
+</LinearLayout>
+
+
+</LinearLayout>
