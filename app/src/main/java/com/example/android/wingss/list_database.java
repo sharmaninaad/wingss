@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class list_database extends AppCompatActivity {
     ListView lv;
-    ArrayList<String> mails;
-    ArrayList<String> names;
-    ArrayList<String> pwds;
+    ArrayList<String> mails = new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> pwds= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,9 @@ public class list_database extends AppCompatActivity {
 
         };
 
-
+        String selection =
+                "" ;
+        String[] selectionArgs = { };
         Cursor cursor;
         cursor = database.query(
                 Dbcontract.Dbentry.TABLE_NAME,
@@ -55,6 +57,7 @@ public class list_database extends AppCompatActivity {
                 null,
                 null
         );
+
 
 
 

@@ -18,12 +18,12 @@
             <View
                 android:layout_height="10dp"
                 android:background="#000"
-                android:layout_width="10dp"/>
+                android:layout_width="30dp"/>
             <TextView
                 android:id="@+id/name_list"
                 android:textColor="#000"
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="30dp" />
             <View
                 android:layout_height="10dp"
                 android:background="#000"
@@ -32,7 +32,7 @@
                 android:id="@+id/pwd_list"
                 android:textColor="#000"
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="30dp" />
 
         </TableRow>
     </TableLayout>
