@@ -34,16 +34,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/mail" />
+                android:src="@drawable/mail"
+                />
+
+
 
             <EditText
                 android:id="@+id/mail1"
                 android:inputType="textEmailAddress"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
+                android:textAllCaps="false"
                 android:layout_marginLeft="23dp"
                 android:layout_weight="1"
-                android:fontFamily="sans-serif-smallcaps"
+                android:fontFamily="monospace"
 
                 android:background="@drawable/text"
                 android:gravity="center_vertical"
@@ -70,6 +74,8 @@
                 android:src="@drawable/lock" />
 
             <EditText
+                android:inputType="textPassword"
+                android:fontFamily="monospace"
                 android:id="@+id/pwd1"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -77,9 +83,8 @@
                 android:background="@drawable/text"
                 android:gravity="center_vertical"
                 android:hint="Enter the password"
-                android:inputType="numberPassword"
+                android:textAllCaps="false"
                 android:textColorHint="#000"
-                android:fontFamily="sans-serif-smallcaps"
                 />
         </LinearLayout>
 
