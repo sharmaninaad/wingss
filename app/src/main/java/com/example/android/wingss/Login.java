@@ -7,23 +7,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Login extends AppCompatActivity {
-   // EditText name_edit;
     EditText pwd_edit;
     EditText mail_edit;
     TextView sign;
@@ -32,24 +28,21 @@ public class Login extends AppCompatActivity {
     EditText name_d;
     EditText pwd_con_d;
     Button sign_d;
-    //EditText phone_edit;
+    Button all_btn;
     Button ver_btn;
-    //Button opt_btn;
-   //int flag_login=1;
-   // int flag_signup=0;
+    ArrayList<String> mails;
+    ArrayList<String> names;
+    ArrayList<String> pwds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
 
+        all_btn=(Button)findViewById(R.id.all);
         mail_edit=(EditText)findViewById(R.id.mail1);
         pwd_edit=(EditText) findViewById(R.id.pwd1);
         sign=(TextView)findViewById(R.id.signup);
-       // mail_edit=(EditText)findViewById(R.id.mail);
-       // phone_edit=(EditText)findViewById(R.id.phone);
 
-       // mail_edit.setVisibility(View.INVISIBLE);
-       // phone_edit.setVisibility(View.INVISIBLE);
         final Dialog dialogs = new Dialog(Login.this);
 
         dialogs.setContentView(R.layout.dialog_signup);
@@ -63,38 +56,26 @@ public class Login extends AppCompatActivity {
 
 
         ver_btn=(Button)findViewById(R.id.versatile1);
-       // opt_btn=(Button)findViewById(R.id.option);
 
-        /*opt_btn.setOnClickListener(new View.OnClickListener() {
+        all_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag_login==1)
-                {
-                    ver_btn.setText("signup");
-                    opt_btn.setText("or login");
-                    flag_signup=1;
-                    flag_login=0;
-                    mail_edit.setVisibility(View.VISIBLE);
-                    phone_edit.setVisibility(View.VISIBLE);
+              Cursor cursorl=  readFromDB();
+                cursorl.moveToFirst();
+                while (cursorl.moveToNext()) {
+                    mails.add(cursorl.getString(0));
+                    pwds.add(cursorl.getString(1));
+                    names.add(cursorl.getString(2));
                 }
-                else if(flag_signup==1)
-                {
-                    ver_btn.setText("login");
-                    opt_btn.setText("or signup");
-                    flag_login=1;
-                    flag_signup=0;
-                    mail_edit.setVisibility(View.INVISIBLE);
-                    phone_edit.setVisibility(View.INVISIBLE);
-                }
+                cursorl.close();
             }
-        });*/
+        });
         ver_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          //      if(flag_login==1)
-            //    {
+
                     String passdb=pwd_edit.getText().toString();
-                    if(passdb.equals(readFromDB()))
+                    if(passdb.equals(readFromDB().getString(1)))
                     {
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
                         startActivity( new Intent(Login.this,MainActivity.class));
@@ -107,15 +88,12 @@ public class Login extends AppCompatActivity {
                     }
                     
                 }
-              // if(flag_login==0)
-               //{
-                 //   saveToDB();
-               //}
-        //    }
+
         });
         sign_d.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(pwd_d.getText().toString().equals(pwd_con_d.getText().toString()))
                 {
                     saveToDB();
@@ -159,7 +137,7 @@ public class Login extends AppCompatActivity {
 
         Toast.makeText(this, "Succesfully signed up as user " + newRowId, Toast.LENGTH_LONG).show();
     }
-    private String readFromDB() {
+    private Cursor readFromDB() {
         String mail = mail_edit.getText().toString();
 
 
@@ -167,7 +145,7 @@ public class Login extends AppCompatActivity {
         SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
-                COLUMN_NAME,
+                Dbcontract.Dbentry.COLUMN_NAME,
                 Dbcontract.Dbentry.COLUMN_PWD
 
         };
@@ -175,8 +153,8 @@ public class Login extends AppCompatActivity {
         String selection =
                 Dbcontract.Dbentry.COLUMN_MAIL + " like ? " ;
         String[] selectionArgs = { mail};
-
-        Cursor cursor = database.query(
+        Cursor cursor;
+         cursor = database.query(
                 Dbcontract.Dbentry.TABLE_NAME,
                 projection,
                 selection,
@@ -186,16 +164,13 @@ public class Login extends AppCompatActivity {
                 null
         );
 
-        if(cursor==null)
-        {
-            Toast.makeText(this, "No user with the above mail-id exists", Toast.LENGTH_SHORT).show();
-        return null;}
-        else {
-            cursor.moveToFirst();
-            String pwddb = cursor.getString(1);
-            return pwddb;}
+
+
+//        cursor.close();
+            return cursor;
+
+
 
     }
-    //To do: make a read from db function and then call them on buttons beong clicked
 
 }
