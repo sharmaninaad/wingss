@@ -30,9 +30,7 @@ public class Login extends AppCompatActivity {
     Button sign_d;
     Button all_btn;
     Button ver_btn;
-    ArrayList<String> mails;
-    ArrayList<String> names;
-    ArrayList<String> pwds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +58,7 @@ public class Login extends AppCompatActivity {
         all_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Cursor cursorl=  readFromDB();
-                cursorl.moveToFirst();
-                while (cursorl.moveToNext()) {
-                    mails.add(cursorl.getString(0));
-                    pwds.add(cursorl.getString(1));
-                    names.add(cursorl.getString(2));
-                }
-                cursorl.close();
+                startActivity(new Intent(Login.this,list_database.class));
             }
         });
         ver_btn.setOnClickListener(new View.OnClickListener() {
