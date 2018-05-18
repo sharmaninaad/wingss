@@ -18,7 +18,7 @@
             <View
                 android:layout_height="10dp"
                 android:background="#000"
-                android:layout_weight="10dp"/>
+                android:layout_width="10dp"/>
             <TextView
                 android:id="@+id/name_list"
                 android:textColor="#000"
@@ -27,7 +27,7 @@
             <View
                 android:layout_height="10dp"
                 android:background="#000"
-                android:layout_weight="10dp"/>
+                android:layout_width="10dp"/>
             <TextView
                 android:id="@+id/pwd_list"
                 android:textColor="#000"

@@ -19,12 +19,13 @@ public class list_database extends AppCompatActivity {
         setContentView(R.layout.activity_list_database);
         Cursor cursorl=  readFromDB();
         cursorl.moveToFirst();
-        while (cursorl.moveToNext()) {
+      do
+        {
             mails.add(cursorl.getString(0));
             pwds.add(cursorl.getString(1));
             names.add(cursorl.getString(2));
-        }
-        cursorl.close();
+        } while (cursorl.moveToNext());
+            cursorl.close();
         lv=(ListView)findViewById(R.id.data);
         Dbadapter dbadapter=new Dbadapter(this,names,mails,pwds);
         lv.setAdapter(dbadapter);
