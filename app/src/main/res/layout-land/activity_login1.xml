@@ -6,17 +6,19 @@
     android:alpha="0.7"
     android:gravity="center_horizontal"
     android:orientation="vertical">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="30dp"></LinearLayout>
 <ImageView
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:scaleType="fitCenter"
     android:background="@drawable/img"
-    android:layout_marginTop="80dp"
+
     android:src="@drawable/camerab"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"></LinearLayout>
+        android:layout_height="30dp"></LinearLayout>
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -88,7 +90,7 @@
         android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="20dp"
         android:gravity="center">
         <View
             android:layout_width="130dp"
@@ -99,31 +101,42 @@
             android:layout_gravity="center"/>
     </LinearLayout>
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.45"
+
         android:background="@drawable/buttonb">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/fbb"/>
-    <Button
-        android:layout_width="250dp"
 
-        android:text="Sign in with Facebook"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:textAllCaps="false"
-        android:background="@drawable/buttonb"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/button"
+
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonb"
+            android:text="Sign in with Facebook"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textStyle="bold" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="15dp"></LinearLayout>
+  <View
+      android:layout_width="1dp"
+      android:layout_height="40dp"
+      android:background="#000"
+      android:layout_weight="0.1"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.45"
         android:background="@drawable/buttons">
         <ImageView
             android:layout_width="50dp"
@@ -139,25 +152,29 @@
         android:background="@drawable/buttons"
         android:layout_height="wrap_content" />
         </LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Forgot password?"
-            android:textColor="#f5f5f5"
-            android:layout_marginLeft="60dp"
-            android:layout_weight="0.5"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New here? Sign Up"
-            android:textColor="#f5f5f5"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-            android:layout_weight="0.5"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_weight="0.5"
+            android:text="Forgot password?"
+            android:textColor="#f5f5f5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="New here? Sign Up"
+
+            android:textColor="#f5f5f5" />
     </LinearLayout>
 
 
