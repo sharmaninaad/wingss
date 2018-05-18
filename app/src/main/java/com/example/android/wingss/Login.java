@@ -1,5 +1,6 @@
 package com.example.android.wingss;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,16 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
 
 public class Login extends AppCompatActivity {
-    EditText name_edit;
+   // EditText name_edit;
     EditText pwd_edit;
-    //EditText mail_edit;
+    EditText mail_edit;
+    TextView sign;
     //EditText phone_edit;
     Button ver_btn;
     //Button opt_btn;
@@ -31,8 +33,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
 
-        name_edit=(EditText)findViewById(R.id.mail1);
+        mail_edit=(EditText)findViewById(R.id.mail1);
         pwd_edit=(EditText) findViewById(R.id.pwd1);
+        sign=(TextView)findViewById(R.id.signup);
        // mail_edit=(EditText)findViewById(R.id.mail);
        // phone_edit=(EditText)findViewById(R.id.phone);
 
@@ -90,6 +93,19 @@ public class Login extends AppCompatActivity {
                //}
         //    }
         });
+        sign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialogs = new Dialog(Login.this);
+
+                dialogs.setContentView(R.layout.dialog_signup);
+                dialogs.setTitle("Create an account");
+
+
+                dialogs.show();
+
+            }
+        });
 
 
     }
@@ -108,21 +124,21 @@ public class Login extends AppCompatActivity {
         Toast.makeText(this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
     }*/
     private String readFromDB() {
-        String name = name_edit.getText().toString();
+        String mail = mail_edit.getText().toString();
 
 
 
         SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
-                COLUMN_NAME,
-                Dbcontract.Dbentry.COLUMN_PWD,
-                Dbcontract.Dbentry.COLUMN_MAIL
+                Dbcontract.Dbentry.COLUMN_NAME,
+                Dbcontract.Dbentry.COLUMN_PWD
+
         };
 
         String selection =
-                Dbcontract.Dbentry.COLUMN_NAME + " like ? " ;
-        String[] selectionArgs = { name};
+                Dbcontract.Dbentry.COLUMN_MAIL + " like ? " ;
+        String[] selectionArgs = { mail};
 
         Cursor cursor = database.query(
                 Dbcontract.Dbentry.TABLE_NAME,
@@ -136,7 +152,7 @@ public class Login extends AppCompatActivity {
 
         if(cursor==null)
         {
-            Toast.makeText(this, "No user with the above name exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No user with the above mail-id exists", Toast.LENGTH_SHORT).show();
         return null;}
         else {
             cursor.moveToFirst();
@@ -145,4 +161,5 @@ public class Login extends AppCompatActivity {
 
     }
     //To do: make a read from db function and then call them on buttons beong clicked
+
 }
