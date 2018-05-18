@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.EditText;
@@ -17,12 +19,19 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import static com.example.android.wingss.Dbcontract.Dbentry.COLUMN_NAME;
+
 
 public class Login extends AppCompatActivity {
    // EditText name_edit;
     EditText pwd_edit;
     EditText mail_edit;
     TextView sign;
+    EditText mail_d;
+    EditText pwd_d;
+    EditText name_d;
+    EditText pwd_con_d;
+    Button sign_d;
     //EditText phone_edit;
     Button ver_btn;
     //Button opt_btn;
@@ -41,6 +50,17 @@ public class Login extends AppCompatActivity {
 
        // mail_edit.setVisibility(View.INVISIBLE);
        // phone_edit.setVisibility(View.INVISIBLE);
+        final Dialog dialogs = new Dialog(Login.this);
+
+        dialogs.setContentView(R.layout.dialog_signup);
+        dialogs.setTitle("Create an account");
+
+        mail_d= (EditText) dialogs.findViewById(R.id.mail_dialog);
+        name_d= (EditText) dialogs.findViewById(R.id.name_dialog);
+        pwd_d= (EditText) dialogs.findViewById(R.id.pwd_dialog);
+        pwd_con_d= (EditText) dialogs.findViewById(R.id.pwd_con_dialog);
+        sign_d= (Button) dialogs.findViewById(R.id.signup_dialog);
+
 
         ver_btn=(Button)findViewById(R.id.versatile1);
        // opt_btn=(Button)findViewById(R.id.option);
@@ -93,36 +113,52 @@ public class Login extends AppCompatActivity {
                //}
         //    }
         });
+        sign_d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pwd_d.getText().toString().equals(pwd_con_d.getText().toString()))
+                {
+                    saveToDB();
+                    pwd_d.setText("");
+                    pwd_con_d.setText("");
+                    mail_d.setText("");
+                    name_d.setText("");
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "typed passwords do not match", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialogs = new Dialog(Login.this);
-
-                dialogs.setContentView(R.layout.dialog_signup);
-                dialogs.setTitle("Create an account");
 
 
                 dialogs.show();
+                Window window = dialogs.getWindow();
+
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             }
         });
 
 
     }
-  /*  private void saveToDB() {
+    private void saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name_edit.getText().toString());
-        values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_edit.getText().toString());
-        values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_edit.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
 
 
 
         long newRowId = database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
-        Toast.makeText(this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
-    }*/
+        Toast.makeText(this, "Succesfully signed up as user " + newRowId, Toast.LENGTH_LONG).show();
+    }
     private String readFromDB() {
         String mail = mail_edit.getText().toString();
 
@@ -131,7 +167,7 @@ public class Login extends AppCompatActivity {
         SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
-                Dbcontract.Dbentry.COLUMN_NAME,
+                COLUMN_NAME,
                 Dbcontract.Dbentry.COLUMN_PWD
 
         };

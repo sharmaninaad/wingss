@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="vertical" android:layout_width="300dp"
+    android:layout_gravity="center"
+    android:layout_height="400dp"
     android:background="@drawable/dialog"
 
     >
@@ -22,8 +23,8 @@
             android:src="@drawable/user" />
 
         <EditText
-
-            android:layout_width="340dp"
+            android:id="@+id/name_dialog"
+            android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
             android:hint="Your Name(eg. John Doe)" />
@@ -38,82 +39,63 @@
             android:layout_height="60dp"
             android:src="@drawable/mailf"/>
     <EditText
-        android:layout_width="340dp"
+        android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginLeft="10dp"
+        android:id="@+id/mail_dialog"
 
         android:hint="Your email"/>
         </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-    <LinearLayout
-        android:layout_width="210dp"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"       >
         <ImageView
             android:layout_width="30dp"
             android:layout_height="60dp"
             android:src="@drawable/key"/>
-        <EditText
-            android:layout_width="130dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="10dp"
 
-            android:hint="Password"/>
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:id="@+id/pwd_dialog"
+
+            android:layout_marginLeft="10dp"
+            android:hint="Password" />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:layout_gravity="center_horizontal">
         <ImageView
             android:layout_width="30dp"
             android:layout_height="60dp"
             android:src="@drawable/key"/>
 
         <EditText
-            android:id="@+id/editText3"
-            android:layout_width="160dp"
+            android:id="@+id/pwd_con_dialog"
+            android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
 
             android:hint="Confirm Password" />
     </LinearLayout>
 
-    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="30dp"></View>
+
     <Button
-        android:layout_width="350dp"
-        android:layout_gravity="center"
+        android:id="@+id/signup_dialog"
+        android:layout_width="250dp"
         android:layout_height="60dp"
-        android:text="create a free account"
+        android:layout_gravity="center"
         android:fontFamily="monospace"
-        android:textColor="#fff"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <View
-        android:layout_width="150dp"
-        android:layout_height="1dp"
-        android:layout_weight="0.4"
-        android:background="#000">
+        android:text="create a free account"
+        android:textColor="#fff" />
 
-    </View>
-
-        <View
-            android:layout_width="150dp"
-            android:layout_height="1dp"
-            android:layout_weight="0.4"
-
-            android:background="#000">
-
-        </View>
-    </LinearLayout>
 </LinearLayout>
+
