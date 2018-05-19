@@ -74,17 +74,21 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
 
                     String passdb=pwd_edit.getText().toString();
-                    if(passdb.equals(readFromDB().getString(1)))
-                    {
+                    Cursor log=readFromDB();
+                if(log!=null && log.getCount()>0) {
+                    if (passdb.equals(log.getString(1))) {
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
-                        startActivity( new Intent(Login.this,MainActivity.class));
+                        startActivity(new Intent(Login.this, MainActivity.class));
 
-                    }
-                    else
-                    {
+                    } else {
                         pwd_edit.setText("");
                         Toast.makeText(Login.this, "Please enter the right password", Toast.LENGTH_SHORT).show();
                     }
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "No such username exists", Toast.LENGTH_SHORT).show();
+                }
                     
                 }
 
