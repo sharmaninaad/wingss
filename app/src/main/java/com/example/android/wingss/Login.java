@@ -1,5 +1,6 @@
 package com.example.android.wingss;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -35,6 +36,13 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
+        View decorView = getWindow().getDecorView();
+// Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+// Remember that you should never show the action bar if the
+// status bar is hidden, so hide that too if necessary.
+
 
         all_btn=(Button)findViewById(R.id.all);
         mail_edit=(EditText)findViewById(R.id.mail1);
