@@ -34,7 +34,7 @@ public class Login extends AppCompatActivity {
     Button all_btn;
     Button ver_btn;
     LinearLayout layout;
-    int count;
+    int flag=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +108,10 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                count=0;
+
                 dialogs.show();
                 Window window = dialogs.getWindow();
+
 
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -238,22 +239,40 @@ public class Login extends AppCompatActivity {
         sign_d.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
-                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
+               char mail_first= mail_d.getText().toString().charAt(0);
+                char name_first= mail_d.getText().toString().charAt(0);
+
+
+
+                if(pwd_d.getText().toString().length()>0
+                        && mail_d.getText().toString().length()>0
+                        && mail_first!=32 && name_first!=32
+                        && name_d.getText().toString().length()>0
+                        && pwd_con_d.getText().toString().length()>0)
+                {
                     if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
+                        startActivity(new Intent(Login.this, MainActivity.class));
                         long row=saveToDB();
-                        pwd_d.setText(null);
-                        pwd_con_d.setText(null);
-                        mail_d.setText(null);
-                        name_d.setText(null);
                         Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
 
+
+                        pwd_d.setText(" ");
+                        pwd_con_d.setText(" ");
+                        mail_d.setText(" ");
+                        name_d.setText(" ");
+
+
                     } else {
-                        Toast.makeText(Login.this, "typed passwords do not match", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "typed passwords do not match ", Toast.LENGTH_SHORT).show();
                         pwd_d.setError("Typed Passwords do not match");
                         pwd_con_d.setError("Typed Passwords do not match");
 
                     }
+                }
+                else
+                {
+                    mail_d.setError("Invalid mail");
+                    name_d.setError("Invalid name");
                 }
 
 
@@ -270,8 +289,6 @@ public class Login extends AppCompatActivity {
         values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
-
-
 
         return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 

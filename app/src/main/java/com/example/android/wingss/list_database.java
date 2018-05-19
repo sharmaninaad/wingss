@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -12,27 +13,33 @@ public class list_database extends AppCompatActivity {
     ListView lv;
     public static ArrayList<String> mails = new ArrayList<>();
     public static ArrayList<String> names = new ArrayList<>();
-    public static ArrayList<String> pwds= new ArrayList<>();
+    public static ArrayList<String> pwds = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_database);
-        Cursor cursorl=  readFromDB();
-        cursorl.moveToFirst();
-      do
-        {
-            mails.add(cursorl.getString(0));
-            pwds.add(cursorl.getString(1));
-            names.add(cursorl.getString(2));
-        } while (cursorl.moveToNext());
+        Cursor cursorl = readFromDB();
+        if (cursorl == null) {
+            Toast.makeText(this, "No users to display", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            cursorl.moveToFirst();
+            do {
+                mails.add(cursorl.getString(0));
+                pwds.add(cursorl.getString(1));
+                names.add(cursorl.getString(2));
+            } while (cursorl.moveToNext());
             cursorl.close();
-        lv=(ListView)findViewById(R.id.data);
-        Dbadapter dbadapter=new Dbadapter(this,names,mails,pwds);
-        lv.setAdapter(dbadapter);
+            lv = (ListView) findViewById(R.id.data);
+            Dbadapter dbadapter = new Dbadapter(this, names, mails, pwds);
+            lv.setAdapter(dbadapter);
 
+        }
     }
-    private Cursor readFromDB() {
 
+    private Cursor readFromDB() {
 
 
         SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
@@ -45,8 +52,8 @@ public class list_database extends AppCompatActivity {
         };
 
         String selection =
-                "" ;
-        String[] selectionArgs = { };
+                "";
+        String[] selectionArgs = {};
         Cursor cursor;
         cursor = database.query(
                 Dbcontract.Dbentry.TABLE_NAME,
@@ -59,12 +66,10 @@ public class list_database extends AppCompatActivity {
         );
 
 
-
-
 //        cursor.close();
         return cursor;
 
 
-
     }
+
 }
