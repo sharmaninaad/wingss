@@ -170,6 +170,11 @@ public class Login extends AppCompatActivity {
                     mail_d.setError("This field is mandatory");
 
                 }
+                if(search_record(mail_d.getText().toString()))
+                 {
+                       mail_d.setError("An account with the id already exists");
+                 }
+
                 if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
                         && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -268,8 +273,8 @@ public class Login extends AppCompatActivity {
 
 
 
-        long newRowId = database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
-        return newRowId;
+        return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
+
     }
     private Cursor readFromDB() {
         String mail = mail_edit.getText().toString();
@@ -306,5 +311,13 @@ public class Login extends AppCompatActivity {
 
 
     }
-
+    private boolean search_record( String user_mail) {
+        for (String s : list_database.mails) {
+            if(user_mail.equals(s))
+            {
+                return true;
+            }
+        }
+       return false;
+    }
 }

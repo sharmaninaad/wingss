@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class list_database extends AppCompatActivity {
     ListView lv;
-    ArrayList<String> mails = new ArrayList<>();
-    ArrayList<String> names = new ArrayList<>();
-    ArrayList<String> pwds= new ArrayList<>();
+    public static ArrayList<String> mails = new ArrayList<>();
+    public static ArrayList<String> names = new ArrayList<>();
+    public static ArrayList<String> pwds= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
