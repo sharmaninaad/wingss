@@ -34,7 +34,7 @@ public class Login extends AppCompatActivity {
     Button all_btn;
     Button ver_btn;
     LinearLayout layout;
-
+    int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +108,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                count=0;
                 dialogs.show();
                 Window window = dialogs.getWindow();
 
@@ -122,19 +122,112 @@ public class Login extends AppCompatActivity {
 
 
 
-        layout.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+        name_d.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (name_d.getText().toString().length() == 0) {
+                    name_d.setError("This field is mandatory");
+                }
                 if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
-                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0)
-                {
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
                     }
                 }
             }
         });
+        mail_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (mail_d.getText().toString().length() == 0) {
+                    mail_d.setError("This field is mandatory");
+
+                }
+                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
+                    }
+                }
+            }
+        });
+        pwd_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (pwd_d.getText().toString().length() == 0) {
+                    pwd_d.setError("This field is mandatory");
+                }
+                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
+                    }
+                }
+            }
+        });
+        pwd_con_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (pwd_con_d.getText().toString().length() == 0) {
+                    pwd_con_d.setError("This field is mandatory");
+                }
+                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
+                    }
+                }
+            }
+        });
 
 
         sign_d.setOnClickListener(new View.OnClickListener() {
@@ -160,92 +253,9 @@ public class Login extends AppCompatActivity {
 
 
 
-                }
+            }
 
         });
-
-        name_d.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (name_d.getText().toString().length() == 0) {
-                    name_d.setError("This field is mandatory");
-                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        mail_d.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (mail_d.getText().toString().length() == 0) {
-                    mail_d.setError("This field is mandatory");
-                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        pwd_d.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (pwd_d.getText().toString().length() == 0) {
-                    pwd_d.setError("This field is mandatory");
-                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        pwd_con_d.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (pwd_con_d.getText().toString().length() == 0) {
-                    pwd_con_d.setError("This field is mandatory");
-                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
 
     }
     private long saveToDB() {
