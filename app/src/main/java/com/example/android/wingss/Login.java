@@ -1,11 +1,11 @@
 package com.example.android.wingss;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 
 
 public class Login extends AppCompatActivity {
@@ -31,6 +31,7 @@ public class Login extends AppCompatActivity {
     Button sign_d;
     Button all_btn;
     Button ver_btn;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login1);
         View decorView = getWindow().getDecorView();
 // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        }
         decorView.setSystemUiVisibility(uiOptions);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
@@ -59,9 +63,13 @@ public class Login extends AppCompatActivity {
         pwd_d= (EditText) dialogs.findViewById(R.id.pwd_dialog);
         pwd_con_d= (EditText) dialogs.findViewById(R.id.pwd_con_dialog);
         sign_d= (Button) dialogs.findViewById(R.id.signup_dialog);
-
+        layout=(LinearLayout)dialogs.findViewById(R.id.lays);
 
         ver_btn=(Button)findViewById(R.id.versatile1);
+        pwd_d.setText(null);
+        pwd_con_d.setText(null);
+        mail_d.setText(null);
+        name_d.setText(null);
 
         all_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,24 +101,7 @@ public class Login extends AppCompatActivity {
                 }
 
         });
-        sign_d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if(pwd_d.getText().toString().equals(pwd_con_d.getText().toString()))
-                {
-                    saveToDB();
-                    pwd_d.setText("");
-                    pwd_con_d.setText("");
-                    mail_d.setText("");
-                    name_d.setText("");
-                }
-                else
-                {
-                    Toast.makeText(Login.this, "typed passwords do not match", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,10 +114,69 @@ public class Login extends AppCompatActivity {
 
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            sign_d.setBackgroundColor(getResources().getColor(R.color.dull,getTheme()));
+        }
 
+
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
+                    }
+                }
+            }
+        });
+
+
+
+        sign_d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
+                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
+                    if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
+                        long row=saveToDB();
+                        pwd_d.setText(null);
+                        pwd_con_d.setText(null);
+                        mail_d.setText(null);
+                        name_d.setText(null);
+                        Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(Login.this, "typed passwords do not match", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                    if(pwd_d.getText().toString().length()<0)
+                    {
+                        pwd_d.setError("This field is required");
+                    }
+                    if(mail_d.getText().toString().length()<0)
+                    {
+                        mail_d.setError("This field is required");
+
+                    }
+                    if(name_d.getText().toString().length()<0)
+                    {
+                        name_d.setError("This field is required");
+
+                    }
+                    if(pwd_con_d.getText().toString().length()<0)
+                    {
+                        pwd_con_d.setError("This field is required");
+                    }
+                }
+
+        });
 
     }
-    private void saveToDB() {
+    private long saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -137,8 +187,7 @@ public class Login extends AppCompatActivity {
 
 
         long newRowId = database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
-
-        Toast.makeText(this, "Succesfully signed up as user " + newRowId, Toast.LENGTH_LONG).show();
+        return newRowId;
     }
     private Cursor readFromDB() {
         String mail = mail_edit.getText().toString();
