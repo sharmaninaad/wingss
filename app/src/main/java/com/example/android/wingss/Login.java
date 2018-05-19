@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -150,30 +152,100 @@ public class Login extends AppCompatActivity {
 
                     } else {
                         Toast.makeText(Login.this, "typed passwords do not match", Toast.LENGTH_SHORT).show();
+                        pwd_d.setError("Typed Passwords do not match");
+                        pwd_con_d.setError("Typed Passwords do not match");
+
                     }
                 }
 
-                    if(pwd_d.getText().toString().length()<0)
-                    {
-                        pwd_d.setError("This field is required");
-                    }
-                    if(mail_d.getText().toString().length()<0)
-                    {
-                        mail_d.setError("This field is required");
 
-                    }
-                    if(name_d.getText().toString().length()<0)
-                    {
-                        name_d.setError("This field is required");
 
-                    }
-                    if(pwd_con_d.getText().toString().length()<0)
-                    {
-                        pwd_con_d.setError("This field is required");
-                    }
                 }
 
         });
+
+        name_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (name_d.getText().toString().length() == 0) {
+                    name_d.setError("This field is mandatory");
+                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mail_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (mail_d.getText().toString().length() == 0) {
+                    mail_d.setError("This field is mandatory");
+                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        pwd_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (pwd_d.getText().toString().length() == 0) {
+                    pwd_d.setError("This field is mandatory");
+                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        pwd_con_d.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (pwd_con_d.getText().toString().length() == 0) {
+                    pwd_con_d.setError("This field is mandatory");
+                    Toast.makeText(Login.this, "Please enter the complete information", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
 
     }
     private long saveToDB() {
