@@ -277,7 +277,7 @@ public class Login extends AppCompatActivity {
                             if(Total>=56) {
                                 long row = saveToDB();
                                 Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Login.this, MainActivity.class));
+                                startActivity(new Intent(Login.this, launch.class));
                             }
                             else
                             {
