@@ -71,6 +71,9 @@ public class Login extends AppCompatActivity {
         sign_d= (Button) dialogs.findViewById(R.id.signup_dialog);
         layout=(LinearLayout)dialogs.findViewById(R.id.lays);
 
+        database = new Dbhelper(this).getReadableDatabase();
+
+
         ver_btn=(Button)findViewById(R.id.versatile1);
         pwd_d.setText(null);
         pwd_con_d.setText(null);
@@ -265,7 +268,7 @@ public class Login extends AppCompatActivity {
                         && mail_first!=32 && name_first!=32
                         && name_d.getText().toString().length()>0
                         && pwd_con_d.getText().toString().length()>0) {
-                   if(readFromDB()==null) {
+                   if(check()) {
                         if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
                             long row = saveToDB();
                             Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
@@ -314,7 +317,6 @@ public class Login extends AppCompatActivity {
 
 
 
-        database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
                 Dbcontract.Dbentry.COLUMN_NAME,
@@ -343,6 +345,14 @@ public class Login extends AppCompatActivity {
 
 
 
+    }
+    private boolean check() {
+        String mail_id=mail_d.getText().toString();
+        String[] args={mail_id};
+        Cursor curse=database.query(Dbcontract.Dbentry.TABLE_NAME,null,Dbcontract.Dbentry.COLUMN_MAIL + " like ? ",args,null,null,null);
+        if(curse.getCount()>0)
+            return false;
+        return true;
     }
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
