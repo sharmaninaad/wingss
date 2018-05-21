@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity {
     SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
+    int Total;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Override
@@ -73,10 +74,10 @@ public class Login extends AppCompatActivity {
         pwd_con_d= (EditText) dialogs.findViewById(R.id.pwd_con_dialog);
         sign_d= (Button) dialogs.findViewById(R.id.signup_dialog);
         layout=(LinearLayout)dialogs.findViewById(R.id.lays);
+        pwd_check_view=(TextView)dialogs.findViewById(R.id.pwd_view);
 
         database = new Dbhelper(this).getReadableDatabase();
         pb=(ProgressBar)dialogs.findViewById(R.id.pbar);
-        pwd_check_view=(TextView)findViewById(R.id.pwd_view);
         ver_btn=(Button)findViewById(R.id.versatile1);
         pwd_d.setText(null);
         pwd_con_d.setText(null);
@@ -273,10 +274,17 @@ public class Login extends AppCompatActivity {
                         && pwd_con_d.getText().toString().length()>0) {
                    if(check()) {
                         if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
-                            long row = saveToDB();
-                            Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(Login.this, MainActivity.class));
+                            if(Total>=56) {
+                                long row = saveToDB();
+                                Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Login.this, MainActivity.class));
+                            }
+                            else
+                            {
+                                pwd_d.setError("password not strong enough");
+                                pwd_con_d.setError("password not strong enough");
 
+                            }
 
 
 
@@ -471,7 +479,7 @@ public class Login extends AppCompatActivity {
             numbersonly = 1;
         }
 
-        int Total = (length * 4) + ((length - uppercase) * 2)
+         Total = (length * 4) + ((length - uppercase) * 2)
                 + ((length - lowercase) * 2) + (digits * 4) + (symbols * 6)
                 + (bonus * 2) + (requirements * 2) - (lettersonly * length * 2)
                 - (numbersonly * length * 3) - (cuc * 2) - (clc * 2);
@@ -480,14 +488,34 @@ public class Login extends AppCompatActivity {
 
         if (Total < 30) {
             pb.setProgress(Total - 15);
+            pwd_check_view.setText("Very Weak");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pwd_check_view.setTextColor(getResources().getColor(R.color.error,getTheme()));
+            }
         } else if (Total >= 40 && Total < 50) {
             pb.setProgress(Total - 20);
+            pwd_check_view.setText(" Weak");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pwd_check_view.setTextColor(getResources().getColor(R.color.colorAccent,getTheme()));
+            }
         } else if (Total >= 56 && Total < 70) {
             pb.setProgress(Total - 25);
+            pwd_check_view.setText("Strong");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pwd_check_view.setTextColor(getResources().getColor(R.color.btn,getTheme()));
+            }
         } else if (Total >= 76) {
             pb.setProgress(Total - 30);
+            pwd_check_view.setText("Very Strong");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pwd_check_view.setTextColor(getResources().getColor(R.color.colorPrimary,getTheme()));
+            }
         } else {
             pb.setProgress(Total - 20);
+            pwd_check_view.setText(" ");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pwd_check_view.setTextColor(getResources().getColor(R.color.colorPrimaryDark,getTheme()));
+            }
         }
     }
 
