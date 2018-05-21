@@ -41,6 +41,7 @@ public class launch extends AppCompatActivity
                     whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Hey ! I amusing this app , it has awesome features , you also try it");
                     try {
                         startActivity(whatsappIntent);
+                        sendNotification(viefaw);
                     } catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                     }
