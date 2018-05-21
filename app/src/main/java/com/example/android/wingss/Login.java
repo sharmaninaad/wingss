@@ -97,9 +97,9 @@ public class Login extends AppCompatActivity {
                     String passdb=pwd_edit.getText().toString();
                     Cursor log=readFromDB();
                 if(log!=null && log.getCount()>0) {
-                    if (passdb.equals(log.getString(1))) {
+                    if (passdb.equals(log.getString(0))){
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Login.this, MainActivity.class));
+                        startActivity(new Intent(Login.this, launch.class));
 
                     } else {
                         pwd_edit.setText("");
@@ -330,7 +330,7 @@ public class Login extends AppCompatActivity {
 
 
         String[] projection = {
-                Dbcontract.Dbentry.COLUMN_NAME,
+
                 Dbcontract.Dbentry.COLUMN_PWD
 
         };
@@ -349,7 +349,7 @@ public class Login extends AppCompatActivity {
                 null
         );
 
-
+        cursor.moveToFirst();
 
 //        cursor.close();
             return cursor;
