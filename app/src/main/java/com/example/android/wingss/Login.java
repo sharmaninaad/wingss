@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,7 +36,7 @@ public class Login extends AppCompatActivity {
     Button all_btn;
     Button ver_btn;
     LinearLayout layout;
-    int flag=0;
+    SQLiteDatabase database;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Override
@@ -116,6 +117,7 @@ public class Login extends AppCompatActivity {
                 Window window = dialogs.getWindow();
 
 
+                assert window != null;
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             }
@@ -184,15 +186,10 @@ public class Login extends AppCompatActivity {
                 }
                 else {
 
-                    if(validate(mail_d.getText().toString())) {
-                        if (search_record(mail_d.getText().toString())) {
-                            mail_d.setError("An account with the id already exists");
-                        }
-                    }
-                    else
-                    {
+                    if(!validate(mail_d.getText().toString())) {
                         mail_d.setError("mail is not in proper format");
                     }
+
 
                 }
                 if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
@@ -267,25 +264,25 @@ public class Login extends AppCompatActivity {
                         && mail_d.getText().toString().length()>0
                         && mail_first!=32 && name_first!=32
                         && name_d.getText().toString().length()>0
-                        && pwd_con_d.getText().toString().length()>0)
-                {
-                    if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
-                        startActivity(new Intent(Login.this, MainActivity.class));
-                        long row=saveToDB();
-                        Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
+                        && pwd_con_d.getText().toString().length()>0) {
+                   if(readFromDB()==null) {
+                        if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
+                            long row = saveToDB();
+                            Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(Login.this, MainActivity.class));
 
 
-                        pwd_d.setText(" ");
-                        pwd_con_d.setText(" ");
-                        mail_d.setText(" ");
-                        name_d.setText(" ");
 
 
-                    } else {
-                        Toast.makeText(Login.this, "typed passwords do not match ", Toast.LENGTH_SHORT).show();
-                        pwd_d.setError("Typed Passwords do not match");
-                        pwd_con_d.setError("Typed Passwords do not match");
+                        } else {
+                            Toast.makeText(Login.this, "typed passwords do not match ", Toast.LENGTH_SHORT).show();
+                            pwd_d.setError("Typed Passwords do not match");
+                            pwd_con_d.setError("Typed Passwords do not match");
 
+                        }
+                    }
+                   else {
+                        mail_d.setError("The email-address is already been taken");
                     }
                 }
                 else
@@ -317,7 +314,7 @@ public class Login extends AppCompatActivity {
 
 
 
-        SQLiteDatabase database = new Dbhelper(this).getReadableDatabase();
+        database = new Dbhelper(this).getReadableDatabase();
 
         String[] projection = {
                 Dbcontract.Dbentry.COLUMN_NAME,
@@ -347,17 +344,6 @@ public class Login extends AppCompatActivity {
 
 
     }
-    private boolean search_record( String user_mail) {
-        for (String s : list_database.mails) {
-            if(user_mail.equals(s))
-            {
-                return true;
-            }
-        }
-       return false;
-    }
-
-
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
         return matcher.find();
