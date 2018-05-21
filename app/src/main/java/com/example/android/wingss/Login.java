@@ -19,7 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Login extends AppCompatActivity {
@@ -35,6 +36,8 @@ public class Login extends AppCompatActivity {
     Button ver_btn;
     LinearLayout layout;
     int flag=0;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +148,18 @@ public class Login extends AppCompatActivity {
                 if (name_d.getText().toString().length() == 0) {
                     name_d.setError("This field is mandatory");
                 }
-                if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
-                        && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        sign_d.setBackgroundColor(getResources().getColor(R.color.btn,getTheme()));
+                else {
+                    if(name_d.getText().toString().charAt(0)!=32) {
+                        if (pwd_d.getText().toString().length() > 0 && mail_d.getText().toString().length() > 0
+                                && name_d.getText().toString().length() > 0 && pwd_con_d.getText().toString().length() > 0) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                sign_d.setBackgroundColor(getResources().getColor(R.color.btn, getTheme()));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        name_d.setError("Invalid username");
                     }
                 }
             }
@@ -171,11 +182,19 @@ public class Login extends AppCompatActivity {
                     mail_d.setError("This field is mandatory");
 
                 }
-                if(search_record(mail_d.getText().toString()))
-                 {
-                       mail_d.setError("An account with the id already exists");
-                 }
+                else {
 
+                    if(validate(mail_d.getText().toString())) {
+                        if (search_record(mail_d.getText().toString())) {
+                            mail_d.setError("An account with the id already exists");
+                        }
+                    }
+                    else
+                    {
+                        mail_d.setError("mail is not in proper format");
+                    }
+
+                }
                 if(pwd_d.getText().toString().length()>0 && mail_d.getText().toString().length()>0
                         && name_d.getText().toString().length()>0 && pwd_con_d.getText().toString().length()>0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -336,5 +355,11 @@ public class Login extends AppCompatActivity {
             }
         }
        return false;
+    }
+
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 }
