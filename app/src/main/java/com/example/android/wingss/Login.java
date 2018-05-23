@@ -9,14 +9,17 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +34,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.android.wingss.R.id.editText;
 
 
 public class Login extends AppCompatActivity {
@@ -49,6 +54,7 @@ public class Login extends AppCompatActivity {
     SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
+    ImageView view;
     private static int RC_SIGN_IN = 100;
     int Total;
     GoogleSignInClient mGoogleSignInClient;
@@ -106,6 +112,7 @@ public class Login extends AppCompatActivity {
         sign_d= (Button) dialogs.findViewById(R.id.signup_dialog);
         layout=(LinearLayout)dialogs.findViewById(R.id.lays);
         pwd_check_view=(TextView)dialogs.findViewById(R.id.pwd_view);
+        view = (ImageView) dialogs.findViewById(R.id.view_pwd);
 
         database = new Dbhelper(this).getReadableDatabase();
         pb=(ProgressBar)dialogs.findViewById(R.id.pbar);
@@ -150,6 +157,26 @@ public class Login extends AppCompatActivity {
                     
                 }
 
+        });
+        view.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_UP:
+                        pwd_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
+                        pwd_d.setInputType(InputType.TYPE_CLASS_TEXT);
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                        break;
+
+                }
+                return true;
+            }
         });
 
         sign.setOnClickListener(new View.OnClickListener() {
