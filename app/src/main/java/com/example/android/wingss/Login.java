@@ -147,6 +147,7 @@ public class Login extends AppCompatActivity {
                     if (passdb.equals(log.getString(0))){
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, launch.class));
+                        finish();
 
                     } else {
                         pwd_edit.setText("");
@@ -623,8 +624,10 @@ public class Login extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            if(account!=null)
-            startActivity(new Intent(Login.this,launch.class));
+            if (account != null) {
+                startActivity(new Intent(Login.this, launch.class));
+                finish();
+            }
             // Signed in successfully, show authenticated UI.
 
         } catch (ApiException e) {
