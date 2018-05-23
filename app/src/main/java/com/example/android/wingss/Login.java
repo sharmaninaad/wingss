@@ -55,6 +55,7 @@ public class Login extends AppCompatActivity {
     ProgressBar pb;
     TextView pwd_check_view;
     ImageView view;
+    ImageView view_con;
     private static int RC_SIGN_IN = 100;
     int Total;
     GoogleSignInClient mGoogleSignInClient;
@@ -113,6 +114,8 @@ public class Login extends AppCompatActivity {
         layout=(LinearLayout)dialogs.findViewById(R.id.lays);
         pwd_check_view=(TextView)dialogs.findViewById(R.id.pwd_view);
         view = (ImageView) dialogs.findViewById(R.id.view_pwd);
+        view_con = (ImageView) dialogs.findViewById(R.id.view_con_pwd);
+
 
         database = new Dbhelper(this).getReadableDatabase();
         pb=(ProgressBar)dialogs.findViewById(R.id.pbar);
@@ -165,11 +168,27 @@ public class Login extends AppCompatActivity {
 
                     case MotionEvent.ACTION_UP:
                         pwd_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                         break;
 
                     case MotionEvent.ACTION_DOWN:
                         pwd_d.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                        break;
+
+                }
+                return true;
+            }
+        });
+        view_con.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_UP:
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
                         pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
                         break;
@@ -178,6 +197,7 @@ public class Login extends AppCompatActivity {
                 return true;
             }
         });
+
 
         sign.setOnClickListener(new View.OnClickListener() {
             @Override

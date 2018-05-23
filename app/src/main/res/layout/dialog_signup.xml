@@ -111,12 +111,18 @@
 
         <EditText
             android:id="@+id/pwd_con_dialog"
-            android:inputType="textPassword"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="10dp"
+            android:inputType="textPassword"
 
+            android:layout_marginLeft="10dp"
             android:hint="Confirm Password" />
+
+        <ImageView
+            android:id="@+id/view_con_pwd"
+            android:layout_height="60dp"
+            android:layout_width="20dp"
+            android:src="@drawable/eye" />
     </LinearLayout>
 
     <View
