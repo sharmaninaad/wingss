@@ -184,6 +184,7 @@ public class launch extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         startActivity(new Intent(launch.this, Login.class));
+                        finish();
                     }
                 });
     }
