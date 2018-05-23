@@ -1,6 +1,7 @@
 package com.example.android.wingss;
 
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,7 @@ public class Login extends AppCompatActivity {
     ImageView view_con;
     private static int RC_SIGN_IN = 100;
     int Total;
-    GoogleSignInClient mGoogleSignInClient;
+    public static GoogleSignInClient mGoogleSignInClient;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Override

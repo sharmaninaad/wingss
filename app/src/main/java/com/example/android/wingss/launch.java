@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.app.NotificationCompat;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +24,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import static com.example.android.wingss.Login.mGoogleSignInClient;
 
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,8 +94,8 @@ public class launch extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.sign_out) {
+            signOut();
         }
 
         return super.onOptionsItemSelected(item);
@@ -171,4 +178,13 @@ public class launch extends AppCompatActivity
 
     }
 
+    private void signOut() {
+        Login.mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(launch.this, Login.class));
+                    }
+                });
+    }
 }
