@@ -20,7 +20,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Enter new Name"
-        android:layout_alignTop="@+id/imageView2"
+        android:layout_alignTop="@+id/circle"
         android:layout_alignLeft="@+id/back"
         android:layout_alignStart="@+id/back" />
 

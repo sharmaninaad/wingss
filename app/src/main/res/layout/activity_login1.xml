@@ -143,11 +143,11 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/twit"/>
+            android:src="@drawable/googlee"/>
     <Button
         android:layout_width="250dp"
-
-        android:text="Sign in with Twitter"
+        android:id="@+id/google"
+        android:text="Sign in with Google"
         android:textStyle="bold"
         android:textColor="#fff"
         android:textAllCaps="false"
@@ -167,7 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_weight="0.5"
-            android:background="#2e7d32"
+            android:background="#5d4037"
             android:text="See all users"
 
             android:textColor="#f5f5f5" />
@@ -177,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="New user? Sign Up"
+            android:text="@string/sign_string"
             android:textColorLink="@color/colorPrimaryDark"
             android:textColor="#f5f5f5" />
     </LinearLayout>

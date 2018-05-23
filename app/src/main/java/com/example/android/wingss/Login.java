@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,6 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,17 +44,40 @@ public class Login extends AppCompatActivity {
     Button sign_d;
     Button all_btn;
     Button ver_btn;
+    Button google_btn;
     LinearLayout layout;
     SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
+    private static int RC_SIGN_IN = 100;
     int Total;
+    GoogleSignInClient mGoogleSignInClient;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
+
+        //google sign in
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Check for existing Google Sign In account, if the user is already signed in
+// the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if(account!=null)
+        {
+            startActivity(new Intent(Login.this,launch.class));
+        }
+
+
+        //gsign in part over
         View decorView = getWindow().getDecorView();
 // Hide the status bar.
         int uiOptions = 0;
@@ -57,7 +88,7 @@ public class Login extends AppCompatActivity {
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
 
-
+        google_btn=(Button)findViewById(R.id.google);
         all_btn=(Button)findViewById(R.id.all);
         mail_edit=(EditText)findViewById(R.id.mail1);
         pwd_edit=(EditText) findViewById(R.id.pwd1);
@@ -84,6 +115,12 @@ public class Login extends AppCompatActivity {
         mail_d.setText(null);
         name_d.setText(null);
 
+        google_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
         all_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,6 +349,18 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
     private long saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
 
@@ -516,6 +565,26 @@ public class Login extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 pwd_check_view.setTextColor(getResources().getColor(R.color.colorPrimaryDark,getTheme()));
             }
+        }
+    }
+    private void signInWithGoogle(){
+
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+           startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if(account!=null)
+            startActivity(new Intent(Login.this,launch.class));
+            // Signed in successfully, show authenticated UI.
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+
+            Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
         }
     }
 
