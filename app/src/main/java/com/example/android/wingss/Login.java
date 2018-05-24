@@ -78,8 +78,10 @@ public class Login extends AppCompatActivity {
     ImageView view;
     ImageView view_con;
     private static int RC_SIGN_IN = 100;
+    static GoogleSignInAccount account;
     int Total;
     public static GoogleSignInClient mGoogleSignInClient;
+    public static boolean isLoggedIn;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private CallbackManager callbackManager;
@@ -101,7 +103,7 @@ public class Login extends AppCompatActivity {
 
         // Check for existing Google Sign In account, if the user is already signed in
 // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account!=null)
         {
@@ -115,7 +117,7 @@ public class Login extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        final boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        isLoggedIn = accessToken != null && !accessToken.isExpired();
 
 
         fb = (Button) findViewById(R.id.facebook_sign);
@@ -124,8 +126,15 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 if (isLoggedIn) {
                     startActivity(new Intent(Login.this, launch.class));
+                    finish();
+                } else {
+                    if (account != null)
+                        Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
+                    else
+                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
                 }
-                LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
+
+
             }
         };
         fb.setOnClickListener(fbclicklistener);
@@ -140,17 +149,18 @@ public class Login extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
+                        startActivity(new Intent(Login.this, launch.class));
+                        finish();
                     }
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        Toast.makeText(Login.this, "login failed due to unavoidable reasons", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+                        Toast.makeText(Login.this, "wrong username or password", Toast.LENGTH_SHORT).show();
                     }
                 });
         //fb sign in over
@@ -197,7 +207,10 @@ public class Login extends AppCompatActivity {
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInWithGoogle();
+                if (isLoggedIn)
+                    Toast.makeText(Login.this, "You are already logged in through facebook", Toast.LENGTH_SHORT).show();
+                else
+                    signInWithGoogle();
             }
         });
         all_btn.setOnClickListener(new View.OnClickListener() {
