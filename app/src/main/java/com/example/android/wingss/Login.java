@@ -73,7 +73,6 @@ public class Login extends AppCompatActivity {
     SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
-    private static final String EMAIL = "email";
 
     ImageView view;
     ImageView view_con;
@@ -81,18 +80,21 @@ public class Login extends AppCompatActivity {
     static GoogleSignInAccount account;
     int Total;
     public static GoogleSignInClient mGoogleSignInClient;
-    public static boolean isLoggedIn;
+    public static boolean logged_in_from_facebook;
+    public static boolean logged_in_from_app = false;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private CallbackManager callbackManager;
     Button fb;
     View.OnClickListener fbclicklistener = null;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
         FacebookSdk.sdkInitialize(this);
+        intent = new Intent(Login.this, launch.class);
         //google sign in
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -107,25 +109,33 @@ public class Login extends AppCompatActivity {
 
         if(account!=null)
         {
-            startActivity(new Intent(Login.this,launch.class));
+            startActivity(intent);
+            finish();
         }
 
 
         //gsign in part over
+        if (logged_in_from_app) {
 
+            startActivity(intent);
+            finish();
+        }
         //facebook sign in 
 
         callbackManager = CallbackManager.Factory.create();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        isLoggedIn = accessToken != null && !accessToken.isExpired();
-
+        logged_in_from_facebook = accessToken != null && !accessToken.isExpired();
+        if (logged_in_from_facebook) {
+            startActivity(intent);
+            finish();
+        }
 
         fb = (Button) findViewById(R.id.facebook_sign);
         fbclicklistener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLoggedIn) {
-                    startActivity(new Intent(Login.this, launch.class));
+                if (logged_in_from_facebook) {
+                    startActivity(intent);
                     finish();
                 } else {
                     if (account != null)
@@ -149,7 +159,7 @@ public class Login extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        startActivity(new Intent(Login.this, launch.class));
+                        startActivity(intent);
                         finish();
                     }
 
@@ -204,10 +214,11 @@ public class Login extends AppCompatActivity {
         mail_d.setText(null);
         name_d.setText(null);
 
+
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLoggedIn)
+                if (logged_in_from_facebook)
                     Toast.makeText(Login.this, "You are already logged in through facebook", Toast.LENGTH_SHORT).show();
                 else
                     signInWithGoogle();
@@ -228,7 +239,8 @@ public class Login extends AppCompatActivity {
                 if(log!=null && log.getCount()>0) {
                     if (passdb.equals(log.getString(0))){
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Login.this, launch.class));
+                        logged_in_from_app = true;
+                        startActivity(intent);
                         finish();
 
                     } else {
@@ -444,7 +456,8 @@ public class Login extends AppCompatActivity {
                             if(Total>=56) {
                                 long row = saveToDB();
                                 Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Login.this, launch.class));
+                                startActivity(intent);
+                                finish();
                             }
                             else
                             {
@@ -708,7 +721,7 @@ public class Login extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
-                startActivity(new Intent(Login.this, launch.class));
+                startActivity(intent);
                 finish();
             }
             // Signed in successfully, show authenticated UI.
@@ -721,7 +734,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void printHashKey(Context pContext) {
+   /* public void printHashKey(Context pContext) {
         String TAG = "look";
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
@@ -737,7 +750,7 @@ public class Login extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "printHashKey()", e);
         }
-    }
+    }*/
 
 
 }

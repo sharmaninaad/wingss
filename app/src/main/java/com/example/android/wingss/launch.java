@@ -38,7 +38,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static android.widget.Toast.makeText;
-import static com.example.android.wingss.Login.isLoggedIn;
+import static com.example.android.wingss.Login.logged_in_from_facebook;
 import static com.example.android.wingss.Login.mGoogleSignInClient;
 import static com.example.android.wingss.R.drawable.mail;
 
@@ -191,7 +191,7 @@ public class launch extends AppCompatActivity
     }
 
     private void signOut() {
-        if (Login.isLoggedIn) {
+        if (Login.logged_in_from_facebook) {
             LoginManager.getInstance().logOut();
             startActivity(new Intent(launch.this, Login.class));
             finish();
