@@ -1,9 +1,14 @@
 package com.example.android.wingss;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -13,6 +18,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,6 +33,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,6 +48,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +73,8 @@ public class Login extends AppCompatActivity {
     SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
+    private static final String EMAIL = "email";
+
     ImageView view;
     ImageView view_con;
     private static int RC_SIGN_IN = 100;
@@ -63,11 +82,15 @@ public class Login extends AppCompatActivity {
     public static GoogleSignInClient mGoogleSignInClient;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private CallbackManager callbackManager;
+    Button fb;
+    View.OnClickListener fbclicklistener = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
-
+        FacebookSdk.sdkInitialize(this);
         //google sign in
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -87,6 +110,50 @@ public class Login extends AppCompatActivity {
 
 
         //gsign in part over
+
+        //facebook sign in 
+
+        callbackManager = CallbackManager.Factory.create();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        final boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+
+        fb = (Button) findViewById(R.id.facebook_sign);
+        fbclicklistener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLoggedIn) {
+                    startActivity(new Intent(Login.this, launch.class));
+                }
+                LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
+            }
+        };
+        fb.setOnClickListener(fbclicklistener);
+
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+        //fb sign in over
         View decorView = getWindow().getDecorView();
 // Hide the status bar.
         int uiOptions = 0;
@@ -403,6 +470,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
 
@@ -639,6 +707,25 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void printHashKey(Context pContext) {
+        String TAG = "look";
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
+
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e(TAG, "printHashKey()", e);
+        }
+    }
+
 
 }
 

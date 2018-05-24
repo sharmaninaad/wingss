@@ -5,6 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +15,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.app.NotificationCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,7 +33,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static android.widget.Toast.makeText;
 import static com.example.android.wingss.Login.mGoogleSignInClient;
+import static com.example.android.wingss.R.drawable.mail;
 
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,21 +53,21 @@ public class launch extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.refers);
         fab.setOnClickListener(new View.OnClickListener() {
-                @Override
+            @Override
             public void onClick(View viefaw) {
-                    Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-                    whatsappIntent.setType("text/plain");
-                    whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Hey ! I amusing this app , it has awesome features , you also try it");
-                    try {
-                        startActivity(whatsappIntent);
-                       sendCustomNotification();
-                        sendCustomNotification1();
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
-                    }
-
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("text/plain");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Hey ! I amusing this app , it has awesome features , you also try it");
+                try {
+                    startActivity(whatsappIntent);
+                    sendCustomNotification();
+                    sendCustomNotification1();
+                } catch (android.content.ActivityNotFoundException ex) {
+                    makeText(launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                 }
+
+            }
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,7 +126,7 @@ public class launch extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_profile) {
-            Intent intent=new Intent(launch.this,MainActivity.class);
+            Intent intent = new Intent(launch.this, MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_send) {
 
@@ -135,7 +145,6 @@ public class launch extends AppCompatActivity
         //Create the intent that’ll fire when the user taps the notification//
 
 
-
         mBuilder.setSmallIcon(R.drawable.cameraa);
         mBuilder.setContentTitle("Wings");
         mBuilder.setContentText("Whatsapp is active !! send your referal");
@@ -147,13 +156,13 @@ public class launch extends AppCompatActivity
         mNotificationManager.notify(001, mBuilder.build());
     }
 
-    public void sendCustomNotification(){
+    public void sendCustomNotification() {
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
         contentView.setTextViewText(R.id.title, "Whats app in use");
         contentView.setTextViewText(R.id.text, "Wingss is currently using whats app");
-        NotificationCompat.Builder mbuild=new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher).setContent(contentView);
-        Notification notify= mbuild.build();
+        NotificationCompat.Builder mbuild = new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher).setContent(contentView);
+        Notification notify = mbuild.build();
         NotificationManager mNotificationManager =
 
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -162,13 +171,14 @@ public class launch extends AppCompatActivity
 
 
     }
-    public void sendCustomNotification1(){
+
+    public void sendCustomNotification1() {
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
         contentView.setTextViewText(R.id.title, "Whats app in use");
         contentView.setTextViewText(R.id.text, "Wingss is currently using whats app");
-        NotificationCompat.Builder mbuild=new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher).setContent(contentView);
-        Notification notify= mbuild.build();
+        NotificationCompat.Builder mbuild = new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher).setContent(contentView);
+        Notification notify = mbuild.build();
         NotificationManager mNotificationManager =
 
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -188,4 +198,5 @@ public class launch extends AppCompatActivity
                     }
                 });
     }
+
 }

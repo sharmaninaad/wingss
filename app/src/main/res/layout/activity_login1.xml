@@ -124,7 +124,7 @@
             android:src="@drawable/fbb"/>
     <Button
         android:layout_width="250dp"
-
+        android:id="@+id/facebook_sign"
         android:text="Sign in with Facebook"
         android:textStyle="bold"
         android:textColor="#fff"
