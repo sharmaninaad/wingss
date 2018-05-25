@@ -32,42 +32,8 @@ import static android.os.Build.VERSION_CODES.N;
 public class MainActivity extends AppCompatActivity {
    // ListView list;
     TextView upgrade;
+    TextView name_view;
 
-
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Toast.makeText(this, "welcome to the activity , activity starts", Toast.LENGTH_SHORT).show();
-        Log.i("activity state","started");}
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("activity state","stopped");
-    }
-
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-        Log.i("activity state","destroyed");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("activity state","paused");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-      //  Toast.makeText(this, "activity has resumed", Toast.LENGTH_SHORT).show();
-        Log.i("activity state","resumed");
-
-    }
     Button button;
 
 
@@ -85,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
     };
     DialogInterface.OnClickListener listener;
     AlertDialog.Builder alertDialogBuilder;
-    View view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        name_view = (TextView) findViewById(R.id.name);
 
 
         setContentView(R.layout.activity_main);

@@ -21,6 +21,7 @@ import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -52,6 +53,7 @@ import static com.example.android.wingss.Login.logged_in_from_facebook;
 import static com.example.android.wingss.Login.mGoogleSignInClient;
 import static com.example.android.wingss.R.drawable.mail;
 import static com.example.android.wingss.R.id.fab;
+import static java.security.AccessController.getContext;
 
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +64,7 @@ public class launch extends AppCompatActivity
     TextView name_text;
     ImageView imageView;
     Uri image_uri;
+    View child;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class launch extends AppCompatActivity
         Intent launch_intent = getIntent();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
+        child = getLayoutInflater().inflate(R.layout.activity_main, null);
 
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
@@ -81,7 +85,8 @@ public class launch extends AppCompatActivity
 
             Log.i("received name", first_name + " " + last_name);
             name_text.setText("" + first_name + " " + last_name);
-
+            TextView tt_pro = (TextView) child.findViewById(R.id.name);
+            tt_pro.setText("" + first_name + " " + last_name);
 
             pic_uri = launch_intent.getStringExtra("imageUri");
 
@@ -188,8 +193,9 @@ public class launch extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(launch.this, MainActivity.class);
-            startActivity(intent);
+            Intent pro_intent = new Intent(launch.this, MainActivity.class);
+
+            startActivity(pro_intent);
         } else if (id == R.id.nav_send) {
 
         }
@@ -292,6 +298,10 @@ public class launch extends AppCompatActivity
         protected void onPostExecute(Bitmap result) {
             // Set the bitmap into ImageView
             imageView.setImageBitmap(result);
+            ImageView pro_view = (ImageView) child.findViewById(R.id.img_pro);
+
+            pro_view.setImageBitmap(result);
+
             // Close progressdialog
         }
     }
