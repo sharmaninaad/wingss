@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +39,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -48,13 +52,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.android.wingss.R.drawable.log;
 import static com.example.android.wingss.R.id.editText;
+import static com.facebook.Profile.getCurrentProfile;
 
 
 public class Login extends AppCompatActivity {
@@ -88,6 +97,7 @@ public class Login extends AppCompatActivity {
     Button fb;
     View.OnClickListener fbclicklistener = null;
     Intent intent;
+    Intent fb_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +105,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login1);
         FacebookSdk.sdkInitialize(this);
         intent = new Intent(Login.this, launch.class);
+        fb_intent = new Intent(Login.this, launch.class);
         //google sign in
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -126,7 +137,8 @@ public class Login extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         logged_in_from_facebook = accessToken != null && !accessToken.isExpired();
         if (logged_in_from_facebook) {
-            startActivity(intent);
+
+            startActivity(fb_intent);
             finish();
         }
 
@@ -134,10 +146,7 @@ public class Login extends AppCompatActivity {
         fbclicklistener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (logged_in_from_facebook) {
-                    startActivity(intent);
-                    finish();
-                } else {
+
                     if (account != null)
                         Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
                     else
@@ -145,7 +154,7 @@ public class Login extends AppCompatActivity {
                 }
 
 
-            }
+
         };
         fb.setOnClickListener(fbclicklistener);
 
@@ -159,8 +168,9 @@ public class Login extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        startActivity(intent);
-                        finish();
+                        logged_in_from_facebook = true;
+                        setFacebookData(loginResult);
+
                     }
 
                     @Override
@@ -170,7 +180,7 @@ public class Login extends AppCompatActivity {
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(Login.this, "wrong username or password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "check internet connectivity", Toast.LENGTH_SHORT).show();
                     }
                 });
         //fb sign in over
@@ -752,6 +762,51 @@ public class Login extends AppCompatActivity {
         }
     }*/
 
+    private void setFacebookData(final LoginResult loginResult) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Application code
+                        try {
+                            Log.i("Response", response.toString());
 
+                            // String email = response.getJSONObject().getString("email");
+                            String firstName = response.getJSONObject().getString("first_name");
+                            String lastName = response.getJSONObject().getString("last_name");
+                            //  String gender = response.getJSONObject().getString("gender");
+
+
+                            Profile profile = getCurrentProfile();
+                            //String id = profile.getId();
+                            String link = profile.getLinkUri().toString();
+                            Log.i("Link", link);
+                            if (getCurrentProfile() != null) {
+                                Uri uri = Profile.getCurrentProfile().getProfilePictureUri(200, 200);
+                                fb_intent.putExtra("imageUri", uri + "");
+                                Log.i("Login", "ProfilePic" + uri);
+
+                            }
+
+                            //     Log.i("Login" + "Email", email);
+                            Log.i("Login" + "FirstName", firstName);
+                            Log.i("Login" + "LastName", lastName);
+                            //  Log.i("Login" + "Gender", gender);
+                            fb_intent.putExtra("f_name", firstName);
+                            fb_intent.putExtra("l_name", lastName);
+                            startActivity(fb_intent);
+                            finish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
 }
 

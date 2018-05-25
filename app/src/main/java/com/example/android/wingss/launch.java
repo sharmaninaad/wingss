@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,13 +29,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -41,16 +46,60 @@ import static android.widget.Toast.makeText;
 import static com.example.android.wingss.Login.logged_in_from_facebook;
 import static com.example.android.wingss.Login.mGoogleSignInClient;
 import static com.example.android.wingss.R.drawable.mail;
+import static com.example.android.wingss.R.id.fab;
 
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    String first_name = null;
+    String last_name = null;
+    String pic_uri = null;
+    String email_id = null;
+    TextView name_text;
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent launch_intent = getIntent();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+
+        name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
+        imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
+
+        if (Login.logged_in_from_facebook) {
+            first_name = launch_intent.getStringExtra("f_name");
+            last_name = launch_intent.getStringExtra("l_name");
+
+            Log.i("received name", first_name + " " + last_name);
+            name_text.setText("" + first_name + " " + last_name);
+
+
+            pic_uri = launch_intent.getStringExtra("imageUri");
+            if (pic_uri != null)
+                Log.i("received uri", pic_uri);
+
+
+        }
+        /*first_name = launch_intent.getStringExtra("f_name");
+        last_name = launch_intent.getStringExtra("l_name");
+        email_id=launch_intent.getStringExtra("mail");
+        ;*/
+
+        //Uri image_uri=  launch_intent.getParcelableExtra("imageUri");
+/*            Uri img_uri = Uri.parse(image_uri);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),img_uri);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+*/
+
+
+        //name_text.setText("Welcome "+first_name+" "+last_name);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.refers);
@@ -77,7 +126,6 @@ public class launch extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -196,14 +244,14 @@ public class launch extends AppCompatActivity
             startActivity(new Intent(launch.this, Login.class));
             finish();
         } else if (Login.account != null)
-        Login.mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(launch.this, Login.class));
-                        finish();
-                    }
-                });
+            Login.mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            startActivity(new Intent(launch.this, Login.class));
+                            finish();
+                        }
+                    });
 
 
     }
