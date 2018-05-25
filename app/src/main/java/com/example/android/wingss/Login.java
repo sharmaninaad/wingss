@@ -1,27 +1,19 @@
 package com.example.android.wingss;
 
-import android.app.Activity;
+
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-
-import android.util.Base64;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +36,6 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -55,16 +46,12 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.android.wingss.R.drawable.log;
-import static com.example.android.wingss.R.id.editText;
+import static android.R.attr.type;
 import static com.facebook.Profile.getCurrentProfile;
-
 
 public class Login extends AppCompatActivity {
     EditText pwd_edit;
@@ -783,7 +770,7 @@ public class Login extends AppCompatActivity {
                             String link = profile.getLinkUri().toString();
                             Log.i("Link", link);
                             if (getCurrentProfile() != null) {
-                                Uri uri = Profile.getCurrentProfile().getProfilePictureUri(200, 200);
+                                Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
                                 fb_intent.putExtra("imageUri", uri + "");
                                 Log.i("Login", "ProfilePic" + uri);
 

@@ -9,7 +9,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -39,6 +41,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -56,6 +61,7 @@ public class launch extends AppCompatActivity
     String email_id = null;
     TextView name_text;
     ImageView imageView;
+    Uri image_uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +84,15 @@ public class launch extends AppCompatActivity
 
 
             pic_uri = launch_intent.getStringExtra("imageUri");
-            if (pic_uri != null)
-                Log.i("received uri", pic_uri);
 
+            if (pic_uri != null) {
+                Log.i("received uri", pic_uri);
+                image_uri = Uri.parse(pic_uri);
+
+                new DownloadImage().execute(image_uri.toString());
+
+
+            }
 
         }
         /*first_name = launch_intent.getStringExtra("f_name");
@@ -256,4 +268,31 @@ public class launch extends AppCompatActivity
 
     }
 
+    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+
+
+        @Override
+        protected Bitmap doInBackground(String... URL) {
+            String imageURL = URL[0];
+
+            Bitmap bitmap = null;
+            try {
+                // Download Image from URL
+                InputStream input = new java.net.URL(imageURL).openStream();
+                // Decode Bitmap
+                bitmap = BitmapFactory.decodeStream(input);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // Set the bitmap into ImageView
+            imageView.setImageBitmap(result);
+            // Close progressdialog
+        }
+    }
 }
