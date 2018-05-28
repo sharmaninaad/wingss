@@ -4,7 +4,6 @@ package com.example.android.wingss;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,8 +14,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -59,11 +56,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.android.wingss.R.drawable.log;
 import static com.facebook.Profile.getCurrentProfile;
 
 public class Login extends AppCompatActivity {
@@ -101,7 +98,6 @@ public class Login extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
-    public static String path_fb_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +167,7 @@ public class Login extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         logged_in_from_facebook = true;
                         setFacebookData(loginResult);
+                        getfromFb(loginResult);
                         startActivity(intent);
 
                     }
@@ -791,8 +788,39 @@ public class Login extends AppCompatActivity {
                         }
                     }
                 });
+        /*   GraphRequest request = GraphRequest.newMeRequest(
+                accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Insert your code here
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,birthday,photos,videos");
+        request.setParameters(parameters);
+        request.executeAsync();  */
         Bundle parameters = new Bundle();
         parameters.putString("fields", "first_name,last_name");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void getfromFb(final LoginResult loginResult) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Insert your code here
+                        Log.i("Response", response.toString());
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,birthday,photos,videos");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -819,40 +847,27 @@ public class Login extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Bitmap result) {
-            // Set the bitmap into ImageView
 
-            path_fb_image = saveToInternalStorage(result);
-
-            // Close progressdialog
+            boolean is_saved = saveToInternalStorage(result);
+            if (!is_saved) {
+                Toast.makeText(Login.this, "Image not retreived", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     @NonNull
-    private String saveToInternalStorage(Bitmap bitmapImage) {
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-        // Create imageDir
-        File mypath = new File(directory, "profile.jpg");
-
-        FileOutputStream fos = null;
+    private boolean saveToInternalStorage(Bitmap bitmapImage) {
         try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
+            FileOutputStream fos = getApplicationContext().openFileOutput("profile.png", Context.MODE_PRIVATE);
+
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
         }
-        return directory.getAbsolutePath();
     }
 
 

@@ -24,7 +24,7 @@
         android:layout_width="148dp"
         android:layout_height="165dp"
         android:background="@drawable/image_circle"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
 
         android:src="@drawable/picpro" />
 

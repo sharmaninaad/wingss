@@ -26,15 +26,20 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import static android.R.attr.defaultValue;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static android.widget.Toast.makeText;
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +65,7 @@ public class launch extends AppCompatActivity
             if (last_name != null)
                 Log.i("Last name :", last_name);
             name_text.setText(first_name + " " + last_name);
-            loadImageFromStorage(Login.path_fb_image);
+            loadImageFromStorage();
 
         }
     }
@@ -77,6 +82,7 @@ public class launch extends AppCompatActivity
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
         pro_fb_intent = new Intent(launch.this, MainActivity.class);
+//EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
 
         if (Login.logged_in_from_facebook) {
 
@@ -87,7 +93,7 @@ public class launch extends AppCompatActivity
             //Log.i("first name :",first_name);
             //Log.i("Last name :",last_name);
             name_text.setText(first_name + " " + last_name);
-            loadImageFromStorage(Login.path_fb_image);
+            loadImageFromStorage();
 
         } else {
             name_text.setText("");
@@ -247,15 +253,19 @@ public class launch extends AppCompatActivity
 
     }
 
-    private void loadImageFromStorage(String path) {
+    private void loadImageFromStorage() {
 
         try {
-            File f = new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            File filePath = getApplicationContext().getFileStreamPath("profile.png");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(filePath));
             imageView.setImageBitmap(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void get_from_fb() {
 
     }
 

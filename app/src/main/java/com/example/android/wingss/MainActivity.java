@@ -3,22 +3,16 @@ package com.example.android.wingss;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,10 +21,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-import static com.example.android.wingss.Login.account;
-import static com.example.android.wingss.Login.logged_in_from_app;
 
 public class MainActivity extends AppCompatActivity {
    // ListView list;
@@ -74,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             name_view.setText(sharedPref.getString("fb_f_name", "") + " " + sharedPref.getString("fb_l_name", ""));
-            loadImageFromStorage(Login.path_fb_image);
+            loadImageFromStorage();
 
         } else {
             name_view.setText("");
@@ -113,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                /*Snackbar snack=new Sncakbar(findViewById(R.id.myCoordinatorLayout), "feature currently unavailable",
+                /*Snackbar snack=new Snackbar(findViewById(R.id.myCoordinatorLayout), "feature currently unavailable",
                         Snackbar.LENGTH_SHORT);
                         snackbar.show();*/
             //startActivity(new Intent(MainActivity.this,popup_edit.class));
@@ -129,17 +119,17 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setTitle("Edit Profile");
 
 
-                EditText namee = (EditText) dialog.findViewById(R.id.newname);
+                /*EditText namee = (EditText) dialog.findViewById(R.id.newname);
                 EditText numb=(EditText)dialog.findViewById(R.id.number);
 
-                ImageView image = (ImageView) dialog.findViewById(R.id.circle);
+                ImageView image = (ImageView) dialog.findViewById(R.id.circle);*/
 
 
                 dialog.show();
 
                 Button savebtn = (Button) dialog.findViewById(R.id.save);
                 Button backbtn = (Button) dialog.findViewById(R.id.back);
-                // if decline button is clicked, close the custom dialog
+
                 savebtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -154,15 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        //list=(ListView)findViewById(R.id.mmlist);
-        //list.setAdapter(listAdapter);
+
     }
 
-    private void loadImageFromStorage(String path) {
-
+    private void loadImageFromStorage() {
         try {
-            File f = new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            File filePath = getApplicationContext().getFileStreamPath("profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(filePath));
             profile_img.setImageBitmap(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
