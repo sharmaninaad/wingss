@@ -108,8 +108,7 @@ public class Login extends AppCompatActivity {
         FacebookSdk.sdkInitialize(this);
         intent = new Intent(Login.this, launch.class);
         //google sign in
-        sharedpreferences = getPreferences(Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -757,11 +756,16 @@ public class Login extends AppCompatActivity {
                             // String email = response.getJSONObject().getString("email");
                             String firstName = response.getJSONObject().getString("first_name");
                             String lastName = response.getJSONObject().getString("last_name");
-                            String gender = response.getJSONObject().getString("gender");
+                            // String gender = response.getJSONObject().getString("gender");
 
-                            editor.putString(getString(R.string.fb_f_name), firstName);
-                            editor.putString(getString(R.string.fb_l_name), lastName);
-                            editor.putString(getString(R.string.fb_gender), gender);
+                            sharedpreferences = getSharedPreferences("wingss", Context.MODE_PRIVATE);
+                            editor = sharedpreferences.edit();
+
+                            editor.putString("fb_f_name", firstName);
+                            editor.putString("fb_l_name", lastName);
+                            //     editor.putString("fb_gender", gender);
+                            editor.commit();
+
                             Profile profile = getCurrentProfile();
                             //String id = profile.getId();
                             String link = profile.getLinkUri().toString();
@@ -769,7 +773,7 @@ public class Login extends AppCompatActivity {
                             if (getCurrentProfile() != null) {
                                 Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
 
-                                new DownloadImage().execute(uri.toString());
+                                // new DownloadImage().execute(uri.toString());
                                 Log.i("Login", "ProfilePic" + uri);
 
                             }
@@ -825,6 +829,9 @@ public class Login extends AppCompatActivity {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
         // Create imageDir
         File mypath = new File(directory, "profile.jpg");
 

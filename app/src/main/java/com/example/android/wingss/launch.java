@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,24 @@ public class launch extends AppCompatActivity
     String last_name;
     String gender;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (Login.logged_in_from_facebook) {
+
+            SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
+            first_name = sharedPref.getString("fb_f_name", "");
+            last_name = sharedPref.getString("fb_l_name", "");
+            if (first_name != null)
+                Log.i("first name :", first_name);
+            if (last_name != null)
+                Log.i("Last name :", last_name);
+            name_text.setText(first_name + " " + last_name);
+            // loadImageFromStorage(Login.path_fb_image);
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,34 +80,19 @@ public class launch extends AppCompatActivity
 
         if (Login.logged_in_from_facebook) {
 
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            first_name = sharedPref.getString(getString(R.string.fb_f_name), null);
-            last_name = sharedPref.getString(getString(R.string.fb_l_name), null);
+            SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
+            first_name = sharedPref.getString("fb_f_name", "");
+            last_name = sharedPref.getString("fb_l_name", "" +
+                    "..3");
+            //Log.i("first name :",first_name);
+            //Log.i("Last name :",last_name);
             name_text.setText(first_name + " " + last_name);
-            loadImageFromStorage(Login.path_fb_image);
+            //  loadImageFromStorage(Login.path_fb_image);
 
         } else {
             name_text.setText("");
             imageView.setImageDrawable(null);
         }
-
-        /*first_name = launch_intent.getStringExtra("f_name");
-        last_name = launch_intent.getStringExtra("l_name");
-        email_id=launch_intent.getStringExtra("mail");
-        ;*/
-
-        //Uri image_uri=  launch_intent.getParcelableExtra("imageUri");
-/*            Uri img_uri = Uri.parse(image_uri);
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),img_uri);
-                imageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-*/
-
-
-        //name_text.setText("Welcome "+first_name+" "+last_name);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.refers);
