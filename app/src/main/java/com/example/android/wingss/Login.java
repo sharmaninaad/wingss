@@ -791,7 +791,6 @@ public class Login extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
-
     private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
 
@@ -822,7 +821,6 @@ public class Login extends AppCompatActivity {
             // Close progressdialog
         }
     }
-
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir

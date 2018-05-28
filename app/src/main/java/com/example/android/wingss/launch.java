@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +28,10 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import static android.R.attr.defaultValue;
 import static android.widget.Toast.makeText;
@@ -59,6 +65,7 @@ public class launch extends AppCompatActivity
             first_name = sharedPref.getString(getString(R.string.fb_f_name), null);
             last_name = sharedPref.getString(getString(R.string.fb_l_name), null);
             name_text.setText(first_name + " " + last_name);
+            loadImageFromStorage(Login.path_fb_image);
 
         } else {
             name_text.setText("");
@@ -110,7 +117,6 @@ public class launch extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -120,14 +126,12 @@ public class launch extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.launch, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -142,7 +146,6 @@ public class launch extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -171,7 +174,6 @@ public class launch extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     public void sendNotification(View view) {
 
         NotificationCompat.Builder mBuilder =
@@ -190,7 +192,6 @@ public class launch extends AppCompatActivity
 
         mNotificationManager.notify(001, mBuilder.build());
     }
-
     public void sendCustomNotification() {
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
@@ -206,7 +207,6 @@ public class launch extends AppCompatActivity
 
 
     }
-
     public void sendCustomNotification1() {
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
@@ -222,7 +222,6 @@ public class launch extends AppCompatActivity
 
 
     }
-
     private void signOut() {
         if (Login.logged_in_from_facebook) {
             name_text.setText("");
@@ -241,6 +240,18 @@ public class launch extends AppCompatActivity
                         }
                     });
 
+
+    }
+
+    private void loadImageFromStorage(String path) {
+
+        try {
+            File f = new File(path, "profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            imageView.setImageBitmap(b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
