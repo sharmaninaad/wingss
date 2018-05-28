@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -773,7 +774,7 @@ public class Login extends AppCompatActivity {
                             if (getCurrentProfile() != null) {
                                 Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
 
-                                // new DownloadImage().execute(uri.toString());
+                                new DownloadImage().execute(uri.toString());
                                 Log.i("Login", "ProfilePic" + uri);
 
                             }
@@ -825,6 +826,8 @@ public class Login extends AppCompatActivity {
             // Close progressdialog
         }
     }
+
+    @NonNull
     private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir

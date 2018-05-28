@@ -2,14 +2,17 @@ package com.example.android.wingss;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,8 +24,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import static com.example.android.wingss.Login.account;
 import static com.example.android.wingss.Login.logged_in_from_app;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
         button=(Button)findViewById(R.id.edit);
         if (Login.logged_in_from_facebook) {
 
+            SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
+
+
+            name_view.setText(sharedPref.getString("fb_f_name", "") + " " + sharedPref.getString("fb_l_name", ""));
+            loadImageFromStorage(Login.path_fb_image);
+
         } else {
             name_view.setText("");
             profile_img.setImageDrawable(null);
@@ -84,7 +97,15 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "item at "+position+" clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
-                dialog.show();
+                if (Login.logged_in_from_app) {
+                    dialog.show();
+                } else {
+                    if (Login.logged_in_from_facebook)
+                        Toast.makeText(MainActivity.this, "Feature unavailable , You are logged in from facebook", Toast.LENGTH_SHORT).show();
+                    if (Login.account != null)
+                        Toast.makeText(MainActivity.this, "Feature unavailable , You are logged in from google", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -135,6 +156,18 @@ public class MainActivity extends AppCompatActivity {
         });
         //list=(ListView)findViewById(R.id.mmlist);
         //list.setAdapter(listAdapter);
+    }
+
+    private void loadImageFromStorage(String path) {
+
+        try {
+            File f = new File(path, "profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            profile_img.setImageBitmap(b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

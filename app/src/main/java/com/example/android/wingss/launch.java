@@ -60,7 +60,7 @@ public class launch extends AppCompatActivity
             if (last_name != null)
                 Log.i("Last name :", last_name);
             name_text.setText(first_name + " " + last_name);
-            // loadImageFromStorage(Login.path_fb_image);
+            loadImageFromStorage(Login.path_fb_image);
 
         }
     }
@@ -87,7 +87,7 @@ public class launch extends AppCompatActivity
             //Log.i("first name :",first_name);
             //Log.i("Last name :",last_name);
             name_text.setText(first_name + " " + last_name);
-            //  loadImageFromStorage(Login.path_fb_image);
+            loadImageFromStorage(Login.path_fb_image);
 
         } else {
             name_text.setText("");
