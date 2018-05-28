@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.android.wingss.R.id.imageView;
 import static com.example.android.wingss.R.id.txt;
 
 /**

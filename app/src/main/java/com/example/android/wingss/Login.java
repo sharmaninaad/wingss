@@ -3,12 +3,19 @@ package com.example.android.wingss;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -46,11 +53,14 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.R.attr.type;
 import static com.facebook.Profile.getCurrentProfile;
 
 public class Login extends AppCompatActivity {
@@ -78,6 +88,7 @@ public class Login extends AppCompatActivity {
     public static GoogleSignInClient mGoogleSignInClient;
     public static boolean logged_in_from_facebook;
     public static boolean logged_in_from_app = false;
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private CallbackManager callbackManager;
@@ -85,7 +96,11 @@ public class Login extends AppCompatActivity {
     View.OnClickListener fbclicklistener = null;
     Intent intent;
     Intent fb_intent;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
+    public final static String PATH_FB_IMAGE = "/facebook_image/";
+    public final static String FILE_NAME = "thumbnails";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +109,8 @@ public class Login extends AppCompatActivity {
         intent = new Intent(Login.this, launch.class);
         fb_intent = new Intent(Login.this, launch.class);
         //google sign in
-
+        sharedpreferences = getPreferences(Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -124,7 +140,6 @@ public class Login extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         logged_in_from_facebook = accessToken != null && !accessToken.isExpired();
         if (logged_in_from_facebook) {
-
             startActivity(fb_intent);
             finish();
         }
@@ -449,10 +464,11 @@ public class Login extends AppCompatActivity {
                         && name_d.getText().toString().length()>0
                         && pwd_con_d.getText().toString().length()>0) {
                    if(check()) {
-                        if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
-                            if(Total>=56) {
+                       if (pwd_d.getText().toString().equals(pwd_con_d.getText().toString())) {
+                           if (Total >= 56) {
                                 long row = saveToDB();
-                                Toast.makeText(Login.this, "Succesfully signed up as user " + row, Toast.LENGTH_LONG).show();
+                               Toast.makeText(Login.this, "Successfully signed up as user " + row, Toast.LENGTH_LONG).show();
+                               logged_in_from_app = true;
                                 startActivity(intent);
                                 finish();
                             }
@@ -460,7 +476,6 @@ public class Login extends AppCompatActivity {
                             {
                                 pwd_d.setError("password not strong enough");
                                 pwd_con_d.setError("password not strong enough");
-
                             }
 
 
@@ -501,7 +516,6 @@ public class Login extends AppCompatActivity {
             handleSignInResult(task);
         }
     }
-
     private long saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
 
@@ -730,25 +744,6 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
         }
     }
-
-   /* public void printHashKey(Context pContext) {
-        String TAG = "look";
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String hashKey = new String(Base64.encode(md.digest(), 0));
-                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
-
-            }
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "printHashKey()", e);
-        } catch (Exception e) {
-            Log.e(TAG, "printHashKey()", e);
-        }
-    }*/
-
     private void setFacebookData(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
@@ -762,16 +757,19 @@ public class Login extends AppCompatActivity {
                             // String email = response.getJSONObject().getString("email");
                             String firstName = response.getJSONObject().getString("first_name");
                             String lastName = response.getJSONObject().getString("last_name");
-                            //  String gender = response.getJSONObject().getString("gender");
+                            String gender = response.getJSONObject().getString("gender");
 
-
+                            editor.putString(getString(R.string.fb_f_name), firstName);
+                            editor.putString(getString(R.string.fb_l_name), lastName);
+                            editor.putString(getString(R.string.fb_gender), gender);
                             Profile profile = getCurrentProfile();
                             //String id = profile.getId();
                             String link = profile.getLinkUri().toString();
                             Log.i("Link", link);
                             if (getCurrentProfile() != null) {
                                 Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
-                                fb_intent.putExtra("imageUri", uri + "");
+
+                                new DownloadImage().execute(uri.toString());
                                 Log.i("Login", "ProfilePic" + uri);
 
                             }
@@ -795,5 +793,68 @@ public class Login extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
+
+    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+
+
+        @Override
+        protected Bitmap doInBackground(String... URL) {
+            String imageURL = URL[0];
+
+            Bitmap bitmap = null;
+            try {
+                // Download Image from URL
+                InputStream input = new java.net.URL(imageURL).openStream();
+                // Decode Bitmap
+                bitmap = BitmapFactory.decodeStream(input);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // Set the bitmap into ImageView
+
+            boolean is_saved = saveImageToExternalStorage(result);
+            if (!is_saved) {
+                Toast.makeText(Login.this, "Unable to save message", Toast.LENGTH_SHORT).show();
+            }
+            // Close progressdialog
+        }
+    }
+
+    public boolean saveImageToExternalStorage(Bitmap image) {
+        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + PATH_FB_IMAGE + FILE_NAME;
+
+        try {
+            File dir = new File(fullPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            OutputStream fOut = null;
+            File file = new File(fullPath, "desiredFilename.png");
+            file.createNewFile();
+            fOut = new FileOutputStream(file);
+
+// 100 means no compression, the lower you go, the stronger the compression
+            image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+
+            MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e("saveToExternalStorage()", e.getMessage());
+            return false;
+        }
+    }
+
 }
 

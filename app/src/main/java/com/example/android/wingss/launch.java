@@ -2,22 +2,17 @@ package com.example.android.wingss;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
@@ -49,57 +44,44 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static android.widget.Toast.makeText;
+import static com.example.android.wingss.Login.account;
+import static com.example.android.wingss.Login.logged_in_from_app;
 import static com.example.android.wingss.Login.logged_in_from_facebook;
-import static com.example.android.wingss.Login.mGoogleSignInClient;
+import static com.example.android.wingss.R.drawable.fb;
 import static com.example.android.wingss.R.drawable.mail;
 import static com.example.android.wingss.R.id.fab;
 import static java.security.AccessController.getContext;
 
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    String first_name = null;
-    String last_name = null;
-    String pic_uri = null;
-    String email_id = null;
+
     TextView name_text;
     ImageView imageView;
-    Uri image_uri;
-    View child;
+    Intent pro_fb_intent;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Intent launch_intent = getIntent();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
-        child = getLayoutInflater().inflate(R.layout.activity_main, null);
 
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
+        pro_fb_intent = new Intent(launch.this, MainActivity.class);
 
         if (Login.logged_in_from_facebook) {
-            first_name = launch_intent.getStringExtra("f_name");
-            last_name = launch_intent.getStringExtra("l_name");
-
-            Log.i("received name", first_name + " " + last_name);
-            name_text.setText("" + first_name + " " + last_name);
-            TextView tt_pro = (TextView) child.findViewById(R.id.name);
-            tt_pro.setText("" + first_name + " " + last_name);
-
-            pic_uri = launch_intent.getStringExtra("imageUri");
-
-            if (pic_uri != null) {
-                Log.i("received uri", pic_uri);
-                image_uri = Uri.parse(pic_uri);
-
-                new DownloadImage().execute(image_uri.toString());
 
 
-            }
-
+        } else {
+            name_text.setText("");
+            imageView.setImageDrawable(null);
         }
+
         /*first_name = launch_intent.getStringExtra("f_name");
         last_name = launch_intent.getStringExtra("l_name");
         email_id=launch_intent.getStringExtra("mail");
@@ -185,7 +167,7 @@ public class launch extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -193,9 +175,11 @@ public class launch extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_profile) {
-            Intent pro_intent = new Intent(launch.this, MainActivity.class);
 
-            startActivity(pro_intent);
+
+            startActivity(pro_fb_intent);
+
+
         } else if (id == R.id.nav_send) {
 
         }
@@ -258,6 +242,9 @@ public class launch extends AppCompatActivity
 
     private void signOut() {
         if (Login.logged_in_from_facebook) {
+            name_text.setText("");
+            imageView.setImageBitmap(null);
+            Login.logged_in_from_facebook = false;
             LoginManager.getInstance().logOut();
             startActivity(new Intent(launch.this, Login.class));
             finish();
@@ -274,35 +261,5 @@ public class launch extends AppCompatActivity
 
     }
 
-    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
-
-        @Override
-        protected Bitmap doInBackground(String... URL) {
-            String imageURL = URL[0];
-
-            Bitmap bitmap = null;
-            try {
-                // Download Image from URL
-                InputStream input = new java.net.URL(imageURL).openStream();
-                // Decode Bitmap
-                bitmap = BitmapFactory.decodeStream(input);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // Set the bitmap into ImageView
-            imageView.setImageBitmap(result);
-            ImageView pro_view = (ImageView) child.findViewById(R.id.img_pro);
-
-            pro_view.setImageBitmap(result);
-
-            // Close progressdialog
-        }
-    }
 }

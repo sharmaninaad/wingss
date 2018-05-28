@@ -1,16 +1,15 @@
 package com.example.android.wingss;
 
-import android.app.ActionBar;
+
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,20 +21,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 
-import static android.R.attr.allContactsName;
-import static android.R.attr.start;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
-import static android.os.Build.VERSION_CODES.N;
+import static com.example.android.wingss.Login.logged_in_from_app;
 
 public class MainActivity extends AppCompatActivity {
    // ListView list;
     TextView upgrade;
     TextView name_view;
-
+    ImageView profile_img;
     Button button;
-
 
     String[] texts = {
         "Weekly plan",
@@ -43,53 +38,36 @@ public class MainActivity extends AppCompatActivity {
             "Annual Plan",
             "Lifetime Plan"
     } ;
-    Integer[] iconId = {
-        R.drawable.week,
+    Integer[] iconId =
+            {
+                    R.drawable.week,
             R.drawable.month,
             R.drawable.year,
             R.drawable.lifetime
     };
-    DialogInterface.OnClickListener listener;
-    AlertDialog.Builder alertDialogBuilder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        name_view = (TextView) findViewById(R.id.name);
-
 
         setContentView(R.layout.activity_main);
+
+
+        name_view = (TextView) findViewById(R.id.name);
+        profile_img = (ImageView) findViewById(R.id.img_pro);
+
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
         final mylist listAdapter = new
                 mylist(MainActivity.this, texts, iconId);
         button=(Button)findViewById(R.id.edit);
+        if (Login.logged_in_from_facebook) {
 
-    //alertDialogBuilder= new AlertDialog.Builder(this);
-       /* listener=new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(which==BUTTON_POSITIVE)
-                {
-                    Intent editIntent=new Intent(MainActivity.this,Edit_profile.class);
-                startActivity(editIntent);
-                }
-                if(which==BUTTON_NEGATIVE)
-                {
-                    dialog.dismiss();
+        } else {
+            name_view.setText("");
+            profile_img.setImageDrawable(null);
+        }
 
-                }
-            }
-        };
-        alertDialogBuilder.setPositiveButton("Sure",
-                listener);
-        alertDialogBuilder.setNegativeButton("No Please",
-                listener);
-        alertDialogBuilder.setCancelable(true);
-        //alertDialogBuilder.setMessage("Are you sure?");
-        LayoutInflater inflater = getLayoutInflater();
-        view=inflater.inflate(R.layout.dialog, null);
-*/
         upgrade=(TextView)findViewById(R.id.Up);
         upgrade.setOnClickListener(new View.OnClickListener() {
             @Override

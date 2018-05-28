@@ -4,6 +4,10 @@
     <string name="sign_string"><u>  New User! Sign up </u></string>
     <string name="facebook_app_id">2024564934528284</string>
     <string name="fb_login_protocol_scheme">fb2024564934528284</string>
+    <string name="fb_f_name">first_name_facebook</string>
+    <string name="fb_l_name">last_name_facebook</string>
+    <string name="fb_pic_uri">facebook_profile_pic_uri</string>
+    <string name="fb_gender">facebook_gender</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
