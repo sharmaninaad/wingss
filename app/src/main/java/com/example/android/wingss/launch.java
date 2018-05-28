@@ -4,22 +4,12 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-
-import android.support.v4.app.NotificationCompat;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -36,29 +27,17 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
+import static android.R.attr.defaultValue;
 import static android.widget.Toast.makeText;
-import static com.example.android.wingss.Login.account;
-import static com.example.android.wingss.Login.logged_in_from_app;
-import static com.example.android.wingss.Login.logged_in_from_facebook;
-import static com.example.android.wingss.R.drawable.fb;
-import static com.example.android.wingss.R.drawable.mail;
-import static com.example.android.wingss.R.id.fab;
-import static java.security.AccessController.getContext;
-
 public class launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView name_text;
     ImageView imageView;
     Intent pro_fb_intent;
-
+    String first_name;
+    String last_name;
+    String gender;
 
 
     @Override
@@ -76,6 +55,10 @@ public class launch extends AppCompatActivity
 
         if (Login.logged_in_from_facebook) {
 
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            first_name = sharedPref.getString(getString(R.string.fb_f_name), null);
+            last_name = sharedPref.getString(getString(R.string.fb_l_name), null);
+            name_text.setText(first_name + " " + last_name);
 
         } else {
             name_text.setText("");

@@ -4,6 +4,7 @@ package com.example.android.wingss;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -55,6 +56,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -95,19 +97,16 @@ public class Login extends AppCompatActivity {
     Button fb;
     View.OnClickListener fbclicklistener = null;
     Intent intent;
-    Intent fb_intent;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
-    public final static String PATH_FB_IMAGE = "/facebook_image/";
-    public final static String FILE_NAME = "thumbnails";
+    public static String path_fb_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
         FacebookSdk.sdkInitialize(this);
         intent = new Intent(Login.this, launch.class);
-        fb_intent = new Intent(Login.this, launch.class);
         //google sign in
         sharedpreferences = getPreferences(Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
@@ -140,7 +139,7 @@ public class Login extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         logged_in_from_facebook = accessToken != null && !accessToken.isExpired();
         if (logged_in_from_facebook) {
-            startActivity(fb_intent);
+            startActivity(intent);
             finish();
         }
 
@@ -172,6 +171,7 @@ public class Login extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         logged_in_from_facebook = true;
                         setFacebookData(loginResult);
+                        startActivity(intent);
 
                     }
 
@@ -778,9 +778,7 @@ public class Login extends AppCompatActivity {
                             Log.i("Login" + "FirstName", firstName);
                             Log.i("Login" + "LastName", lastName);
                             //  Log.i("Login" + "Gender", gender);
-                            fb_intent.putExtra("f_name", firstName);
-                            fb_intent.putExtra("l_name", lastName);
-                            startActivity(fb_intent);
+                            startActivity(intent);
                             finish();
 
                         } catch (JSONException e) {
@@ -819,42 +817,36 @@ public class Login extends AppCompatActivity {
         protected void onPostExecute(Bitmap result) {
             // Set the bitmap into ImageView
 
-            boolean is_saved = saveImageToExternalStorage(result);
-            if (!is_saved) {
-                Toast.makeText(Login.this, "Unable to save message", Toast.LENGTH_SHORT).show();
-            }
+            path_fb_image = saveToInternalStorage(result);
+
             // Close progressdialog
         }
     }
 
-    public boolean saveImageToExternalStorage(Bitmap image) {
-        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + PATH_FB_IMAGE + FILE_NAME;
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, "profile.jpg");
 
+        FileOutputStream fos = null;
         try {
-            File dir = new File(fullPath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            OutputStream fOut = null;
-            File file = new File(fullPath, "desiredFilename.png");
-            file.createNewFile();
-            fOut = new FileOutputStream(file);
-
-// 100 means no compression, the lower you go, the stronger the compression
-            image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-
-            MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
-
-            return true;
-
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
-            Log.e("saveToExternalStorage()", e.getMessage());
-            return false;
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return directory.getAbsolutePath();
     }
+
 
 }
 
