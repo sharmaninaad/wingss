@@ -52,15 +52,12 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.android.wingss.R.drawable.log;
 import static com.facebook.Profile.getCurrentProfile;
 
 public class Login extends AppCompatActivity {
@@ -146,9 +143,16 @@ public class Login extends AppCompatActivity {
 
                     if (account != null)
                         Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
-                    else
+                    else {
                         LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
-                }
+                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_birthday"));
+
+                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_photos"));
+                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_videos"));
+
+                    }
+
+            }
 
 
 
@@ -503,6 +507,12 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -807,23 +817,6 @@ public class Login extends AppCompatActivity {
         request.executeAsync();
     }
 
-    private void getfromFb(final LoginResult loginResult) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
-
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        // Insert your code here
-                        Log.i("Response", response.toString());
-                    }
-                });
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,birthday,photos,videos");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
     private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
 
@@ -868,6 +861,35 @@ public class Login extends AppCompatActivity {
             Log.e("saveToInternalStorage()", e.getMessage());
             return false;
         }
+    }
+
+    private void getfromFb(final LoginResult loginResult) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Insert your code here
+                        Log.i("Response", response.toString());
+                        try {
+                            String birthdate = response.getJSONObject().getString("birthday");
+                            String photos = response.getJSONObject().getString("photos");
+                            editor.putString("birthdate", birthdate);
+                            editor.putString("photos", photos);
+                            editor.commit();
+                            Log.i("birthday", birthdate);
+                            Log.i("photographs", photos);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,birthday,photos,videos");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
 

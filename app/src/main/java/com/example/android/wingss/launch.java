@@ -165,7 +165,7 @@ public class launch extends AppCompatActivity
         if (id == R.id.nav_camera) {
 
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(launch.this, gallery.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

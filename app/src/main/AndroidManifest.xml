@@ -8,16 +8,13 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity" />
         <activity android:name=".Edit_profile" />
         <activity android:name=".Login">
@@ -31,7 +28,7 @@
         <activity
             android:name=".launch"
             android:label="@string/title_activity_launch"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -41,8 +38,15 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
-
+        <activity
+            android:name=".gallery"
+            android:label="@string/title_activity_gallery"
+            android:parentActivityName=".launch"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.wingss.launch" />
+        </activity>
     </application>
 
 </manifest>
