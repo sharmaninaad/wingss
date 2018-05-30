@@ -26,13 +26,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/date_view"
             android:layout_weight="0.5"
-            android:text="date" />
+            android:text="date"
+            android:gravity="left" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/id_view"
             android:layout_weight="0.5"
+            android:gravity="right"
             android:text="id" />
     </LinearLayout>
 

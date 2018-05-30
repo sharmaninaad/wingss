@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.android.wingss.Photo_fb;
 import com.example.android.wingss.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.id;
 
 /**
  * Created by Ninaad on 5/30/2018.
@@ -17,16 +21,13 @@ import java.util.ArrayList;
 
 public class photo_detail_adapter extends ArrayAdapter {
     private final Activity context;
-    ArrayList<String> date_created;
-    ArrayList<String> name;
-    ArrayList<String> id;
+    List<Photo_fb> photos;
 
-    public photo_detail_adapter(Activity context, ArrayList<String> date_created, ArrayList<String> name, ArrayList<String> id) {
-        super(context, R.layout.list_photo, name);
+    public photo_detail_adapter(Activity context, List<Photo_fb> photos) {
+        super(context, R.layout.list_photo, photos);
         this.context = context;
-        this.name = name;
-        this.date_created = date_created;
-        this.id = id;
+        // this.name = name;
+        this.photos = photos;
     }
 
     @Override
@@ -37,9 +38,9 @@ public class photo_detail_adapter extends ArrayAdapter {
         TextView txtname = (TextView) rowView.findViewById(R.id.name_view);
         TextView txtid = (TextView) rowView.findViewById(R.id.id_view);
 
-        txtdate.setText(date_created.get(position));
-        txtname.setText(name.get(position));
-        txtid.setText(id.get(position));
+        txtdate.setText(photos.get(position).getCreated_time());
+        txtname.setText(photos.get(position).getName());
+        txtid.setText(photos.get(position).getName());
         return rowView;
     }
 }

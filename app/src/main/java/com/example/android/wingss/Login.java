@@ -137,27 +137,17 @@ public class Login extends AppCompatActivity {
         }
 
         fb = (Button) findViewById(R.id.facebook_sign);
-        fbclicklistener = new View.OnClickListener() {
+
+        fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    if (account != null)
-                        Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
-                    else {
-                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "user_birthday", "user_photos", "user_videos"));
-
-                    }
-
+                if (account != null)
+                    Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
+                else {
+                    LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "user_birthday", "user_photos", "user_videos"));
+                }
             }
-
-
-
-        };
-        fb.setOnClickListener(fbclicklistener);
-
-        // If you are using in a fragment, call loginButton.setFragment(this);
-
-        // Callback registration
+        });
 
         callbackManager = CallbackManager.Factory.create();
 
