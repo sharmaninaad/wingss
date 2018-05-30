@@ -47,6 +47,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.wingss.launch" />
         </activity>
+        <activity android:name=".fb_pic_adapter"></activity>
     </application>
 
 </manifest>

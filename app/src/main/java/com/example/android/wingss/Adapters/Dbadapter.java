@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.android.wingss.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

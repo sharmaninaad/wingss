@@ -51,24 +51,6 @@ public class launch extends AppCompatActivity
     String last_name;
     String gender;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (Login.logged_in_from_facebook) {
-
-            SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
-            first_name = sharedPref.getString("fb_f_name", "");
-            last_name = sharedPref.getString("fb_l_name", "");
-            if (first_name != null)
-                Log.i("first name :", first_name);
-            if (last_name != null)
-                Log.i("Last name :", last_name);
-            name_text.setText(first_name + " " + last_name);
-            loadImageFromStorage();
-
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +116,7 @@ public class launch extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
     @Override
@@ -265,9 +248,6 @@ public class launch extends AppCompatActivity
 
     }
 
-    private void get_from_fb() {
-
-    }
 
 
 }

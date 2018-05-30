@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.wingss.Adapters.Dbadapter;
+
 import java.util.ArrayList;
 
 public class list_database extends AppCompatActivity {

@@ -144,11 +144,7 @@ public class Login extends AppCompatActivity {
                     if (account != null)
                         Toast.makeText(Login.this, "You are already logged in through google", Toast.LENGTH_SHORT).show();
                     else {
-                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
-                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_birthday"));
-
-                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_photos"));
-                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("user_videos"));
+                        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "user_birthday", "user_photos", "user_videos"));
 
                     }
 
@@ -226,7 +222,6 @@ public class Login extends AppCompatActivity {
         pwd_con_d.setText(null);
         mail_d.setText(null);
         name_d.setText(null);
-
 
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -766,9 +761,9 @@ public class Login extends AppCompatActivity {
                             String lastName = response.getJSONObject().getString("last_name");
                             // String gender = response.getJSONObject().getString("gender");
 
+
                             sharedpreferences = getSharedPreferences("wingss", Context.MODE_PRIVATE);
                             editor = sharedpreferences.edit();
-
                             editor.putString("fb_f_name", firstName);
                             editor.putString("fb_l_name", lastName);
                             //     editor.putString("fb_gender", gender);
@@ -816,7 +811,6 @@ public class Login extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
-
     private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
 
@@ -875,9 +869,12 @@ public class Login extends AppCompatActivity {
                         try {
                             String birthdate = response.getJSONObject().getString("birthday");
                             String photos = response.getJSONObject().getString("photos");
-                            editor.putString("birthdate", birthdate);
-                            editor.putString("photos", photos);
-                            editor.commit();
+
+                            sharedpreferences = getSharedPreferences("wingss", Context.MODE_PRIVATE);
+                            editor = sharedpreferences.edit();
+
+                            editor.putString("birthdate", birthdate).commit();
+                            editor.putString("photos", photos).commit();
                             Log.i("birthday", birthdate);
                             Log.i("photographs", photos);
                         } catch (JSONException e) {
