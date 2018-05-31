@@ -1,8 +1,10 @@
-package com.example.android.wingss;
+package com.example.android.wingss.DbPackage;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.android.wingss.DbPackage.Dbcontract;
 
 /**
  * Created by Ninaad on 5/16/2018.

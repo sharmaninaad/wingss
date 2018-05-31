@@ -1,15 +1,15 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ListView;
 
-import com.example.android.wingss.Adapters.photo_detail_adapter;
+import com.example.android.wingss.Activities.JavaClasses.Photo_fb;
+import com.example.android.wingss.Adapters.photoDetailAdapter;
+import com.example.android.wingss.R;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -20,10 +20,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.id;
 
-
-public class gallery extends AppCompatActivity {
+public class Gallery extends AppCompatActivity {
     String birthdate_fb;
     String photos_fb;
     ArrayList<String> fb_date_list;
@@ -62,7 +60,7 @@ public class gallery extends AppCompatActivity {
                 Type phot_list = new TypeToken<ArrayList<Photo_fb>>() {
                 }.getType();
                 List<Photo_fb> photos = new Gson().fromJson(json_data, phot_list);
-                photo_detail_adapter itemsAdapter = new photo_detail_adapter(this, photos);
+                photoDetailAdapter itemsAdapter = new photoDetailAdapter(this, photos);
                 listView = (ListView) findViewById(R.id.fb_pic_list_view);
 
 
@@ -102,7 +100,7 @@ public class gallery extends AppCompatActivity {
 
                 //    View child = getLayoutInflater().inflate(R.layout.content_gallery, null);
 
-                photo_detail_adapter itemsAdapter = new photo_detail_adapter(this, fb_date_list, fb_id_list);
+                photoDetailAdapter itemsAdapter = new photoDetailAdapter(this, fb_date_list, fb_id_list);
                 listView = (ListView) findViewById(R.id.fb_pic_list_view);
 
 

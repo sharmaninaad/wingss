@@ -14,12 +14,13 @@ import com.example.android.wingss.R;
  * Created by Ninaad on 5/14/2018.
  */
 
-public class mylist extends ArrayAdapter<String> {
+public class MyList extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] texts;
     private final Integer[] iconId;
-    public mylist(Activity context,
-                      String[] texts, Integer[] iconId) {
+
+    public MyList(Activity context,
+                  String[] texts, Integer[] iconId) {
         super(context, R.layout.list_single, texts);
         this.context = context;
         this.texts = texts;

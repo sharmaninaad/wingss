@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,10 +8,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.wingss.Adapters.Dbadapter;
+import com.example.android.wingss.DbPackage.Dbcontract;
+import com.example.android.wingss.DbPackage.Dbhelper;
+import com.example.android.wingss.R;
 
 import java.util.ArrayList;
 
-public class list_database extends AppCompatActivity {
+public class ListDatabase extends AppCompatActivity {
     ListView lv;
     public static ArrayList<String> mails = new ArrayList<>();
     public static ArrayList<String> names = new ArrayList<>();

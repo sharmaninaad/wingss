@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.wingss.launch">
+    tools:context="com.example.android.wingss.Activities.Launch">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,4 +31,12 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/refers" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/camera"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#fff"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/capture" />
 </android.support.design.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities.JavaClasses;
 
 /**
  * Created by Ninaad on 5/30/2018.

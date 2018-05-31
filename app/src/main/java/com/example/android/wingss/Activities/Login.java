@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
 
 import android.app.Dialog;
@@ -32,6 +32,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.wingss.DbPackage.Dbcontract;
+import com.example.android.wingss.DbPackage.Dbhelper;
+import com.example.android.wingss.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -100,7 +103,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
         FacebookSdk.sdkInitialize(this);
-        intent = new Intent(Login.this, launch.class);
+        intent = new Intent(Login.this, Launch.class);
         //google sign in
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -225,7 +228,7 @@ public class Login extends AppCompatActivity {
         all_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this,list_database.class));
+                startActivity(new Intent(Login.this, ListDatabase.class));
             }
         });
         ver_btn.setOnClickListener(new View.OnClickListener() {

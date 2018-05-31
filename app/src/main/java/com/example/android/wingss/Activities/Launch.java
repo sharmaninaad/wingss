@@ -1,5 +1,6 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,22 +26,20 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
+import com.example.android.wingss.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
-import static android.R.attr.defaultValue;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static android.widget.Toast.makeText;
-public class launch extends AppCompatActivity
+
+public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView name_text;
@@ -50,6 +48,7 @@ public class launch extends AppCompatActivity
     String first_name;
     String last_name;
     String gender;
+    private static final int REQUEST_CODE = 1;
 
 
     @Override
@@ -63,7 +62,7 @@ public class launch extends AppCompatActivity
 
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
-        pro_fb_intent = new Intent(launch.this, MainActivity.class);
+        pro_fb_intent = new Intent(Launch.this, MainActivity.class);
 //EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
 
         if (Login.logged_in_from_facebook) {
@@ -83,6 +82,14 @@ public class launch extends AppCompatActivity
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton capture = (FloatingActionButton) findViewById(R.id.camera);
+
+        capture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Launch.this, MakePhoto.class));
+            }
+        });
         fab.setImageResource(R.drawable.refers);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +103,7 @@ public class launch extends AppCompatActivity
                     sendCustomNotification();
                     sendCustomNotification1();
                 } catch (android.content.ActivityNotFoundException ex) {
-                    makeText(launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    makeText(Launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -148,8 +155,13 @@ public class launch extends AppCompatActivity
         if (id == R.id.nav_camera) {
 
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(launch.this, gallery.class));
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(intent, REQUEST_CODE);
         } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(Launch.this, Gallery.class));
 
         } else if (id == R.id.nav_manage) {
 
@@ -221,14 +233,14 @@ public class launch extends AppCompatActivity
             imageView.setImageBitmap(null);
             Login.logged_in_from_facebook = false;
             LoginManager.getInstance().logOut();
-            startActivity(new Intent(launch.this, Login.class));
+            startActivity(new Intent(Launch.this, Login.class));
             finish();
         } else if (Login.account != null)
             Login.mGoogleSignInClient.signOut()
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            startActivity(new Intent(launch.this, Login.class));
+                            startActivity(new Intent(Launch.this, Login.class));
                             finish();
                         }
                     });
@@ -248,6 +260,30 @@ public class launch extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        InputStream stream = null;
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            try {
+                // recyle unused bitmaps
 
+                stream = getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+                // imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+
+                if (stream != null)
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }
+    }
 
 }

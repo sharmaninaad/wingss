@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.DbPackage;
 
 import android.provider.BaseColumns;
 

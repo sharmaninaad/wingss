@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
 
 import android.app.Dialog;
@@ -18,7 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.wingss.Adapters.mylist;
+import com.example.android.wingss.Adapters.MyList;
+import com.example.android.wingss.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
-        final mylist listAdapter = new
-                mylist(MainActivity.this, texts, iconId);
+        final MyList listAdapter = new
+                MyList(MainActivity.this, texts, iconId);
         button=(Button)findViewById(R.id.edit);
         if (Login.logged_in_from_facebook) {
 

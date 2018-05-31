@@ -7,23 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.android.wingss.Photo_fb;
+import com.example.android.wingss.Activities.JavaClasses.Photo_fb;
 import com.example.android.wingss.R;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.id;
 
 /**
  * Created by Ninaad on 5/30/2018.
  */
 
-public class photo_detail_adapter extends ArrayAdapter {
+public class photoDetailAdapter extends ArrayAdapter {
     private final Activity context;
     List<Photo_fb> photos;
 
-    public photo_detail_adapter(Activity context, List<Photo_fb> photos) {
+    public photoDetailAdapter(Activity context, List<Photo_fb> photos) {
         super(context, R.layout.list_photo, photos);
         this.context = context;
         // this.name = name;
@@ -40,7 +37,7 @@ public class photo_detail_adapter extends ArrayAdapter {
 
         txtdate.setText(photos.get(position).getCreated_time());
         txtname.setText(photos.get(position).getName());
-        txtid.setText(photos.get(position).getName());
+        txtid.setText(photos.get(position).getId());
         return rowView;
     }
 }
