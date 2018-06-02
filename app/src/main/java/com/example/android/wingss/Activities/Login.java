@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -99,6 +100,7 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     static String mail_user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -885,7 +887,6 @@ public class Login extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
-
 
 }
 

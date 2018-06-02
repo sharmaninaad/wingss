@@ -87,10 +87,9 @@ public class ProfileActivity extends AppCompatActivity {
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
         if (Login.logged_in_from_app) {
-            if (Login.logged_in_from_app) {
 
 
-                String picture = readImage().getString(0);
+            String picture = readImage().getString(0);
                 if (!picture.equals("")) {
                     try {
                         byte[] bytes = picture.getBytes("UTF-8");
@@ -102,7 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 }
 
-            }
 
         }
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

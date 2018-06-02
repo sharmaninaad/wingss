@@ -8,16 +8,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,19 +41,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.widget.Toast.makeText;
 
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    String mCurrentPhotoPath;
 
     TextView name_text;
     ImageView imageView;
     Intent pro_fb_intent;
     String first_name;
     String last_name;
-    String gender;
     private static final int REQUEST_CODE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    ImageView captureView;
 
 
     @Override
@@ -59,10 +68,10 @@ public class Launch extends AppCompatActivity
         setSupportActionBar(toolbar);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
-
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
         pro_fb_intent = new Intent(Launch.this, ProfileActivity.class);
+        captureView = (ImageView) findViewById(R.id.captured);
 //EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
 
         if (Login.logged_in_from_facebook) {
@@ -108,7 +117,12 @@ public class Launch extends AppCompatActivity
 
             }
         });
-
+        capture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePictureIntent();
+            }
+        });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -235,7 +249,7 @@ public class Launch extends AppCompatActivity
             LoginManager.getInstance().logOut();
             startActivity(new Intent(Launch.this, Login.class));
             finish();
-        } else if (Login.account != null)
+        } else if (Login.account != null) {
             Login.mGoogleSignInClient.signOut()
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
@@ -244,7 +258,11 @@ public class Launch extends AppCompatActivity
                             finish();
                         }
                     });
-
+        } else if (Login.logged_in_from_app) {
+            Login.logged_in_from_app = false;
+            startActivity(new Intent(Launch.this, Login.class));
+            finish();
+        }
 
     }
 
@@ -264,6 +282,11 @@ public class Launch extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         InputStream stream = null;
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            captureView.setImageBitmap(imageBitmap);
+        }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             try {
                 // recyle unused bitmaps
@@ -286,4 +309,43 @@ public class Launch extends AppCompatActivity
         }
     }
 
+    private void takePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.i("IOException:", ex.getMessage());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 }
