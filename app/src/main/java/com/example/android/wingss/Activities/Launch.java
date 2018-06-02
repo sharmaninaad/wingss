@@ -55,9 +55,10 @@ public class Launch extends AppCompatActivity
     Intent pro_fb_intent;
     String first_name;
     String last_name;
-    private static final int REQUEST_CODE = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CODE = 0;
     ImageView captureView;
+    static final int REQUEST_TAKE_PHOTO = 1;
+
 
 
     @Override
@@ -120,7 +121,7 @@ public class Launch extends AppCompatActivity
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePictureIntent();
+                doTakePictureIntent();
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -193,24 +194,6 @@ public class Launch extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void sendNotification(View view) {
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this);
-
-        //Create the intent that’ll fire when the user taps the notification//
-
-
-        mBuilder.setSmallIcon(R.drawable.cameraa);
-        mBuilder.setContentTitle("Wings");
-        mBuilder.setContentText("Whatsapp is active !! send your referal");
-
-        NotificationManager mNotificationManager =
-
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.notify(001, mBuilder.build());
-    }
     public void sendCustomNotification() {
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
@@ -282,10 +265,10 @@ public class Launch extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         InputStream stream = null;
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            captureView.setImageBitmap(imageBitmap);
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ////captureView.setImageBitmap(imageBitmap);
         }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             try {
@@ -294,7 +277,7 @@ public class Launch extends AppCompatActivity
                 stream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(stream);
 
-                // imageView.setImageBitmap(bitmap);
+                imageView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } finally {
@@ -309,7 +292,7 @@ public class Launch extends AppCompatActivity
         }
     }
 
-    private void takePictureIntent() {
+    private void doTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -317,18 +300,19 @@ public class Launch extends AppCompatActivity
             File photoFile = null;
             try {
                 photoFile = createImageFile();
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(this,
+                            "com.example.android.fileprovider",
+                            photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.i("IOException:", ex.getMessage());
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
+
         }
     }
 
@@ -349,3 +333,32 @@ public class Launch extends AppCompatActivity
         return image;
     }
 }
+/* try {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                fileUri = getOutputMediaFileUri2(MEDIA_TYPE_IMAGE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            } else {
+                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            }
+            startActivityForResult(intent, CAMERA);
+        } catch (ActivityNotFoundException anfe) {
+            Toast.makeText(mContext, "No activity found to open this attachment.", Toast.LENGTH_LONG).show();
+        }
+    public Uri getOutputMediaFileUri(int type) {
+        Uri photoUri = Uri.fromFile(getOutputMediaFile());
+        mImageUri = photoUri;
+        return photoUri;
+    }
+    public Uri getOutputMediaFileUri2(int type) {
+//        return Uri.fromFile(getOutputMediaFile(type));
+        File newFile = getOutputMediaFile();
+        Log.e("MyPath", BuildConfig.APPLICATION_ID);
+        Uri photoURI = FileProvider.getUriForFile(mContext,
+                BuildConfig.APPLICATION_ID + ".provider",
+                newFile);
+        mImageUri = photoURI;
+        return photoURI;
+    }*/
