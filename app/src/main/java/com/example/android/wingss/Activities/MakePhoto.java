@@ -1,9 +1,12 @@
 package com.example.android.wingss.Activities;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +17,9 @@ import android.widget.Toast;
 
 import com.example.android.wingss.R;
 
-import static android.R.attr.bitmap;
+import java.io.UnsupportedEncodingException;
+
+import static com.example.android.wingss.Activities.ProfileActivity.profile_img;
 
 
 @SuppressWarnings("deprecation")
@@ -51,6 +56,7 @@ public class MakePhoto extends AppCompatActivity {
         FrameLayout preview_frame = (FrameLayout) findViewById(R.id.preview);
         preview_frame.addView(preview);
         final Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
 
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -75,9 +81,13 @@ public class MakePhoto extends AppCompatActivity {
 
 
                 //finished saving picture
-                View child = getLayoutInflater().inflate(R.layout.activity_ProfileActivity, null);
-                ImageView img_profile_view = (ImageView) child.findViewById(R.id.img_pro);
-                img_profile_view.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+                SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
+                try {
+                    sharedPreferences.edit().putString("pic_profile", new String(data, "UTF-8")).commit();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
 
 
             }
@@ -145,5 +155,4 @@ public class MakePhoto extends AppCompatActivity {
         }
         super.onPause();
     }
-
 }

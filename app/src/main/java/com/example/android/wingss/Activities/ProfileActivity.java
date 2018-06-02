@@ -27,10 +27,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class ProfileActivity extends AppCompatActivity {
-   // ListView list;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Login.logged_in_from_app) {
+            SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
+            sharedPreferences.getString("pic_profile", "");
+        }
+    }
+
+    // ListView list;
     TextView upgrade;
     TextView name_view;
-    ImageView profile_img;
+    static ImageView profile_img;
     Button button;
 
     String[] texts = {
@@ -51,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_ProfileActivity);
+        setContentView(R.layout.activity_profile);
 
 
         name_view = (TextView) findViewById(R.id.name);
@@ -91,14 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Toast.makeText(ProfileActivity.this, "item at " + position + " clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
-                if (Login.logged_in_from_app) {
-                    dialog.show();
-                } else {
-                    if (Login.logged_in_from_facebook)
-                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from facebook", Toast.LENGTH_SHORT).show();
-                    if (Login.account != null)
-                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from google", Toast.LENGTH_SHORT).show();
-                }
+
 
 
             }
@@ -106,8 +108,11 @@ public class ProfileActivity extends AppCompatActivity {
         profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this, MakePhoto.class));
+                if (Login.logged_in_from_app)
+                    startActivity(new Intent(ProfileActivity.this, MakePhoto.class));
 
+                else
+                    Toast.makeText(ProfileActivity.this, "Cannot change profile pic , You are logged in from external sources", Toast.LENGTH_SHORT).show();
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +141,14 @@ public class ProfileActivity extends AppCompatActivity {
                 ImageView image = (ImageView) dialog.findViewById(R.id.circle);*/
 
 
-                dialog.show();
+                if (Login.logged_in_from_app) {
+                    dialog.show();
+                } else {
+                    if (Login.logged_in_from_facebook)
+                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from facebook", Toast.LENGTH_SHORT).show();
+                    if (Login.account != null)
+                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from google", Toast.LENGTH_SHORT).show();
+                }
 
                 Button savebtn = (Button) dialog.findViewById(R.id.save);
                 Button backbtn = (Button) dialog.findViewById(R.id.back);
