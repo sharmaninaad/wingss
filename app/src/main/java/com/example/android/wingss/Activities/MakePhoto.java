@@ -1,5 +1,6 @@
 package com.example.android.wingss.Activities;
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -12,14 +13,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.example.android.wingss.Activities.ProfileActivity.profile_img;
+import static com.example.android.wingss.Activities.Login.mail_user;
+import static com.example.android.wingss.R.drawable.mail;
 
 
 @SuppressWarnings("deprecation")
@@ -81,9 +83,14 @@ public class MakePhoto extends AppCompatActivity {
 
 
                 //finished saving picture
-                SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
+
                 try {
-                    sharedPreferences.edit().putString("pic_profile", new String(data, "UTF-8")).commit();
+                    String byte_img = new String(data, "UTF-8");
+                    ContentValues cv = new ContentValues();
+                    cv.put(Dbcontract.Dbentry.COLUMN_IMG, byte_img);
+                    String[] s_args = {Login.mail_user};
+                    Login.database.update(Dbcontract.Dbentry.TABLE_NAME, cv, Dbcontract.Dbentry.COLUMN_MAIL + " like ? ", s_args);
+
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

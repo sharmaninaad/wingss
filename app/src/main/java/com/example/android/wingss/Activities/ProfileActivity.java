@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,27 +21,66 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.wingss.Adapters.MyList;
+import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+
+import static android.R.attr.bitmap;
+import static com.example.android.wingss.Activities.Login.database;
+import static com.example.android.wingss.R.drawable.mail;
 
 public class ProfileActivity extends AppCompatActivity {
+    TextView upgrade;
+    TextView name_view;
+    ImageView profile_img;
+    Button button;
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
         if (Login.logged_in_from_app) {
-            SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
-            sharedPreferences.getString("pic_profile", "");
+
+
+            String[] projection = {
+
+                    Dbcontract.Dbentry.COLUMN_IMG
+
+            };
+
+            String selection =
+                    Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
+            String[] selectionArgs = {Login.mail_user};
+            Cursor cursor = database.query(
+                    Dbcontract.Dbentry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            String picture = cursor.getString(0);
+            if (!picture.equals("")) {
+                try {
+                    byte[] bytes = picture.getBytes("UTF-8");
+                    profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
         }
     }
 
-    // ListView list;
-    TextView upgrade;
-    TextView name_view;
-    static ImageView profile_img;
-    Button button;
 
     String[] texts = {
         "Weekly plan",
@@ -65,7 +105,21 @@ public class ProfileActivity extends AppCompatActivity {
 
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
+        if (Login.logged_in_from_app) {
+            SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
+            String picture = sharedPreferences.getString("pic_profile", "");
+            if (!picture.equals("")) {
+                try {
+                    byte[] bytes = picture.getBytes("UTF-8");
+                    profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
         final MyList listAdapter = new

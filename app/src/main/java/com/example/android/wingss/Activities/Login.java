@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
     Button ver_btn;
     Button google_btn;
     LinearLayout layout;
-    SQLiteDatabase database;
+    static SQLiteDatabase database;
     ProgressBar pb;
     TextView pwd_check_view;
 
@@ -97,6 +97,8 @@ public class Login extends AppCompatActivity {
     Intent intent;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
+
+    static String mail_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +243,7 @@ public class Login extends AppCompatActivity {
                     if (passdb.equals(log.getString(0))){
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
                         logged_in_from_app = true;
+                        mail_user = mail_edit.getText().toString();
                         startActivity(intent);
                         finish();
 
@@ -513,11 +516,12 @@ public class Login extends AppCompatActivity {
     }
     private long saveToDB() {
         SQLiteDatabase database = new Dbhelper(this).getWritableDatabase();
-
+        mail_user = mail_d.getText().toString();
         ContentValues values = new ContentValues();
         values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_IMG, "");
 
         return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
