@@ -47,26 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (Login.logged_in_from_app) {
 
 
-            String[] projection = {
-
-                    Dbcontract.Dbentry.COLUMN_IMG
-
-            };
-
-            String selection =
-                    Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
-            String[] selectionArgs = {Login.mail_user};
-            Cursor cursor = database.query(
-                    Dbcontract.Dbentry.TABLE_NAME,
-                    projection,
-                    selection,
-                    selectionArgs,
-                    null,
-                    null,
-                    null
-            );
-            cursor.moveToFirst();
-            String picture = cursor.getString(0);
+            String picture = readImage().getString(0);
             if (!picture.equals("")) {
                 try {
                     byte[] bytes = picture.getBytes("UTF-8");
@@ -106,15 +87,19 @@ public class ProfileActivity extends AppCompatActivity {
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
         if (Login.logged_in_from_app) {
-            SharedPreferences sharedPreferences = getSharedPreferences("wingss", MODE_PRIVATE);
-            String picture = sharedPreferences.getString("pic_profile", "");
-            if (!picture.equals("")) {
-                try {
-                    byte[] bytes = picture.getBytes("UTF-8");
-                    profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+            if (Login.logged_in_from_app) {
 
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+
+                String picture = readImage().getString(0);
+                if (!picture.equals("")) {
+                    try {
+                        byte[] bytes = picture.getBytes("UTF-8");
+                        profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             }
@@ -235,5 +220,27 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private Cursor readImage() {
+        String[] projection = {
+
+                Dbcontract.Dbentry.COLUMN_IMG
+
+        };
+
+        String selection =
+                Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
+        String[] selectionArgs = {Login.mail_user};
+        Cursor cursor = database.query(
+                Dbcontract.Dbentry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        cursor.moveToFirst();
+        return cursor;
+    }
 
 }
