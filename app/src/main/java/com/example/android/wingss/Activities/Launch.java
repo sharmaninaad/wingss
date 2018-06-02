@@ -69,12 +69,12 @@ public class Launch extends AppCompatActivity
 
             SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
             first_name = sharedPref.getString("fb_f_name", "");
-            last_name = sharedPref.getString("fb_l_name", "" +
-                    "..3");
+            last_name = sharedPref.getString("fb_l_name", "");
             //Log.i("first name :",first_name);
             //Log.i("Last name :",last_name);
             name_text.setText(first_name + " " + last_name);
             loadImageFromStorage();
+
 
         } else {
             name_text.setText("");
