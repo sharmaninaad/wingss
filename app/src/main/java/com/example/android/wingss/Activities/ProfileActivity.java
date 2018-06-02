@@ -3,6 +3,7 @@ package com.example.android.wingss.Activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,7 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class MainActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
    // ListView list;
     TextView upgrade;
     TextView name_view;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ProfileActivity);
 
 
         name_view = (TextView) findViewById(R.id.name);
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
         final MyList listAdapter = new
-                MyList(MainActivity.this, texts, iconId);
+                MyList(ProfileActivity.this, texts, iconId);
         button=(Button)findViewById(R.id.edit);
         if (Login.logged_in_from_facebook) {
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         upgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(MainActivity.this);
+                final Dialog dialog = new Dialog(ProfileActivity.this);
 
                 dialog.setContentView(R.layout.dialoglist);
                 dialog.setTitle("Select from the above plans");
@@ -87,18 +88,25 @@ public class MainActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(MainActivity.this, "item at "+position+" clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "item at " + position + " clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
                 if (Login.logged_in_from_app) {
                     dialog.show();
                 } else {
                     if (Login.logged_in_from_facebook)
-                        Toast.makeText(MainActivity.this, "Feature unavailable , You are logged in from facebook", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from facebook", Toast.LENGTH_SHORT).show();
                     if (Login.account != null)
-                        Toast.makeText(MainActivity.this, "Feature unavailable , You are logged in from google", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Feature unavailable , You are logged in from google", Toast.LENGTH_SHORT).show();
                 }
 
+
+            }
+        });
+        profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, MakePhoto.class));
 
             }
         });
@@ -109,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 /*Snackbar snack=new Snackbar(findViewById(R.id.myCoordinatorLayout), "feature currently unavailable",
                         Snackbar.LENGTH_SHORT);
                         snackbar.show();*/
-            //startActivity(new Intent(MainActivity.this,popup_edit.class));
+                //startActivity(new Intent(ProfileActivity.this,popup_edit.class));
               /*
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
 
                 alertDialog.show();
             */
-                final Dialog dialog = new Dialog(MainActivity.this);
+                final Dialog dialog = new Dialog(ProfileActivity.this);
 
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Edit Profile");

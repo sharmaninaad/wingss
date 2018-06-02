@@ -62,7 +62,7 @@ public class Launch extends AppCompatActivity
 
         name_text = (TextView) headerLayout.findViewById(R.id.nametxt);
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
-        pro_fb_intent = new Intent(Launch.this, MainActivity.class);
+        pro_fb_intent = new Intent(Launch.this, ProfileActivity.class);
 //EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
 
         if (Login.logged_in_from_facebook) {
@@ -84,12 +84,12 @@ public class Launch extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton capture = (FloatingActionButton) findViewById(R.id.camera);
 
-        capture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Launch.this, MakePhoto.class));
-            }
-        });
+        // capture.setOnClickListener(new View.OnClickListener() {
+        //   @Override
+        //     public void onClick(View v) {
+        //       startActivity(new Intent(Launch.this, MakePhoto.class));
+        //    }
+        //  });
         fab.setImageResource(R.drawable.refers);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
