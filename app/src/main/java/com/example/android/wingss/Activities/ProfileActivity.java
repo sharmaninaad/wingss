@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,14 +29,18 @@ import com.example.android.wingss.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import static com.example.android.wingss.Activities.Login.database;
 
 public class ProfileActivity extends AppCompatActivity {
     TextView upgrade;
     TextView name_view;
+    TextView phone;
     ImageView profile_img;
     Button button;
+    EditText namee;
+    EditText number;
 
 
     @Override
@@ -75,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
+        phone = (TextView) findViewById(R.id.number);
         if (Login.logged_in_from_app) {
             loadProfilePic();
             name_view.setText(readFromDB().getString(0));
@@ -151,10 +157,10 @@ public class ProfileActivity extends AppCompatActivity {
                 dialog.setTitle("Edit Profile");
 
 
-                /*EditText namee = (EditText) dialog.findViewById(R.id.newname);
-                EditText numb=(EditText)dialog.findViewById(R.id.number);
+                namee = (EditText) dialog.findViewById(R.id.newname);
+                number = (EditText) dialog.findViewById(R.id.number);
 
-                ImageView image = (ImageView) dialog.findViewById(R.id.circle);*/
+
 
 
                 if (Login.logged_in_from_app) {
@@ -172,7 +178,12 @@ public class ProfileActivity extends AppCompatActivity {
                 savebtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (namee.getText() != null)
+                            name_view.setText(namee.getText().toString());
+                        if (number.getText().toString().length() == 10)
+                            phone.setText(number.getText().toString());
 
+                        dialog.dismiss();
                     }
                 });
                 backbtn.setOnClickListener(new View.OnClickListener() {

@@ -3,15 +3,7 @@
      android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/popup">
-<ImageView
-    android:src="@drawable/boratcircle"
-    android:layout_height="50dp"
-    android:layout_width="50dp"
-    android:id="@+id/circle"
-    android:layout_alignParentTop="true"
-    android:layout_alignRight="@+id/save"
-    android:layout_alignEnd="@+id/save"
-    android:layout_marginTop="17dp" />
+
 
     <EditText
         android:id="@+id/newname"
@@ -20,9 +12,11 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Enter new Name"
-        android:layout_alignTop="@+id/circle"
-        android:layout_alignLeft="@+id/back"
-        android:layout_alignStart="@+id/back" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp" />
 
 
 
@@ -30,7 +24,7 @@
         android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="18dp"
         android:ems="10"
         android:hint="Enter new number"
         android:inputType="phone"
@@ -44,8 +38,8 @@
         android:layout_height="wrap_content"
         android:text="Save"
 
-        android:layout_alignBaseline="@+id/back"
-        android:layout_alignBottom="@+id/back"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/number"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -54,9 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:layout_below="@+id/number"
-        android:layout_toRightOf="@+id/circle"
-        android:layout_toEndOf="@+id/circle" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_alignBaseline="@+id/save"
+        android:layout_alignBottom="@+id/save"
+        android:layout_toRightOf="@+id/save"
+        android:layout_toEndOf="@+id/save" />
 
 
 </RelativeLayout>
