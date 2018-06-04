@@ -128,10 +128,10 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
-
+        SharedPreferences p = getSharedPreferences("wingss", MODE_PRIVATE);
         //gsign in part over
-        if (logged_in_from_app) {
-
+        if (p.getBoolean("isLoggedIn", false)) {
+            logged_in_from_app = true;
             startActivity(intent);
             finish();
         }
@@ -251,6 +251,8 @@ public class Login extends AppCompatActivity {
                         userId = log.getInt(1);
                         logged_in_from_app = true;
                         mail_user = mail_edit.getText().toString();
+                        SharedPreferences sspref = getSharedPreferences("wingss", MODE_PRIVATE);
+                        sspref.edit().putBoolean("isLoggedIn", true).commit();
                         startActivity(intent);
                         finish();
 

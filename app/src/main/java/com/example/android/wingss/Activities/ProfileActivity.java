@@ -184,6 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
                             phone.setText(number.getText().toString());
 
                         dialog.dismiss();
+
                     }
                 });
                 backbtn.setOnClickListener(new View.OnClickListener() {

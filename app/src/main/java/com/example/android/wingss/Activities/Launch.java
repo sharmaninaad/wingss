@@ -249,6 +249,8 @@ public class Launch extends AppCompatActivity
                     });
         } else if (Login.logged_in_from_app) {
             Login.logged_in_from_app = false;
+            SharedPreferences pref = getSharedPreferences("wingss", MODE_PRIVATE);
+            pref.edit().putBoolean("isLoggedIn", false).commit();
             startActivity(new Intent(Launch.this, Login.class));
             finish();
         }
