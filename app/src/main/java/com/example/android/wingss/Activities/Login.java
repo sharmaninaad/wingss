@@ -267,6 +267,27 @@ public class Login extends AppCompatActivity {
                 }
 
         });
+
+
+        pwd_login.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_UP:
+                        pwd_edit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
+                        pwd_edit.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                        break;
+
+                }
+                return true;
+            }
+        });
+
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -295,7 +316,7 @@ public class Login extends AppCompatActivity {
                         break;
 
                     case MotionEvent.ACTION_DOWN:
-                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT);
 
                         break;
 
@@ -303,25 +324,6 @@ public class Login extends AppCompatActivity {
                 return true;
             }
         });
-        pwd_login.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch (event.getAction()) {
-
-                    case MotionEvent.ACTION_UP:
-                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        break;
-
-                    case MotionEvent.ACTION_DOWN:
-                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
-                        break;
-
-                }
-                return true;
-            }
-        });
-
 
 
         sign.setOnClickListener(new View.OnClickListener() {

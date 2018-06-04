@@ -70,8 +70,8 @@
 
         <ImageView
             android:id="@+id/view_pwd"
-            android:layout_height="60dp"
             android:layout_width="20dp"
+            android:layout_height="60dp"
             android:src="@drawable/eye" />
     </LinearLayout>
     <LinearLayout
@@ -102,26 +102,27 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="60dp"
-            android:src="@drawable/key"/>
+            android:src="@drawable/key" />
 
         <EditText
             android:id="@+id/pwd_con_dialog"
             android:layout_width="230dp"
             android:layout_height="60dp"
-            android:inputType="textPassword"
-
             android:layout_marginLeft="10dp"
-            android:hint="Confirm Password" />
+
+            android:hint="Confirm Password"
+            android:inputType="textPassword" />
 
         <ImageView
             android:id="@+id/view_con_pwd"
-            android:layout_height="60dp"
             android:layout_width="20dp"
+            android:layout_height="60dp"
             android:src="@drawable/eye" />
     </LinearLayout>
 
