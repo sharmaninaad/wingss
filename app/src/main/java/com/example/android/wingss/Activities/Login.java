@@ -101,6 +101,7 @@ public class Login extends AppCompatActivity {
 
     static String mail_user;
     public static int userId;
+    private ImageView pwd_login;
 
     @Override
 
@@ -196,6 +197,7 @@ public class Login extends AppCompatActivity {
         mail_edit=(EditText)findViewById(R.id.mail1);
         pwd_edit=(EditText) findViewById(R.id.pwd1);
         sign=(TextView)findViewById(R.id.signup);
+        pwd_login = (ImageView) findViewById(R.id.show_pwd_login);
 
         final Dialog dialogs = new Dialog(Login.this);
 
@@ -211,6 +213,7 @@ public class Login extends AppCompatActivity {
         pwd_check_view=(TextView)dialogs.findViewById(R.id.pwd_view);
         view = (ImageView) dialogs.findViewById(R.id.view_pwd);
         view_con = (ImageView) dialogs.findViewById(R.id.view_con_pwd);
+
 
 
         database = new Dbhelper(this).getReadableDatabase();
@@ -300,6 +303,25 @@ public class Login extends AppCompatActivity {
                 return true;
             }
         });
+        pwd_login.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_UP:
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
+                        pwd_con_d.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                        break;
+
+                }
+                return true;
+            }
+        });
+
 
 
         sign.setOnClickListener(new View.OnClickListener() {
