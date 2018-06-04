@@ -1,6 +1,7 @@
 package com.example.android.wingss.Activities;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -87,13 +88,13 @@ public class Login extends AppCompatActivity {
     int Total;
     public static GoogleSignInClient mGoogleSignInClient;
     public static boolean logged_in_from_facebook;
-    public static boolean logged_in_from_app = false;
+    public static boolean logged_in_from_app;
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private CallbackManager callbackManager;
     Button fb;
-    View.OnClickListener fbclicklistener = null;
+
     Intent intent;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
@@ -568,51 +569,49 @@ public class Login extends AppCompatActivity {
         String mail_id=mail_d.getText().toString();
         String[] args={mail_id};
         Cursor curse=database.query(Dbcontract.Dbentry.TABLE_NAME,null,Dbcontract.Dbentry.COLUMN_MAIL + " like ? ",args,null,null,null);
-        if(curse.getCount()>0)
-            return false;
-        return true;
+        return curse.getCount() <= 0;
     }
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
         return matcher.find();
     }
+
+    @SuppressLint("SetTextI18n")
     public void check_pwd(String s) {
 
 
-        String temp = s;
-
-        int length = 0, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
+        int length, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
 
         int lettersonly = 0, numbersonly = 0, cuc = 0, clc = 0;
 
-        length = temp.length();
-        for (int i = 0; i < temp.length(); i++) {
-            if (Character.isUpperCase(temp.charAt(i)))
+        length = s.length();
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isUpperCase(s.charAt(i)))
                 uppercase++;
-            else if (Character.isLowerCase(temp.charAt(i)))
+            else if (Character.isLowerCase(s.charAt(i)))
                 lowercase++;
-            else if (Character.isDigit(temp.charAt(i)))
+            else if (Character.isDigit(s.charAt(i)))
                 digits++;
 
             symbols = length - uppercase - lowercase - digits;
 
         }
 
-        for (int j = 1; j < temp.length() - 1; j++) {
+        for (int j = 1; j < s.length() - 1; j++) {
 
-            if (Character.isDigit(temp.charAt(j)))
+            if (Character.isDigit(s.charAt(j)))
                 bonus++;
 
         }
 
-        for (int k = 0; k < temp.length(); k++) {
+        for (int k = 0; k < s.length(); k++) {
 
-            if (Character.isUpperCase(temp.charAt(k))) {
+            if (Character.isUpperCase(s.charAt(k))) {
                 k++;
 
-                if (k < temp.length()) {
+                if (k < s.length()) {
 
-                    if (Character.isUpperCase(temp.charAt(k))) {
+                    if (Character.isUpperCase(s.charAt(k))) {
 
                         cuc++;
                         k--;
@@ -625,14 +624,14 @@ public class Login extends AppCompatActivity {
 
         }
 
-        for (int l = 0; l < temp.length(); l++) {
+        for (int l = 0; l < s.length(); l++) {
 
-            if (Character.isLowerCase(temp.charAt(l))) {
+            if (Character.isLowerCase(s.charAt(l))) {
                 l++;
 
-                if (l < temp.length()) {
+                if (l < s.length()) {
 
-                    if (Character.isLowerCase(temp.charAt(l))) {
+                    if (Character.isLowerCase(s.charAt(l))) {
 
                         clc++;
                         l--;

@@ -21,9 +21,9 @@ public final class Dbcontract {
 
             public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " +
                     TABLE_NAME + " (" +
-                    COLUMN_ID + "INTEGER AUTOINCREMENT, " +
-                    COLUMN_MAIL + " TEXT, " +
-                    COLUMN_PWD + " TEXT, " +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_MAIL + " TEXT," +
+                    COLUMN_PWD + " TEXT," +
                     COLUMN_NAME + " TEXT" +
                     ")";
         }

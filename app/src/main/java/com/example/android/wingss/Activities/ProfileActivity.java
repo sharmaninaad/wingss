@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -27,11 +28,8 @@ import com.example.android.wingss.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 
-import static android.R.attr.bitmap;
 import static com.example.android.wingss.Activities.Login.database;
-import static com.example.android.wingss.R.drawable.mail;
 
 public class ProfileActivity extends AppCompatActivity {
     TextView upgrade;
@@ -46,6 +44,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (Login.logged_in_from_app) {
 
+            loadProfilePic();
+            name_view.setText(readFromDB().getString(0));
+
+        } else if (Login.logged_in_from_facebook) {
+            loadImageFromStorage();
         }
     }
 
@@ -73,9 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
         if (Login.logged_in_from_app) {
-
-
-
+            loadProfilePic();
+            name_view.setText(readFromDB().getString(0));
 
 
         }
@@ -184,6 +186,37 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private Cursor readFromDB() {
+
+
+        String[] projection = {
+
+                Dbcontract.Dbentry.COLUMN_NAME
+
+
+        };
+
+        String selection =
+                Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
+        String[] selectionArgs = {Login.mail_user};
+        Cursor cursor;
+        cursor = database.query(
+                Dbcontract.Dbentry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+
+//        cursor.close();
+        return cursor;
+
+
+    }
     private void loadImageFromStorage() {
         try {
             File filePath = getApplicationContext().getFileStreamPath("profile.jpg");
@@ -195,6 +228,17 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void loadProfilePic() {
+
+
+        String photoPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image_" + Login.userId + ".png";
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+
+        profile_img.setImageBitmap(bitmap);
+    }
 
 
 }

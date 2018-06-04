@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +47,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.widget.Toast.makeText;
+import static com.example.android.wingss.Activities.Login.database;
+import static com.example.android.wingss.R.drawable.mail;
 
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,8 +91,10 @@ public class Launch extends AppCompatActivity
 
 
         } else {
-            name_text.setText("");
-            imageView.setImageDrawable(null);
+            if (Login.logged_in_from_app) {
+                loadProfilePic();
+                name_text.setText(readFromDB().getString(0));
+            }
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -327,7 +333,49 @@ public class Launch extends AppCompatActivity
         }
     }
 
+    private void loadProfilePic() {
 
+
+        String photoPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image_" + Login.userId + ".png";
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+
+        imageView.setImageBitmap(bitmap);
+    }
+
+    private Cursor readFromDB() {
+
+
+        String[] projection = {
+
+                Dbcontract.Dbentry.COLUMN_NAME
+
+
+        };
+
+        String selection =
+                Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
+        String[] selectionArgs = {Login.mail_user};
+        Cursor cursor;
+        cursor = database.query(
+                Dbcontract.Dbentry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+
+//        cursor.close();
+        return cursor;
+
+
+    }
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
