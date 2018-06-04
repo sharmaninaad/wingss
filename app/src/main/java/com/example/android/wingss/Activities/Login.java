@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -100,9 +99,10 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     static String mail_user;
-
+    public static int userId;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
@@ -244,6 +244,7 @@ public class Login extends AppCompatActivity {
                 if(log!=null && log.getCount()>0) {
                     if (passdb.equals(log.getString(0))){
                         Toast.makeText(Login.this, "Login succesful", Toast.LENGTH_SHORT).show();
+                        userId = log.getInt(1);
                         logged_in_from_app = true;
                         mail_user = mail_edit.getText().toString();
                         startActivity(intent);
@@ -523,7 +524,6 @@ public class Login extends AppCompatActivity {
         values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
-        values.put(Dbcontract.Dbentry.COLUMN_IMG, "");
 
         return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
@@ -536,7 +536,9 @@ public class Login extends AppCompatActivity {
 
         String[] projection = {
 
-                Dbcontract.Dbentry.COLUMN_PWD
+                Dbcontract.Dbentry.COLUMN_PWD,
+                Dbcontract.Dbentry.COLUMN_ID
+
 
         };
 

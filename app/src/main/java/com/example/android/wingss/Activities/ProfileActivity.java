@@ -46,22 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (Login.logged_in_from_app) {
 
-
-            String picture = readImage().getString(0);
-            if (!picture.equals("")) {
-                try {
-                    byte[] bytes = picture.getBytes("UTF-8");
-                    profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
         }
     }
-
 
     String[] texts = {
         "Weekly plan",
@@ -89,17 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (Login.logged_in_from_app) {
 
 
-            String picture = readImage().getString(0);
-                if (!picture.equals("")) {
-                    try {
-                        byte[] bytes = picture.getBytes("UTF-8");
-                        profile_img.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-
-                }
 
 
         }
@@ -147,6 +123,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (Login.logged_in_from_app)
                     startActivity(new Intent(ProfileActivity.this, MakePhoto.class));
+
 
                 else
                     Toast.makeText(ProfileActivity.this, "Cannot change profile pic , You are logged in from external sources", Toast.LENGTH_SHORT).show();
@@ -218,27 +195,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private Cursor readImage() {
-        String[] projection = {
 
-                Dbcontract.Dbentry.COLUMN_IMG
-
-        };
-
-        String selection =
-                Dbcontract.Dbentry.COLUMN_MAIL + " like ? ";
-        String[] selectionArgs = {Login.mail_user};
-        Cursor cursor = database.query(
-                Dbcontract.Dbentry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-        cursor.moveToFirst();
-        return cursor;
-    }
 
 }

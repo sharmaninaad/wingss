@@ -266,7 +266,19 @@ public class Launch extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         InputStream stream = null;
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
+            //   Bundle extras = data.getBundleExtra(EXTRA_OUTPUT);
+            String picUri = data.getStringExtra(MediaStore.EXTRA_OUTPUT);
+            if (picUri != null) {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, null);
+
+                    captureView.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
             //Bitmap imageBitmap = (Bitmap) extras.get("data");
             ////captureView.setImageBitmap(imageBitmap);
         }
@@ -304,14 +316,13 @@ public class Launch extends AppCompatActivity
                     Uri photoURI = FileProvider.getUriForFile(this,
                             "com.example.android.fileprovider",
                             photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI.toString());
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.i("IOException:", ex.getMessage());
             }
-            // Continue only if the File was successfully created
 
         }
     }
@@ -328,7 +339,7 @@ public class Launch extends AppCompatActivity
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
+
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
