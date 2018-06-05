@@ -93,7 +93,6 @@ public class Launch extends AppCompatActivity
         imageView = (ImageView) headerLayout.findViewById(R.id.profile_pic);
         pro_fb_intent = new Intent(Launch.this, ProfileActivity.class);
         captureView = (ImageView) findViewById(R.id.captured);
-//EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
 // Here, thisActivity is the current activity
 
 
@@ -188,15 +187,6 @@ public class Launch extends AppCompatActivity
                 if (ContextCompat.checkSelfPermission(Launch.this,
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Launch.this,
-                            new String[]{Manifest.permission.CAMERA},
-                            MY_PERMISSIONS_REQUEST_CAMERA);
-                    ActivityCompat.requestPermissions(Launch.this,
-                            new String[]{Manifest.permission.CAMERA},
-                            MY_PERMISSIONS_REQUEST_CAMERA);
-                    ActivityCompat.requestPermissions(Launch.this,
-                            new String[]{Manifest.permission.CAMERA},
-                            MY_PERMISSIONS_REQUEST_CAMERA);
                     ActivityCompat.requestPermissions(Launch.this,
                             new String[]{Manifest.permission.CAMERA},
                             MY_PERMISSIONS_REQUEST_CAMERA);
@@ -411,7 +401,8 @@ public class Launch extends AppCompatActivity
                     }
                     return;
                 } else {
-                    Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission to read from storage " +
+                            "", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
