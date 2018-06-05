@@ -69,8 +69,16 @@ public class Launch extends AppCompatActivity
     String picUri;
 
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 3;
-    static final int MY_PERMISSIONS_REQUEST_STORAGE = 4;
-    static final int MY_PERMISSIONS_REQUEST_STORAGE_READ = 5;
+
+    static final int MY_PERMISSIONS_REQUEST_CAMERA_FRONT = 8;
+
+    static final int MY_PERMISSIONS_REQUEST_STORAGE_FOR_CAMERA = 4;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY = 5;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK = 6;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP = 7;
+
+
+
 
 
     @Override
@@ -101,6 +109,9 @@ public class Launch extends AppCompatActivity
                     Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
+                ActivityCompat.requestPermissions(Launch.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK);
                 // Permission is not granted
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
@@ -109,7 +120,7 @@ public class Launch extends AppCompatActivity
                 } else {
                     ActivityCompat.requestPermissions(Launch.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK);
 
                 }
             } else
@@ -123,6 +134,9 @@ public class Launch extends AppCompatActivity
                         Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
 
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP);
                     // Permission is not granted
                     // Should we show an explanation?
                     if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
@@ -131,7 +145,7 @@ public class Launch extends AppCompatActivity
                     } else {
                         ActivityCompat.requestPermissions(Launch.this,
                                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                MY_PERMISSIONS_REQUEST_STORAGE_READ);
+                                MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP);
 
                     }
                 } else {
@@ -174,6 +188,18 @@ public class Launch extends AppCompatActivity
                 if (ContextCompat.checkSelfPermission(Launch.this,
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
 
                     // Permission is not granted
                     // Should we show an explanation?
@@ -241,6 +267,9 @@ public class Launch extends AppCompatActivity
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(Launch.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY);
 
                 // Permission is not granted
                 // Should we show an explanation?
@@ -250,7 +279,7 @@ public class Launch extends AppCompatActivity
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY);
 
                 }
             } else {
@@ -356,6 +385,7 @@ public class Launch extends AppCompatActivity
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    doTakePictureIntent();
                     return;
                 } else {
                     Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
@@ -367,10 +397,42 @@ public class Launch extends AppCompatActivity
             // permissions this app might request.
 
 
-            case MY_PERMISSIONS_REQUEST_STORAGE_READ: {
+            case MY_PERMISSIONS_REQUEST_STORAGE_FOR_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
+                        captureView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                } else {
+                    Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(intent, REQUEST_CODE);
+                return;
+                } else {
+                    Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
+            }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadImageFromStorage();
 
                     return;
                 } else {
@@ -378,18 +440,19 @@ public class Launch extends AppCompatActivity
                 }
                 return;
             }
-            case MY_PERMISSIONS_REQUEST_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
+            case MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadProfilePic();
 
                     return;
-
                 } else {
                     Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
+
+
         }
     }
     @Override
@@ -404,6 +467,9 @@ public class Launch extends AppCompatActivity
                 if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE_FOR_CAMERA);
 
                     // Permission is not granted
                     // Should we show an explanation?
@@ -412,7 +478,7 @@ public class Launch extends AppCompatActivity
                     } else {
                         ActivityCompat.requestPermissions(this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                MY_PERMISSIONS_REQUEST_STORAGE);
+                                MY_PERMISSIONS_REQUEST_STORAGE_FOR_CAMERA);
 
                     }
                 } else {
@@ -420,7 +486,7 @@ public class Launch extends AppCompatActivity
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
-
+                        captureView.setImageBitmap(bitmap);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -529,22 +595,7 @@ public class Launch extends AppCompatActivity
         Log.i("directory", imageFileName);
         File image = null;
 
-        if (ContextCompat.checkSelfPermission(Launch.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            } else {
-                ActivityCompat.requestPermissions(Launch.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_STORAGE_READ);
-
-            }
-        } else {
             image = File.createTempFile(
                     imageFileName,  /* prefix */
                     ".jpeg",         /* suffix */
@@ -552,7 +603,7 @@ public class Launch extends AppCompatActivity
             );
 
             mCurrentPhotoPath = image.getAbsolutePath();
-        }
+
         return image;
 
     }

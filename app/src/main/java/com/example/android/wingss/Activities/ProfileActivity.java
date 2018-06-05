@@ -10,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +35,12 @@ import com.example.android.wingss.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 
-import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ;
+import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_CAMERA;
+import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP;
+import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK;
 import static com.example.android.wingss.Activities.Login.database;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -47,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText namee;
     EditText number;
 
+    static final int MY_PERMISSIONS_REQUEST_READ_APP = 9;
+    static final int MY_PERMISSIONS_REQUEST_READ_FACEBOOK = 10;
 
     @Override
     protected void onResume() {
@@ -250,7 +257,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } else {
                     ActivityCompat.requestPermissions(ProfileActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+                            MY_PERMISSIONS_REQUEST_READ_FACEBOOK);
 
                 }
             } else {
@@ -279,7 +286,7 @@ public class ProfileActivity extends AppCompatActivity {
             } else {
                 ActivityCompat.requestPermissions(ProfileActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_STORAGE_READ);
+                        MY_PERMISSIONS_REQUEST_READ_APP);
 
             }
         } else {
@@ -290,6 +297,34 @@ public class ProfileActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
 
             profile_img.setImageBitmap(bitmap);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_APP: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadProfilePic();
+                    return;
+                } else {
+                    Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_READ_FACEBOOK: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadImageFromStorage();
+                    return;
+                } else {
+                    Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
         }
     }
 
