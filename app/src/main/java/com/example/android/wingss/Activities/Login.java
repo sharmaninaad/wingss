@@ -797,8 +797,6 @@ public class Login extends AppCompatActivity {
 
                             Profile profile = getCurrentProfile();
                             //String id = profile.getId();
-                            String link = profile.getLinkUri().toString();
-                            Log.i("Link", link);
                             if (getCurrentProfile() != null) {
                                 Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
 

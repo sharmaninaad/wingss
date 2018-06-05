@@ -1,11 +1,13 @@
 package com.example.android.wingss.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +18,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -62,7 +66,11 @@ public class Launch extends AppCompatActivity
     private static final int REQUEST_CODE = 0;
     ImageView captureView;
     static final int REQUEST_TAKE_PHOTO = 1;
+    String picUri;
 
+    static final int MY_PERMISSIONS_REQUEST_CAMERA = 3;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE = 4;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE_READ = 5;
 
 
     @Override
@@ -78,6 +86,8 @@ public class Launch extends AppCompatActivity
         pro_fb_intent = new Intent(Launch.this, ProfileActivity.class);
         captureView = (ImageView) findViewById(R.id.captured);
 //EAACEdEose0cBAChJ6xImSegYzGUHWeF2BdeE8D1tIWiw07UZCvu7vZAQZCHlpQFDZC5BHfZBYHG6Ct4LZC8BMDU15KGJgDsZBYc8Td9IZAzo0ZCt1nUzpZAuOpoJS0gZB1uiZCbXTMwl0HiXbmsM1ZB8KhQZAq6Dazsc7WsiA7vV0LlZA3BqZABuBAt2YdtnK1ZAg36L7FgtSDob5FNBRtwZDZD
+// Here, thisActivity is the current activity
+
 
         if (Login.logged_in_from_facebook) {
 
@@ -127,7 +137,22 @@ public class Launch extends AppCompatActivity
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doTakePictureIntent();
+                if (ContextCompat.checkSelfPermission(Launch.this,
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Permission is not granted
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
+                            Manifest.permission.CAMERA)) {
+
+                    } else {
+                        ActivityCompat.requestPermissions(Launch.this,
+                                new String[]{Manifest.permission.CAMERA},
+                                MY_PERMISSIONS_REQUEST_CAMERA);
+
+                    }
+                }
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -176,11 +201,23 @@ public class Launch extends AppCompatActivity
         if (id == R.id.nav_camera) {
 
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            startActivityForResult(intent, REQUEST_CODE);
+
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Permission is not granted
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+
+                }
+            }
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(Launch.this, Gallery.class));
 
@@ -270,36 +307,105 @@ public class Launch extends AppCompatActivity
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    doTakePictureIntent();
+
+                } else {
+                    Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+
+
+            case MY_PERMISSIONS_REQUEST_STORAGE_READ: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(intent, REQUEST_CODE);
+                } else {
+                    Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    captureView.setImageBitmap(bitmap);
+
+                } else {
+                    Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         InputStream stream = null;
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             //   Bundle extras = data.getBundleExtra(EXTRA_OUTPUT);
-            String picUri = data.getStringExtra(MediaStore.EXTRA_OUTPUT);
+            picUri = data.getStringExtra(MediaStore.EXTRA_OUTPUT);
             if (picUri != null) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, null);
 
-                    captureView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Permission is not granted
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_STORAGE);
+
+                    }
                 }
 
+
+                //Bitmap imageBitmap = (Bitmap) extras.get("data");
+                ////captureView.setImageBitmap(imageBitmap);
             }
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ////captureView.setImageBitmap(imageBitmap);
         }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             try {
-                // recyle unused bitmaps
+
 
                 stream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(stream);
-
                 imageView.setImageBitmap(bitmap);
+
             } catch (FileNotFoundException e) {
+
                 e.printStackTrace();
+
             } finally {
 
                 if (stream != null)
@@ -309,8 +415,9 @@ public class Launch extends AppCompatActivity
                         e.printStackTrace();
                     }
             }
+            }
         }
-    }
+
 
     private void doTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -322,7 +429,7 @@ public class Launch extends AppCompatActivity
                 photoFile = createImageFile();
                 if (photoFile != null) {
                     Uri photoURI = FileProvider.getUriForFile(this,
-                            "com.example.android.fileprovider",
+                            "com.example.android.wingss",
                             photoFile);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI.toString());
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -383,9 +490,10 @@ public class Launch extends AppCompatActivity
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        Log.i("directory", imageFileName);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpeg",         /* suffix */
                 storageDir      /* directory */
         );
 
@@ -393,33 +501,7 @@ public class Launch extends AppCompatActivity
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
+
 }
-/* try {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                fileUri = getOutputMediaFileUri2(MEDIA_TYPE_IMAGE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            } else {
-                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            }
-            startActivityForResult(intent, CAMERA);
-        } catch (ActivityNotFoundException anfe) {
-            Toast.makeText(mContext, "No activity found to open this attachment.", Toast.LENGTH_LONG).show();
-        }
-    public Uri getOutputMediaFileUri(int type) {
-        Uri photoUri = Uri.fromFile(getOutputMediaFile());
-        mImageUri = photoUri;
-        return photoUri;
-    }
-    public Uri getOutputMediaFileUri2(int type) {
-//        return Uri.fromFile(getOutputMediaFile(type));
-        File newFile = getOutputMediaFile();
-        Log.e("MyPath", BuildConfig.APPLICATION_ID);
-        Uri photoURI = FileProvider.getUriForFile(mContext,
-                BuildConfig.APPLICATION_ID + ".provider",
-                newFile);
-        mImageUri = photoURI;
-        return photoURI;
-    }*/
+
