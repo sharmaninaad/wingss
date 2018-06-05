@@ -97,12 +97,46 @@ public class Launch extends AppCompatActivity
             //Log.i("first name :",first_name);
             //Log.i("Last name :",last_name);
             name_text.setText(first_name + " " + last_name);
-            loadImageFromStorage();
+            if (ContextCompat.checkSelfPermission(Launch.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Permission is not granted
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                } else {
+                    ActivityCompat.requestPermissions(Launch.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+
+                }
+            } else
+                loadImageFromStorage();
 
 
         } else {
             if (Login.logged_in_from_app) {
-                loadProfilePic();
+
+                if (ContextCompat.checkSelfPermission(Launch.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Permission is not granted
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    } else {
+                        ActivityCompat.requestPermissions(Launch.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_STORAGE_READ);
+
+                    }
+                } else {
+                    loadProfilePic();
+                }
                 name_text.setText(readFromDB().getString(0));
             }
         }
@@ -152,6 +186,8 @@ public class Launch extends AppCompatActivity
                                 MY_PERMISSIONS_REQUEST_CAMERA);
 
                     }
+                } else {
+                    doTakePictureIntent();
                 }
             }
         });
@@ -217,6 +253,13 @@ public class Launch extends AppCompatActivity
                             MY_PERMISSIONS_REQUEST_STORAGE_READ);
 
                 }
+            } else {
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(Launch.this, Gallery.class));
@@ -307,15 +350,13 @@ public class Launch extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    doTakePictureIntent();
-
+                    return;
                 } else {
                     Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
                 }
@@ -331,11 +372,7 @@ public class Launch extends AppCompatActivity
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(intent, REQUEST_CODE);
+                    return;
                 } else {
                     Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
                 }
@@ -346,16 +383,7 @@ public class Launch extends AppCompatActivity
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    captureView.setImageBitmap(bitmap);
+                    return;
 
                 } else {
                     Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
@@ -387,6 +415,15 @@ public class Launch extends AppCompatActivity
                                 MY_PERMISSIONS_REQUEST_STORAGE);
 
                     }
+                } else {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -417,8 +454,6 @@ public class Launch extends AppCompatActivity
             }
             }
         }
-
-
     private void doTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -426,6 +461,7 @@ public class Launch extends AppCompatActivity
             // Create the File where the photo should go
             File photoFile = null;
             try {
+
                 photoFile = createImageFile();
                 if (photoFile != null) {
                     Uri photoURI = FileProvider.getUriForFile(this,
@@ -434,6 +470,7 @@ public class Launch extends AppCompatActivity
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI.toString());
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
+
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.i("IOException:", ex.getMessage());
@@ -441,7 +478,6 @@ public class Launch extends AppCompatActivity
 
         }
     }
-
     private void loadProfilePic() {
 
 
@@ -452,8 +488,8 @@ public class Launch extends AppCompatActivity
         Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
 
         imageView.setImageBitmap(bitmap);
-    }
 
+    }
     private Cursor readFromDB() {
 
 
@@ -491,15 +527,34 @@ public class Launch extends AppCompatActivity
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         Log.i("directory", imageFileName);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpeg",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = null;
 
+        if (ContextCompat.checkSelfPermission(Launch.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        mCurrentPhotoPath = image.getAbsolutePath();
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(Launch.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_STORAGE_READ);
+
+            }
+        } else {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpeg",         /* suffix */
+                    storageDir      /* directory */
+            );
+
+            mCurrentPhotoPath = image.getAbsolutePath();
+        }
         return image;
+
     }
 
 

@@ -1,15 +1,19 @@
 package com.example.android.wingss.Activities;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 
+import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ;
 import static com.example.android.wingss.Activities.Login.database;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -82,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_img = (ImageView) findViewById(R.id.img_pro);
         phone = (TextView) findViewById(R.id.number);
         if (Login.logged_in_from_app) {
+
             loadProfilePic();
             name_view.setText(readFromDB().getString(0));
 
@@ -98,6 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
             name_view.setText(sharedPref.getString("fb_f_name", "") + " " + sharedPref.getString("fb_l_name", ""));
+
             loadImageFromStorage();
 
         } else {
@@ -231,9 +238,27 @@ public class ProfileActivity extends AppCompatActivity {
     }
     private void loadImageFromStorage() {
         try {
+            if (ContextCompat.checkSelfPermission(ProfileActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Permission is not granted
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                } else {
+                    ActivityCompat.requestPermissions(ProfileActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE_READ);
+
+                }
+            } else {
             File filePath = getApplicationContext().getFileStreamPath("profile.jpg");
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(filePath));
-            profile_img.setImageBitmap(b);
+                profile_img.setImageBitmap(b);
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -242,14 +267,30 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void loadProfilePic() {
 
+        if (ContextCompat.checkSelfPermission(ProfileActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        String photoPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image_" + Login.userId + ".png";
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+            } else {
+                ActivityCompat.requestPermissions(ProfileActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_STORAGE_READ);
 
-        profile_img.setImageBitmap(bitmap);
+            }
+        } else {
+            String photoPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image_" + Login.userId + ".png";
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+
+            profile_img.setImageBitmap(bitmap);
+        }
     }
 
 
