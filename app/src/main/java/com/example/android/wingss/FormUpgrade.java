@@ -59,7 +59,8 @@ public class FormUpgrade extends AppCompatActivity {
         bank_radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                BankFragment bankFragment = new BankFragment();
+                replaceFragment(bankFragment);
             }
         });
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -70,7 +71,8 @@ public class FormUpgrade extends AppCompatActivity {
                     CreditFragment fragment = new CreditFragment();
                     replaceFragment(fragment);
                 } else if (checkedId == R.id.bank) {
-                    Toast.makeText(FormUpgrade.this, "clicked on bank", Toast.LENGTH_SHORT).show();
+                    BankFragment bankFragment = new BankFragment();
+                    replaceFragment(bankFragment);
                 }
             }
         });
