@@ -168,7 +168,7 @@ public class Login extends AppCompatActivity {
                         setFacebookData(loginResult);
                         getfromFb(loginResult);
                         startActivity(intent);
-
+                        finish();
                     }
 
                     @Override
@@ -809,7 +809,6 @@ public class Login extends AppCompatActivity {
                             Log.i("Login" + "FirstName", firstName);
                             Log.i("Login" + "LastName", lastName);
                             //  Log.i("Login" + "Gender", gender);
-                            startActivity(intent);
                             finish();
 
                         } catch (JSONException e) {

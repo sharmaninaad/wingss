@@ -174,7 +174,6 @@ public class Launch extends AppCompatActivity
                 try {
                     startActivity(whatsappIntent);
                     sendCustomNotification();
-                    sendCustomNotification1();
                 } catch (android.content.ActivityNotFoundException ex) {
                     makeText(Launch.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                 }
@@ -312,23 +311,10 @@ public class Launch extends AppCompatActivity
 
         mNotificationManager.notify(001, notify);
 
-
-    }
-    public void sendCustomNotification1() {
-        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
-        contentView.setImageViewResource(R.id.image, R.drawable.cameraa);
-        contentView.setTextViewText(R.id.title, "Whats app in use");
-        contentView.setTextViewText(R.id.text, "Wingss is currently using whats app");
-        NotificationCompat.Builder mbuild = new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher).setContent(contentView);
-        Notification notify = mbuild.build();
-        NotificationManager mNotificationManager =
-
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         mNotificationManager.notify(002, notify);
 
-
     }
+
     private void signOut() {
         if (Login.logged_in_from_facebook) {
             name_text.setText("");
@@ -391,14 +377,7 @@ public class Launch extends AppCompatActivity
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
-                        captureView.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                     return;
                 } else {
                     Toast.makeText(this, "Permission to read from storage " +
@@ -452,7 +431,6 @@ public class Launch extends AppCompatActivity
         InputStream stream = null;
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             //   Bundle extras = data.getBundleExtra(EXTRA_OUTPUT);
-            picUri = data.getStringExtra(MediaStore.EXTRA_OUTPUT);
             if (picUri != null) {
 
                 if (ContextCompat.checkSelfPermission(this,
@@ -473,14 +451,11 @@ public class Launch extends AppCompatActivity
 
                     }
                 } else {
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(picUri));
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, null);
-                        captureView.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    galleryAddPic();
+                    captureView.setImageBitmap(imageBitmap);
+
                 }
 
 
@@ -511,6 +486,17 @@ public class Launch extends AppCompatActivity
             }
             }
         }
+
+    private void galleryAddPic() {
+
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+
+    }
+
     private void doTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -524,7 +510,7 @@ public class Launch extends AppCompatActivity
                     Uri photoURI = FileProvider.getUriForFile(this,
                             "com.example.android.wingss",
                             photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI.toString());
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
 

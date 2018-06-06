@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_horizontal"
+    tools:context="com.example.android.wingss.FormUpgrade"
+    android:layout_height="match_parent"
+    android:background="#3e2723"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+
+        android:gravity="center_horizontal"
+        android:layout_width="380dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        tools:context="com.example.android.wingss.FormUpgrade">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/user" />
+
+                <EditText
+                    android:id="@+id/name_upgrade"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Enter Your full name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/address" />
+
+                <EditText
+                    android:id="@+id/address_upgrade"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Enter Your full address"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/plann" />
+
+                <Spinner
+                    android:id="@+id/duration_upgrade"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Select a plan from the above" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/pay_group">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/credit"
+                        android:text="Pay With card"
+                        android:layout_weight="0.5" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bank"
+                        android:text="Pay from your bank account"
+                        android:layout_weight="0.5" />
+                </RadioGroup>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_horizontal"
+                android:background="@drawable/text">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.5"
+                android:background="@drawable/text">
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+
+
+

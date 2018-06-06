@@ -10,11 +10,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,22 +26,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.wingss.Adapters.MyList;
+import com.example.android.wingss.Adapters.MyListAdapter;
 import com.example.android.wingss.DbPackage.Dbcontract;
+import com.example.android.wingss.FormUpgrade;
 import com.example.android.wingss.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Objects;
 
-import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_CAMERA;
-import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP;
-import static com.example.android.wingss.Activities.Launch.MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK;
 import static com.example.android.wingss.Activities.Login.database;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -51,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button button;
     EditText namee;
     EditText number;
-
+    RadioGroup radioGroup;
     static final int MY_PERMISSIONS_REQUEST_READ_APP = 9;
     static final int MY_PERMISSIONS_REQUEST_READ_FACEBOOK = 10;
 
@@ -69,19 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    String[] texts = {
-        "Weekly plan",
-            "Monthly Plan",
-            "Annual Plan",
-            "Lifetime Plan"
-    } ;
-    Integer[] iconId =
-            {
-                    R.drawable.week,
-            R.drawable.month,
-            R.drawable.year,
-            R.drawable.lifetime
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +76,28 @@ public class ProfileActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_profile);
 
-
         name_view = (TextView) findViewById(R.id.name);
         profile_img = (ImageView) findViewById(R.id.img_pro);
         phone = (TextView) findViewById(R.id.number);
+//        radioGroup.addOnAttachStateChangeListener();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if (checkedId == R.id.credit) {
+
+                  /*  ExampleFragment fragment = new ExampleFragment();
+                    fragmentTransaction.add(R.id.fragment_container, fragment);
+                    fragmentTransaction.commit();*/
+
+                } else if (checkedId == R.id.bank) {
+
+                }
+            }
+        });
+
         if (Login.logged_in_from_app) {
 
             loadProfilePic();
@@ -102,8 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//int flag, int mask
-        final MyList listAdapter = new
-                MyList(ProfileActivity.this, texts, iconId);
+
         button=(Button)findViewById(R.id.edit);
         if (Login.logged_in_from_facebook) {
 
@@ -123,21 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
         upgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(ProfileActivity.this);
-
-                dialog.setContentView(R.layout.dialoglist);
-                dialog.setTitle("Select from the above plans");
-                ListView listView=(ListView)dialog.findViewById(R.id.thelist);
-                listView.setAdapter(listAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(ProfileActivity.this, "item at " + position + " clicked", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-
+                startActivity(new Intent(ProfileActivity.this, FormUpgrade.class));
             }
         });
         profile_img.setOnClickListener(new View.OnClickListener() {

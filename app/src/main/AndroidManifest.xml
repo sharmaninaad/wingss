@@ -6,20 +6,19 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -30,8 +29,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
-        <activity android:name=".Activities.ProfileActivity" />
 
+        <activity android:name=".Activities.ProfileActivity" />
         <activity android:name=".Activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,8 +61,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.wingss.Activities.Launch" />
         </activity>
-        <activity android:name=".fb_pic_adapter" />
-        <activity android:name=".Activities.MakePhoto"></activity>
+        <activity android:name=".Activities.MakePhoto" />
+        <activity android:name=".FormUpgrade"></activity>
     </application>
 
 </manifest>
