@@ -121,14 +121,7 @@
 
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_weight="0.5"
-                android:background="@drawable/text">
 
-            </FrameLayout>
         </LinearLayout>
 
     </LinearLayout>
