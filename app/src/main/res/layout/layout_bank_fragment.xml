@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="340dp"
+    android:layout_height="200dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/text"
+    android:orientation="vertical"
+    tools:context="com.example.android.wingss.FormUpgrade">
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:src="@drawable/user" />
+
+        <EditText
+            android:id="@+id/number_bank"
+            android:inputType="number"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:hint="Account Number" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:src="@drawable/bank" />
+
+        <EditText
+            android:id="@+id/ifsc_bank"
+            android:inputType="number"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:hint="Enter Your IFSC code" />
+    </LinearLayout>
+
+
+</LinearLayout>
+

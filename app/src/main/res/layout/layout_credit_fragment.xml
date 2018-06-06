@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="60dp"
-            android:src="@drawable/user" />
+            android:src="@drawable/card" />
 
         <EditText
             android:id="@+id/number_card"
@@ -51,7 +51,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="60dp"
-                android:src="@drawable/address" />
+                android:src="@drawable/datee" />
 
             <EditText
                 android:id="@+id/address_upgrade"
@@ -72,12 +72,12 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="60dp"
-                android:src="@drawable/plann" />
+                android:src="@drawable/cvvv" />
 
             <EditText
                 android:layout_width="120dp"
                 android:layout_height="60dp"
-                android:hint="CVC"
+                android:hint="CVV"
                 android:inputType="number" />
 
 
