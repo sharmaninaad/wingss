@@ -26,12 +26,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.wingss.Adapters.MyListAdapter;
+import com.example.android.wingss.CreditFragment;
 import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.FormUpgrade;
 import com.example.android.wingss.R;
@@ -50,7 +52,6 @@ public class ProfileActivity extends AppCompatActivity {
     Button button;
     EditText namee;
     EditText number;
-    RadioGroup radioGroup;
     static final int MY_PERMISSIONS_REQUEST_READ_APP = 9;
     static final int MY_PERMISSIONS_REQUEST_READ_FACEBOOK = 10;
 
@@ -80,23 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_img = (ImageView) findViewById(R.id.img_pro);
         phone = (TextView) findViewById(R.id.number);
 //        radioGroup.addOnAttachStateChangeListener();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if (checkedId == R.id.credit) {
-
-                  /*  ExampleFragment fragment = new ExampleFragment();
-                    fragmentTransaction.add(R.id.fragment_container, fragment);
-                    fragmentTransaction.commit();*/
-
-                } else if (checkedId == R.id.bank) {
-
-                }
-            }
-        });
 
         if (Login.logged_in_from_app) {
 
