@@ -4,11 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:id="@+id/sett_list">
-
-    </ListView>
+        android:text="this is a notification fragment" />
 </LinearLayout>

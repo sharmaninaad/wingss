@@ -50,7 +50,7 @@ public class SettingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View setting_view = inflater.inflate(R.layout.layout_setting_list_fragment, container, false);
-        ListView listView = (ListView) setting_view.findViewById(R.id.settings_list);
+        ListView listView = (ListView) setting_view.findViewById(R.id.sett_list);
         MyListAdapter myListAdapter = new MyListAdapter(getActivity(), text_settings, icon_settings);
         listView.setAdapter(myListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

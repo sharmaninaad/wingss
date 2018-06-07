@@ -9,7 +9,8 @@
     <fragment
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="com.example.android.wingss.SettingListFragment">
+        android:name="com.example.android.wingss.SettingListFragment"
+        android:id="@+id/masterfragment">
 
     </fragment>
 </LinearLayout>
