@@ -63,7 +63,8 @@
         </activity>
         <activity android:name=".Activities.MakePhoto" />
         <activity android:name=".FormUpgrade" />
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".Settings" />
+        <activity android:name=".Settingss"></activity>
     </application>
 
 </manifest>

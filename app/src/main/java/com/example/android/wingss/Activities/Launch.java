@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
 import com.example.android.wingss.Settings;
+import com.example.android.wingss.Settingss;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -283,7 +284,7 @@ public class Launch extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(Launch.this, Gallery.class));
         } else if (id == R.id.nav_manage) {
-            startActivity(new Intent(Launch.this, Settings.class));
+            startActivity(new Intent(Launch.this, Settingss.class));
         } else if (id == R.id.nav_profile) {
             startActivity(pro_fb_intent);
         } else if (id == R.id.nav_send) {

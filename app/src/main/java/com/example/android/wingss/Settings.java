@@ -28,21 +28,10 @@ public class Settings extends AppCompatActivity implements SettingListFragment.O
         if (findViewById(R.id.detail_setting) != null) {
             switch (position) {
                 case 0:
-                    LanguageFragment languageFragment = new LanguageFragment();
-                    replaceFragment(languageFragment);
-                    break;
                 case 1:
-                    NotificationFragment notificationFragment = new NotificationFragment();
-                    replaceFragment(notificationFragment);
-                    break;
                 case 2:
-                    AccountFragment accountFragment = new AccountFragment();
-                    replaceFragment(accountFragment);
-                    break;
+
                 case 3:
-                    AboutFragment aboutFragment = new AboutFragment();
-                    replaceFragment(aboutFragment);
-                    break;
                 default:
                     break;
 
@@ -53,14 +42,5 @@ public class Settings extends AppCompatActivity implements SettingListFragment.O
 
     }
 
-    public void replaceFragment(Fragment destFragment) {
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.detail_setting, destFragment);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-        fragmentTransaction.commit();
-    }
 }

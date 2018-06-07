@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_language"
+                android:icon="@drawable/language"
+                android:title="Language Settings" />
+            <item
+                android:id="@+id/nav_notification"
+                android:icon="@drawable/notiff"
+                android:title="Notification Settings" />
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/user"
+                android:title="Account Settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/about"
+                android:title="About" />
+        </group>
+    </menu>
