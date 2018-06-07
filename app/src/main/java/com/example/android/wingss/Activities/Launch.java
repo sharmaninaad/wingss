@@ -281,15 +281,10 @@ public class Launch extends AppCompatActivity
             }
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(Launch.this, Gallery.class));
-
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_profile) {
-
-
             startActivity(pro_fb_intent);
-
-
         } else if (id == R.id.nav_send) {
 
         }
