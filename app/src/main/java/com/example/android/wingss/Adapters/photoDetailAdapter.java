@@ -28,7 +28,6 @@ public class photoDetailAdapter extends ArrayAdapter {
     public photoDetailAdapter(Activity context, List<Photo_fb> photos) {
         super(context, R.layout.list_photo, photos);
         this.context = context;
-        // this.name = name;
         this.photos = photos;
     }
 

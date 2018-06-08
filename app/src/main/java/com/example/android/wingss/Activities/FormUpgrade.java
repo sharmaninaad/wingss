@@ -21,10 +21,10 @@ public class FormUpgrade extends AppCompatActivity {
     MyListAdapter listAdapter;
     Spinner spinner;
     String[] texts = {
-            "Weekly plan",
-            "Monthly Plan",
-            "Annual Plan",
-            "Lifetime Plan"
+            "Weekly plan   ($10)",
+            "Monthly Plan  ($30)",
+            "Annual Plan   ($300)",
+            "Lifetime Plan ($600)"
     };
     Integer[] iconId =
             {
@@ -51,6 +51,7 @@ public class FormUpgrade extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.pay_group);
         credit_radio = (RadioButton) findViewById(R.id.credit);
         bank_radio = (RadioButton) findViewById(R.id.bank);
+
         credit_radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +59,7 @@ public class FormUpgrade extends AppCompatActivity {
                 replaceFragment(fragment);
             }
         });
+
         bank_radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +67,7 @@ public class FormUpgrade extends AppCompatActivity {
                 replaceFragment(bankFragment);
             }
         });
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {

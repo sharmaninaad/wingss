@@ -22,7 +22,7 @@
             android:src="@drawable/card" />
 
         <EditText
-            android:id="@+id/number_card"
+            android:id="@+id/number_card_edit"
             android:inputType="number"
             android:layout_width="250dp"
             android:layout_height="60dp"
@@ -54,12 +54,13 @@
                 android:src="@drawable/datee" />
 
             <EditText
-                android:id="@+id/address_upgrade"
+                android:id="@+id/date_expiry_edit"
 
                 android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:hint="DD/MM/YY"
+
                 android:inputType="date" />
         </LinearLayout>
 
@@ -75,6 +76,7 @@
                 android:src="@drawable/cvvv" />
 
             <EditText
+                android:id="@+id/cvv_edit"
                 android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:hint="CVV"
@@ -83,5 +85,10 @@
 
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:id="@+id/pay_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proceed  to pay "/>
 
 </LinearLayout>
