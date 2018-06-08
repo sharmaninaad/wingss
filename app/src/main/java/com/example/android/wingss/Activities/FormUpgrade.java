@@ -1,4 +1,4 @@
-package com.example.android.wingss;
+package com.example.android.wingss.Activities;
 
 
 import android.os.Bundle;
@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.android.wingss.Adapters.MyListAdapter;
+import com.example.android.wingss.Fragments.BankFragment;
+import com.example.android.wingss.Fragments.CreditFragment;
+import com.example.android.wingss.R;
 
 public class FormUpgrade extends AppCompatActivity {
     MyListAdapter listAdapter;

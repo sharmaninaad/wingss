@@ -1,4 +1,4 @@
-package com.example.android.wingss.Activities;
+package com.example.android.wingss.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,14 +13,14 @@ import com.example.android.wingss.R;
  * Created by Ninaad on 6/7/2018.
  */
 
-public class NotificationFragment extends Fragment {
-    public NotificationFragment() {
+public class AccountFragment extends Fragment {
+    public AccountFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.layout_notification_fragment, container, false);
+        return inflater.inflate(R.layout.layout_account_fragment, container, false);
 
     }
 }

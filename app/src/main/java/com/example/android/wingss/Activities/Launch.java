@@ -38,8 +38,6 @@ import android.widget.Toast;
 
 import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
-import com.example.android.wingss.Settings;
-import com.example.android.wingss.Settingss;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,7 +52,6 @@ import java.util.Date;
 
 import static android.widget.Toast.makeText;
 import static com.example.android.wingss.Activities.Login.database;
-import static com.example.android.wingss.R.drawable.mail;
 
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

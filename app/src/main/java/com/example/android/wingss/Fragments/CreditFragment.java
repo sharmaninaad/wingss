@@ -1,4 +1,4 @@
-package com.example.android.wingss.Activities;
+package com.example.android.wingss.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,17 +10,18 @@ import android.view.ViewGroup;
 import com.example.android.wingss.R;
 
 /**
- * Created by Ninaad on 6/7/2018.
+ * Created by Ninaad on 6/6/2018.
  */
 
-public class AboutFragment extends Fragment {
-    public AboutFragment() {
+public class CreditFragment extends Fragment {
+    public CreditFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.layout_about_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.layout_credit_fragment, container, false);
 
+        return rootView;
     }
 }
