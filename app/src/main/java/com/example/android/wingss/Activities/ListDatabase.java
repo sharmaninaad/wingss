@@ -56,9 +56,7 @@ public class ListDatabase extends AppCompatActivity {
 
         };
 
-        String selection =
-                "";
-        String[] selectionArgs = {};
+
         Cursor cursor;
         cursor = database.query(
                 Dbcontract.Dbentry.TABLE_NAME,

@@ -72,6 +72,7 @@ public class FormUpgrade extends AppCompatActivity {
 
                     CreditFragment fragment = new CreditFragment();
                     replaceFragment(fragment);
+
                 } else if (checkedId == R.id.bank) {
                     BankFragment bankFragment = new BankFragment();
                     replaceFragment(bankFragment);

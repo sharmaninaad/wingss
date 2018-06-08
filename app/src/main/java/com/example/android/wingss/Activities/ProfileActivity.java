@@ -10,11 +10,15 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
     static final int MY_PERMISSIONS_REQUEST_READ_APP = 9;
     static final int MY_PERMISSIONS_REQUEST_READ_FACEBOOK = 10;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onResume() {
         super.onResume();
@@ -59,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +213,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void loadImageFromStorage() {
         try {
             if (ContextCompat.checkSelfPermission(ProfileActivity.this,
@@ -217,6 +224,7 @@ public class ProfileActivity extends AppCompatActivity {
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Log.i("a","premanent denial of permission");
 
                 } else {
                     ActivityCompat.requestPermissions(ProfileActivity.this,
@@ -236,6 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void loadProfilePic() {
 
         if (ContextCompat.checkSelfPermission(ProfileActivity.this,
@@ -246,6 +255,7 @@ public class ProfileActivity extends AppCompatActivity {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Log.i("a","premanent denial of permission");
 
             } else {
                 ActivityCompat.requestPermissions(ProfileActivity.this,
@@ -264,7 +274,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_APP: {
                 // If request is cancelled, the result arrays are empty.
@@ -275,18 +286,16 @@ public class ProfileActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
             case MY_PERMISSIONS_REQUEST_READ_FACEBOOK: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     loadImageFromStorage();
-                    return;
                 } else {
                     Toast.makeText(this, "Permission to access camera denied", Toast.LENGTH_SHORT).show();
                 }
-                return;
+
             }
 
         }

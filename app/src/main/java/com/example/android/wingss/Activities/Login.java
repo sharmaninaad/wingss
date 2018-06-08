@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -43,7 +42,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -64,6 +62,7 @@ import java.util.regex.Pattern;
 
 import static com.facebook.Profile.getCurrentProfile;
 
+@SuppressWarnings("ConstantConditions")
 public class Login extends AppCompatActivity {
     EditText pwd_edit;
     EditText mail_edit;
@@ -101,7 +100,6 @@ public class Login extends AppCompatActivity {
 
     static String mail_user;
     public static int userId;
-    private ImageView pwd_login;
 
     @Override
 
@@ -197,7 +195,7 @@ public class Login extends AppCompatActivity {
         mail_edit=(EditText)findViewById(R.id.mail1);
         pwd_edit=(EditText) findViewById(R.id.pwd1);
         sign=(TextView)findViewById(R.id.signup);
-        pwd_login = (ImageView) findViewById(R.id.show_pwd_login);
+        ImageView pwd_login = (ImageView) findViewById(R.id.show_pwd_login);
 
         final Dialog dialogs = new Dialog(Login.this);
 
@@ -252,7 +250,7 @@ public class Login extends AppCompatActivity {
                         logged_in_from_app = true;
                         mail_user = mail_edit.getText().toString();
                         SharedPreferences sspref = getSharedPreferences("wingss", MODE_PRIVATE);
-                        sspref.edit().putBoolean("isLoggedIn", true).commit();
+                        sspref.edit().putBoolean("isLoggedIn", true).apply();
                         startActivity(intent);
                         finish();
 
@@ -793,9 +791,8 @@ public class Login extends AppCompatActivity {
                             editor.putString("fb_f_name", firstName);
                             editor.putString("fb_l_name", lastName);
                             //     editor.putString("fb_gender", gender);
-                            editor.commit();
+                            editor.apply();
 
-                            Profile profile = getCurrentProfile();
                             //String id = profile.getId();
                             if (getCurrentProfile() != null) {
                                 Uri uri = getCurrentProfile().getProfilePictureUri(100, 100);
@@ -865,7 +862,6 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    @NonNull
     private boolean saveToInternalStorage(Bitmap bitmapImage) {
         try {
             FileOutputStream fos = getApplicationContext().openFileOutput("profile.png", Context.MODE_PRIVATE);
@@ -896,7 +892,7 @@ public class Login extends AppCompatActivity {
                             sharedpreferences = getSharedPreferences("wingss", Context.MODE_PRIVATE);
                             editor = sharedpreferences.edit();
 
-                            editor.putString("birthdate", birthdate).commit();
+                            editor.putString("birthdate", birthdate).apply();
                             editor.putString("photos", photos).commit();
                             Log.i("birthday", birthdate);
                             Log.i("photographs", photos);

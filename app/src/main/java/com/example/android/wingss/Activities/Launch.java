@@ -1,6 +1,7 @@
 package com.example.android.wingss.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,10 +13,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -53,6 +56,7 @@ import java.util.Date;
 import static android.widget.Toast.makeText;
 import static com.example.android.wingss.Activities.Login.database;
 
+@SuppressWarnings("deprecation")
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String mCurrentPhotoPath;
@@ -69,7 +73,6 @@ public class Launch extends AppCompatActivity
 
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 3;
 
-    static final int MY_PERMISSIONS_REQUEST_CAMERA_FRONT = 8;
 
     static final int MY_PERMISSIONS_REQUEST_STORAGE_FOR_CAMERA = 4;
     static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY = 5;
@@ -80,6 +83,7 @@ public class Launch extends AppCompatActivity
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +118,7 @@ public class Launch extends AppCompatActivity
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Log.i("a","");
 
                 } else {
                     ActivityCompat.requestPermissions(Launch.this,
@@ -139,6 +144,7 @@ public class Launch extends AppCompatActivity
                     // Should we show an explanation?
                     if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
                             Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        Log.i("a","");
 
                     } else {
                         ActivityCompat.requestPermissions(Launch.this,
@@ -193,7 +199,7 @@ public class Launch extends AppCompatActivity
                     // Should we show an explanation?
                     if (ActivityCompat.shouldShowRequestPermissionRationale(Launch.this,
                             Manifest.permission.CAMERA)) {
-
+                        Log.i("a","");
                     } else {
                         ActivityCompat.requestPermissions(Launch.this,
                                 new String[]{Manifest.permission.CAMERA},
@@ -242,9 +248,10 @@ public class Launch extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -303,9 +310,9 @@ public class Launch extends AppCompatActivity
 
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotificationManager.notify(001, notify);
+        mNotificationManager.notify(1, notify);
 
-        mNotificationManager.notify(002, notify);
+        mNotificationManager.notify(2, notify);
 
     }
 
@@ -329,7 +336,7 @@ public class Launch extends AppCompatActivity
         } else if (Login.logged_in_from_app) {
             Login.logged_in_from_app = false;
             SharedPreferences pref = getSharedPreferences("wingss", MODE_PRIVATE);
-            pref.edit().putBoolean("isLoggedIn", false).commit();
+            pref.edit().putBoolean("isLoggedIn", false).apply();
             startActivity(new Intent(Launch.this, Login.class));
             finish();
         }
@@ -349,7 +356,7 @@ public class Launch extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
@@ -409,11 +416,9 @@ public class Launch extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     loadProfilePic();
 
-                    return;
                 } else {
                     Toast.makeText(this, "Permission to read from storage denied", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
 
 
@@ -438,6 +443,7 @@ public class Launch extends AppCompatActivity
                     // Should we show an explanation?
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        Log.i("a","");
                     } else {
                         ActivityCompat.requestPermissions(this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -496,7 +502,7 @@ public class Launch extends AppCompatActivity
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
+            File photoFile ;
             try {
 
                 photoFile = createImageFile();
@@ -560,11 +566,11 @@ public class Launch extends AppCompatActivity
     }
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         Log.i("directory", imageFileName);
-        File image = null;
+        File image ;
 
 
             image = File.createTempFile(

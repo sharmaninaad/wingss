@@ -28,7 +28,6 @@ public class Gallery extends AppCompatActivity {
     ArrayList<String> fb_name_list;
     ArrayList<String> fb_id_list;
     ListView listView;
-    List<String> yourList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class Gallery extends AppCompatActivity {
 
             photos_fb = sharedPref.getString("photos", "");
 
-            JSONObject json = null;
+            JSONObject json ;
             try {
                 json = new JSONObject(photos_fb);
                 JSONArray jsonArray = json.getJSONArray("data");
