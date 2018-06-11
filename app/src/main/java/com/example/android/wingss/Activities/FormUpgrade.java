@@ -1,6 +1,7 @@
 package com.example.android.wingss.Activities;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,35 @@ public class FormUpgrade extends AppCompatActivity {
     RadioButton credit_radio;
     RadioButton bank_radio;
     RadioGroup radioGroup;
+    CreditFragment fragment;
+    BankFragment bankFragment;
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences preff = getSharedPreferences("wingss", MODE_PRIVATE);
+
+        preff.edit().putInt("position", spinner.getSelectedItemPosition()).commit();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefff = getSharedPreferences("wingss", MODE_PRIVATE);
+
+        spinner.setSelection(prefff.getInt("position", 0));
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefff = getSharedPreferences("wingss", MODE_PRIVATE);
+
+        spinner.setSelection(prefff.getInt("position", 0));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +78,19 @@ public class FormUpgrade extends AppCompatActivity {
         listAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(listAdapter);
 
+
+        SharedPreferences prefff = getSharedPreferences("wingss", MODE_PRIVATE);
+
+        spinner.setSelection(prefff.getInt("position", 0));
         radioGroup = (RadioGroup) findViewById(R.id.pay_group);
         credit_radio = (RadioButton) findViewById(R.id.credit);
         bank_radio = (RadioButton) findViewById(R.id.bank);
+        fragment = new CreditFragment();
+        bankFragment = new BankFragment();
 
         credit_radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreditFragment fragment = new CreditFragment();
                 replaceFragment(fragment);
             }
         });
@@ -63,7 +98,6 @@ public class FormUpgrade extends AppCompatActivity {
         bank_radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BankFragment bankFragment = new BankFragment();
                 replaceFragment(bankFragment);
             }
         });
@@ -73,11 +107,9 @@ public class FormUpgrade extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.credit) {
 
-                    CreditFragment fragment = new CreditFragment();
                     replaceFragment(fragment);
 
                 } else if (checkedId == R.id.bank) {
-                    BankFragment bankFragment = new BankFragment();
                     replaceFragment(bankFragment);
                 }
             }

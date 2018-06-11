@@ -2,7 +2,6 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="340dp"
     android:layout_height="200dp"
@@ -20,7 +19,6 @@
             android:layout_width="30dp"
             android:layout_height="60dp"
             android:src="@drawable/card" />
-
         <EditText
             android:id="@+id/number_card_edit"
             android:inputType="number"

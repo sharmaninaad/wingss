@@ -1,6 +1,5 @@
 package com.example.android.wingss.Adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -33,7 +32,7 @@ public class MyListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View view, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        @SuppressLint("ViewHolder") View rowView= inflater.inflate(R.layout.list_single, parent, true);
+        View rowView = inflater.inflate(R.layout.list_single, null, false);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
         txtTitle.setText(texts[position]);

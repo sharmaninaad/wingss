@@ -549,6 +549,7 @@ public class Login extends AppCompatActivity {
         values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
+        values.put(Dbcontract.Dbentry.COLUMN_STAR, 0);
 
         return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
