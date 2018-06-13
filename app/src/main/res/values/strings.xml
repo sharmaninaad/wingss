@@ -2,6 +2,7 @@
     <string name="app_name">wingss</string>
     <string name="title_activity_login">Sign in</string>
     <string name="sign_string"><u>  New User! Sign up </u></string>
+    <string name="referal">Hey , I am using this app , it has awesome features , you can download it from </string>
     <string name="facebook_app_id">2024564934528284</string>
     <string name="fb_login_protocol_scheme">fb2024564934528284</string>
 

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,9 +42,11 @@ import android.widget.Toast;
 
 import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
+import com.example.android.wingss.app.Config;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,7 +63,6 @@ import static com.example.android.wingss.Activities.Login.database;
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String mCurrentPhotoPath;
-
     TextView name_text;
     ImageView imageView;
     Intent pro_fb_intent;
@@ -78,8 +80,9 @@ public class Launch extends AppCompatActivity
     static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_GALLERY = 5;
     static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_FACEBOOK = 6;
     static final int MY_PERMISSIONS_REQUEST_STORAGE_READ_FOR_APP = 7;
+    BroadcastReceiver mRegistrationBroadcastReceiver;
 
-
+//Refer https://www.androidhive.info/2012/10/android-push-notifications-using-google-cloud-messaging-gcm-php-and-mysql/
 
 
 
@@ -98,7 +101,27 @@ public class Launch extends AppCompatActivity
         captureView = (ImageView) findViewById(R.id.captured);
 // Here, thisActivity is the current activity
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
         if (Login.logged_in_from_facebook) {
 
             SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
@@ -175,7 +198,7 @@ public class Launch extends AppCompatActivity
                 Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                 whatsappIntent.setType("text/plain");
                 whatsappIntent.setPackage("com.whatsapp");
-                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Hey ! I amusing this app , it has awesome features , you also try it");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, R.string.referal);
                 try {
                     startActivity(whatsappIntent);
                     sendCustomNotification();
