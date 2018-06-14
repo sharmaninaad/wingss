@@ -524,7 +524,7 @@ public class Login extends AppCompatActivity {
         });
 
     }
-
+//
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -549,7 +549,6 @@ public class Login extends AppCompatActivity {
         values.put(Dbcontract.Dbentry.COLUMN_NAME, name_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_PWD, pwd_d.getText().toString());
         values.put(Dbcontract.Dbentry.COLUMN_MAIL, mail_d.getText().toString());
-        values.put(Dbcontract.Dbentry.COLUMN_STAR, 0);
 
         return database.insert(Dbcontract.Dbentry.TABLE_NAME, null, values);
 
@@ -753,7 +752,7 @@ public class Login extends AppCompatActivity {
 
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
            startActivityForResult(signInIntent, RC_SIGN_IN);
-
+//the ac
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
@@ -768,7 +767,8 @@ public class Login extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
 
-            Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w("Api exception",e.getStatusCode()+"");
         }
     }
     private void setFacebookData(final LoginResult loginResult) {

@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -26,11 +27,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +45,7 @@ import android.widget.Toast;
 
 import com.example.android.wingss.DbPackage.Dbcontract;
 import com.example.android.wingss.R;
+import com.example.android.wingss.Util.NotificationUtils;
 import com.example.android.wingss.app.Config;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,7 +63,7 @@ import java.util.Date;
 import static android.widget.Toast.makeText;
 import static com.example.android.wingss.Activities.Login.database;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "StatementWithEmptyBody"})
 public class Launch extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String mCurrentPhotoPath;
@@ -122,6 +126,7 @@ public class Launch extends AppCompatActivity
                 }
             }
         };
+        displayFirebaseRegId();
         if (Login.logged_in_from_facebook) {
 
             SharedPreferences sharedPref = getSharedPreferences("wingss", Context.MODE_PRIVATE);
@@ -608,6 +613,38 @@ public class Launch extends AppCompatActivity
 
     }
 
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
 
+
+        if (!TextUtils.isEmpty(regId))
+        {}
+        else
+        {}
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
 }
 
